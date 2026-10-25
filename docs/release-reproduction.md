@@ -4,7 +4,7 @@
 
 Commit `333c654` captures the previously uncommitted production-domain configuration used by active Worker version `3579388d-8d51-4550-b42e-e1ecc9669255`. It includes the public origin, indexability, Custom Domain routes, loopback preview host and production-alias redirects.
 
-The subsequent repository rename to `wherexml/aspectratio` updates the source and llms.txt links. The public website domain remains `imageaspectratio.com`. This source-only update does not redeploy the Worker; the existing live repository links resolve through GitHub's rename redirect. Checkout `333c654` to reproduce the prior live application configuration, or use current main for the new repository links.
+The subsequent repository rename to `wherexml/image-aspect-ratio` updates the source and llms.txt links. The public website domain remains `imageaspectratio.com`. This source-only update does not redeploy the Worker; the existing live repository links resolve through GitHub's rename redirect. Checkout `333c654` to reproduce the prior live application configuration, or use current main for the new repository links.
 
 ## Verification method
 

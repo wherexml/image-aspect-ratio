@@ -1,7 +1,7 @@
 <p align="center"><img src="public/favicon.svg" width="96" alt="Image Aspect Ratio icon"></p>
 <h1 align="center">Image Aspect Ratio</h1>
 <p align="center">Find your image aspect ratio. Calculate the dimensions you need.</p>
-<p align="center"><a href="https://imageaspectratio.com/">Open the calculator</a> · <a href="https://github.com/wherexml/aspectratio/issues">Report an issue</a> · <a href="LICENSE">MIT license</a></p>
+<p align="center"><a href="https://imageaspectratio.com/">Open the calculator</a> · <a href="https://github.com/wherexml/image-aspect-ratio/issues">Report an issue</a> · <a href="LICENSE">MIT license</a></p>
 
 Image Aspect Ratio is a free, browser-based calculator for image dimensions and proportions. Calculate an exact ratio from width and height, find a matching dimension, and compare Fit and Fill previews. Separate tools cover video and ultrawide dimensions.
 
@@ -34,8 +34,8 @@ These tools calculate numbers and preview framing. They do **not** export resize
 Verified with **Bun 1.3.14** and **Node.js 22.23.1**. Dependencies are pinned in `bun.lock`.
 
 ```sh
-git clone https://github.com/wherexml/aspectratio.git
-cd aspectratio
+git clone https://github.com/wherexml/image-aspect-ratio.git
+cd image-aspect-ratio
 bun install --frozen-lockfile
 npm run dev -- --host 127.0.0.1 --port 18786 --strictPort
 ```
@@ -76,4 +76,4 @@ New content, documentation, code comments and GitHub records use English. Older 
 
 Maintained by [wherexml](https://github.com/wherexml). Originally exported from [Lovable](https://lovable.dev); provenance is recorded in `LOCAL-EXPORT.json`. The repository remains connected to Lovable, so published Git history must not be rewritten.
 
-The public site is available at **imageaspectratio.com**. Search Console ownership and sitemap submission are configured; indexing requests do not guarantee inclusion or ranking. [Report an issue](https://github.com/wherexml/aspectratio/issues) with the page, input dimensions, expected result and steps to reproduce.
+The public site is available at **imageaspectratio.com**. Search Console ownership and sitemap submission are configured; indexing requests do not guarantee inclusion or ranking. [Report an issue](https://github.com/wherexml/image-aspect-ratio/issues) with the page, input dimensions, expected result and steps to reproduce.

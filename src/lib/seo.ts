@@ -1,6 +1,6 @@
 import { canonicalUrl, robotsDirective, type SitePath } from "./site";
 
-export const REPOSITORY_URL = "https://github.com/wherexml/aspectratio";
+export const REPOSITORY_URL = "https://github.com/wherexml/image-aspect-ratio";
 export const MAINTAINER = { "@type": "Person", name: "wherexml", url: "https://github.com/wherexml" };
 // Actual content review date; never derive this from build time.
 export const CONTENT_UPDATED = "2026-10-23";
