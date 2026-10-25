@@ -1,9 +1,9 @@
-<p align="center"><img src="public/favicon.svg" width="96" alt="Aspect Ratio Calculator icon"></p>
-<h1 align="center">Aspect Ratio Calculator</h1>
-<p align="center">Calculate dimensions. Keep the exact proportions.</p>
+<p align="center"><img src="public/favicon.svg" width="96" alt="Image Aspect Ratio icon"></p>
+<h1 align="center">Image Aspect Ratio</h1>
+<p align="center">Find your image aspect ratio. Calculate the dimensions you need.</p>
 <p align="center"><a href="https://imageaspectratio.com/">Open the calculator</a> · <a href="https://github.com/wherexml/aspectratio/issues">Report an issue</a> · <a href="LICENSE">MIT license</a></p>
 
-A free, browser-based calculator for image, video and ultrawide dimensions. Calculate a missing width or height, reduce dimensions to an exact ratio, and preview how content fits a different frame.
+Image Aspect Ratio is a free, browser-based calculator for image dimensions and proportions. Calculate an exact ratio from width and height, find a matching dimension, and compare Fit and Fill previews. Separate tools cover video and ultrawide dimensions.
 
 ## A closer look
 
