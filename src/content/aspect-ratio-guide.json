@@ -1,0 +1,220 @@
+{
+  "title": "What is aspect ratio?",
+  "intro": "Aspect ratio describes the relationship between an image’s width and height, written as width:height. A 16:9 image has 16 units of width for every 9 units of height. It defines the shape of the frame, whereas pixel dimensions define its size.",
+  "sections": [
+    {
+      "id": "reading-a-ratio",
+      "title": "How to read an aspect ratio",
+      "blocks": [
+        {
+          "kind": "paragraph",
+          "text": "Width comes first. In a 3:2 photograph, width is 1.5 times height. Turned vertically, that ratio becomes 2:3. Equal numbers, such as 1:1, indicate a square."
+        },
+        {
+          "kind": "paragraph",
+          "text": "The units can be pixels, inches or centimetres, provided both dimensions use the same unit. A 6 × 4-inch print and a 1500 × 1000-pixel image both have a 3:2 ratio. The ratio alone does not indicate whether an image has enough detail for a given print size."
+        },
+        {
+          "kind": "paragraph",
+          "text": "A decimal expresses the same relationship: divide width by height. For 16:9, the result is approximately 1.78, often written as 1.78:1. This decimal is rounded; 16:9 is the exact ratio."
+        }
+      ]
+    },
+    {
+      "id": "ratio-vs-resolution",
+      "title": "Aspect ratio vs. resolution",
+      "blocks": [
+        {
+          "kind": "paragraph",
+          "text": "Dimensions of 1280 × 720, 1920 × 1080 and 3840 × 2160 all reduce to 16:9. They share the same proportions but contain different total pixel counts. A higher pixel count can hold more detail, though focus, compression and source quality remain factors."
+        },
+        {
+          "kind": "paragraph",
+          "text": "“Resolution” can refer to pixel dimensions in digital video or pixel density (such as pixels per inch) in print. Neither is an aspect ratio. Enlarging a low-resolution image keeps its proportions if scaled evenly, but cannot recover missing detail."
+        }
+      ]
+    },
+    {
+      "id": "common-ratios",
+      "title": "Common aspect ratios",
+      "blocks": [
+        {
+          "kind": "paragraph",
+          "text": "These dimensions are examples rather than upload requirements. Check destination specifications before exporting."
+        },
+        {
+          "kind": "table",
+          "rows": [
+            [
+              "Ratio",
+              "Example dimensions",
+              "Typical use"
+            ],
+            [
+              "1:1",
+              "1080 × 1080",
+              "Square images and album artwork"
+            ],
+            [
+              "4:3",
+              "1600 × 1200",
+              "Photos and traditional screens"
+            ],
+            [
+              "3:2",
+              "1500 × 1000",
+              "Photos and 6 × 4-inch prints"
+            ],
+            [
+              "4:5",
+              "1080 × 1350",
+              "Portrait images and 8 × 10-inch prints"
+            ],
+            [
+              "16:9",
+              "1920 × 1080",
+              "Widescreen video"
+            ],
+            [
+              "9:16",
+              "1080 × 1920",
+              "Vertical video"
+            ]
+          ]
+        },
+        {
+          "kind": "paragraph",
+          "text": "YouTube’s desktop player defaults to 16:9, but adapts dynamically to other video shapes and devices. Vertical videos do not need to be stretched into a horizontal frame."
+        },
+        {
+          "kind": "paragraph",
+          "text": "“21:9” is frequently used as a commercial label for ultrawide displays. A 3440 × 1440 monitor is actually 43:18 rather than precisely 21:9. Use exact pixel dimensions whenever precise fit matters."
+        }
+      ]
+    },
+    {
+      "id": "calculate-aspect-ratio",
+      "title": "How to calculate aspect ratio",
+      "blocks": [
+        {
+          "kind": "paragraph",
+          "text": "To calculate an aspect ratio, divide both width and height by their greatest common divisor (the largest integer that divides both without a remainder)."
+        },
+        {
+          "kind": "paragraph",
+          "text": "For 1920 × 1080, that divisor is 120. Dividing gives 1920 ÷ 120 = 16 and 1080 ÷ 120 = 9, yielding a 16:9 aspect ratio."
+        },
+        {
+          "kind": "paragraph",
+          "text": "To find an unknown dimension for a target ratio W:H, use height = width × H ÷ W, or width = height × W ÷ H. For a 16:9 ratio, an image 1200 pixels wide requires a height of 675 pixels."
+        },
+        {
+          "kind": "paragraph",
+          "text": "If a calculation yields a fraction, rounding to the nearest whole pixel makes the final ratio approximate. To maintain exact integer dimensions, multiply both terms of the reduced ratio by the same positive integer. Our calculator maintains exact fractions and flags rounded pixel values."
+        }
+      ]
+    },
+    {
+      "id": "crop-fit-stretch",
+      "title": "Changing aspect ratio: crop, fit or stretch?",
+      "blocks": [
+        {
+          "kind": "paragraph",
+          "text": "A 16:9 image cannot fill a square frame while retaining both its complete content and original proportions. You have to decide what may change."
+        },
+        {
+          "kind": "heading",
+          "text": "Fit: keep the whole picture"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Scale the image uniformly until it fits within the boundaries of the target frame. Fitting a horizontal image into a square frame leaves empty space above and below. Adding padding fills this space while keeping the full image visible."
+        },
+        {
+          "kind": "heading",
+          "text": "Fill: crop the edges"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Scale the image uniformly until it covers the entire frame, trimming any area outside the border. Filling a square frame with a 16:9 image crops the left and right edges. Because centred cropping can cut off off-centre subjects, check framing before saving."
+        },
+        {
+          "kind": "heading",
+          "text": "Stretch: change the proportions"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Scale width and height unevenly to fill the frame. This avoids cropping, but distorts shapes—turning circles into ovals."
+        },
+        {
+          "kind": "paragraph",
+          "text": "Dark bars positioned above and below an image are called letterboxing; bars on the sides are called pillarboxing. Both allow an image to appear in a differently shaped frame without distortion. YouTube’s help documentation recommends avoiding hardcoded bars in uploaded files, as they interfere with the player’s responsive resizing."
+        }
+      ]
+    },
+    {
+      "id": "choosing-a-ratio",
+      "title": "Choosing a ratio for your image",
+      "blocks": [
+        {
+          "kind": "paragraph",
+          "text": "Begin with the required space: a print size, page layout or video container. Confirm that the subject fits comfortably within those boundaries, leaving sufficient margin around faces, titles and other critical elements to prevent unwanted cropping."
+        },
+        {
+          "kind": "paragraph",
+          "text": "Retain an uncropped master copy of your file. If you need both landscape and portrait exports, frame and review each orientation individually; cropping from 16:9 to 9:16 cuts out a substantial portion of the original frame."
+        },
+        {
+          "kind": "paragraph",
+          "text": "Use our image calculator to inspect the dimensions of a local file and preview Fit versus Fill adjustments. These previews are visual checks: the tool does not crop, resize or export files. Use an image editor to apply and save final modifications."
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "title": "Frequently asked questions",
+      "blocks": [
+        {
+          "kind": "heading",
+          "text": "Is 1920 × 1080 the same as 16:9?"
+        },
+        {
+          "kind": "paragraph",
+          "text": "1920 × 1080 is a specific pixel resolution with a 16:9 aspect ratio. Other resolutions, including 1280 × 720, share this same ratio. An aspect ratio alone does not specify pixel dimensions."
+        },
+        {
+          "kind": "heading",
+          "text": "Is 4:3 or 16:9 better?"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Neither ratio is universally better. Select the frame suited to your delivery platform and visual composition. Converting a 4:3 photograph to 16:9 without distortion requires cropping the top and bottom or adding padding to the sides."
+        },
+        {
+          "kind": "heading",
+          "text": "Can I change aspect ratio without cropping?"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Yes. Adding padding or expanding the canvas changes the frame proportions while keeping the complete image intact. Non-uniform scaling (stretching) also alters the ratio without cropping, but distorts shapes."
+        },
+        {
+          "kind": "heading",
+          "text": "Does aspect ratio affect image quality?"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Aspect ratio itself does not determine image quality. Cropping discards pixels, upscaling can reduce sharpness, and stretching distorts geometry. Those editing choices affect the result."
+        },
+        {
+          "kind": "heading",
+          "text": "What about video with non-square pixels?"
+        },
+        {
+          "kind": "paragraph",
+          "text": "Dividing pixel width by pixel height reflects display shape only when pixels are square, which our video calculator assumes by default. Certain legacy and anamorphic formats use non-square pixels; calculating display aspect ratio for those formats requires factoring in the pixel aspect ratio."
+        }
+      ]
+    }
+  ]
+}

@@ -42,3 +42,7 @@ ci-results/
 
 # Local sprint planning documents
 **/doocs/sprint/
+
+# Local reports and sprint artifacts are not application source.
+/reports/
+**/docs/sprint/

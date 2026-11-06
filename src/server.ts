@@ -1,3 +1,4 @@
+import { geoCollection, recordGeoRequest } from "./lib/geo-collection";
 import { SITE_PAGES, site, robotsDirective, robotsTxt, sitemapXml } from "./lib/site";
 import "./lib/error-capture";
 
@@ -45,7 +46,7 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
-export default {
+const app = {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const url = new URL(request.url);
@@ -70,6 +71,9 @@ export default {
         });
       }
       const cleanPath = url.pathname.replace(/\/+$/, "") || "/";
+      if (isRead && cleanPath === "/image-aspect-ratio") {
+        return new Response(null, { status: 308, headers: { Location: "/" + url.search } });
+      }
       if (isRead && cleanPath !== url.pathname && SITE_PAGES.some(path => path === cleanPath)) {
         return new Response(null, { status: 308, headers: { Location: cleanPath + url.search } });
       }
@@ -89,5 +93,18 @@ export default {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
     }
+  },
+};
+
+export default {
+  async fetch(request: Request, env: unknown, ctx: unknown) {
+    const runtime = request as Request & { runtime?: { cloudflare?: { env?: unknown; context?: unknown } }; waitUntil?: (promise: Promise<unknown>) => void };
+    const workerEnv = env ?? runtime.runtime?.cloudflare?.env ?? {};
+    const workerContext = ctx ?? runtime.runtime?.cloudflare?.context ?? runtime;
+    const collected = await geoCollection(request, workerEnv);
+    if (collected) return collected;
+    const response = await app.fetch(request, env, ctx);
+    recordGeoRequest(request, response, workerEnv, workerContext);
+    return response;
   },
 };

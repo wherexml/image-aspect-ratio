@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576.5 158" role="img" aria-labelledby="ars-title ars-desc" width="100%" style="max-width:100%;height:auto">
+<title id="ars-title">Common aspect ratios compared at the same height</title>
+<desc id="ars-desc">Five frames drawn at one shared height with exact proportions: 1:1 square, 4:3 classic, 3:2 photo, 16:9 widescreen and 9:16 vertical. Wider ratios produce wider frames; 9:16 is a tall, narrow frame.</desc>
+<style>
+.ars-brand{fill:var(--brand, #D96A1B)}
+.ars-tint{fill:var(--brand, #D96A1B);fill-opacity:.1}
+.ars-fg{fill:var(--foreground, #182332)}
+.ars-muted{fill:var(--muted-foreground, #566273)}
+.ars-card{fill:var(--card, #ffffff)}
+.ars-far{fill:var(--muted-foreground, #566273);fill-opacity:.32}
+.ars-near{fill:var(--foreground, #182332);fill-opacity:.72}
+.ars-sky{fill:var(--brand, #D96A1B);fill-opacity:.08}
+.ars-line{fill:none;stroke:var(--brand, #D96A1B);stroke-width:2}
+.ars-edge{fill:none;stroke:var(--border, #dce0e5);stroke-width:1.5}
+.ars-dim{fill:none;stroke:var(--muted-foreground, #566273);stroke-width:1.25;stroke-linecap:round}
+.ars-grid{fill:none;stroke:var(--card, #ffffff);stroke-opacity:.55;stroke-width:.75}
+.ars-t{font-family:var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);fill:var(--foreground, #182332)}
+.ars-s{font-family:var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);fill:var(--muted-foreground, #566273)}
+</style>
+<path class="ars-dim" stroke-dasharray="2 5" d="M8 28H568.5M8 100H568.5"/>
+<rect class="ars-tint" x="22" y="28" width="72" height="72" rx="3"/><rect class="ars-line" x="22" y="28" width="72" height="72" rx="3"/><text class="ars-t" x="58" y="126" text-anchor="middle" font-size="18" font-weight="700">1:1</text><text class="ars-s" x="58" y="146" text-anchor="middle" font-size="14">Square</text>
+<rect class="ars-tint" x="116" y="28" width="96" height="72" rx="3"/><rect class="ars-line" x="116" y="28" width="96" height="72" rx="3"/><text class="ars-t" x="164" y="126" text-anchor="middle" font-size="18" font-weight="700">4:3</text><text class="ars-s" x="164" y="146" text-anchor="middle" font-size="14">Classic</text>
+<rect class="ars-tint" x="234" y="28" width="108" height="72" rx="3"/><rect class="ars-line" x="234" y="28" width="108" height="72" rx="3"/><text class="ars-t" x="288" y="126" text-anchor="middle" font-size="18" font-weight="700">3:2</text><text class="ars-s" x="288" y="146" text-anchor="middle" font-size="14">Photo</text>
+<rect class="ars-tint" x="364" y="28" width="128" height="72" rx="3"/><rect class="ars-line" x="364" y="28" width="128" height="72" rx="3"/><text class="ars-t" x="428" y="126" text-anchor="middle" font-size="18" font-weight="700">16:9</text><text class="ars-s" x="428" y="146" text-anchor="middle" font-size="14">Widescreen</text>
+<rect class="ars-tint" x="514" y="28" width="40.5" height="72" rx="3"/><rect class="ars-line" x="514" y="28" width="40.5" height="72" rx="3"/><text class="ars-t" x="534.25" y="126" text-anchor="middle" font-size="18" font-weight="700">9:16</text><text class="ars-s" x="534.25" y="146" text-anchor="middle" font-size="14">Vertical</text>
+<text class="ars-s" x="288.25" y="16" text-anchor="middle" font-size="13">Same height, different widths</text>
+</svg>

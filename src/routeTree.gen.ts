@@ -11,12 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ExactFractionsVsRoundedPixelsRouteImport } from './routes/exact-fractions-vs-rounded-pixels'
 import { Route as ImageAspectRatioRouteImport } from './routes/image-aspect-ratio'
+import { Route as InstagramReelAspectRatioRouteImport } from './routes/instagram-reel-aspect-ratio'
+import { Route as InstagramStoryAspectRatioRouteImport } from './routes/instagram-story-aspect-ratio'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SocialMediaRouteImport } from './routes/social-media'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TiktokAspectRatioRouteImport } from './routes/tiktok-aspect-ratio'
 import { Route as UltrawideAspectRatioCalculatorRouteImport } from './routes/ultrawide-aspect-ratio-calculator'
 import { Route as VideoAspectRatioRouteImport } from './routes/video-aspect-ratio'
+import { Route as WhatIsAspectRatioRouteImport } from './routes/what-is-aspect-ratio'
+import { Route as YoutubeAspectRatioRouteImport } from './routes/youtube-aspect-ratio'
+import { Route as YoutubeShortsAspectRatioRouteImport } from './routes/youtube-shorts-aspect-ratio'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,24 +37,57 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExactFractionsVsRoundedPixelsRoute =
+  ExactFractionsVsRoundedPixelsRouteImport.update({
+    id: '/exact-fractions-vs-rounded-pixels',
+    path: '/exact-fractions-vs-rounded-pixels',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ImageAspectRatioRoute = ImageAspectRatioRouteImport.update({
   id: '/image-aspect-ratio',
   path: '/image-aspect-ratio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InstagramReelAspectRatioRoute =
+  InstagramReelAspectRatioRouteImport.update({
+    id: '/instagram-reel-aspect-ratio',
+    path: '/instagram-reel-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const InstagramStoryAspectRatioRoute =
+  InstagramStoryAspectRatioRouteImport.update({
+    id: '/instagram-story-aspect-ratio',
+    path: '/instagram-story-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SocialMediaRoute = SocialMediaRouteImport.update({
+  id: '/social-media',
+  path: '/social-media',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TiktokAspectRatioRoute = TiktokAspectRatioRouteImport.update({
+  id: '/tiktok-aspect-ratio',
+  path: '/tiktok-aspect-ratio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UltrawideAspectRatioCalculatorRoute =
@@ -59,80 +101,159 @@ const VideoAspectRatioRoute = VideoAspectRatioRouteImport.update({
   path: '/video-aspect-ratio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WhatIsAspectRatioRoute = WhatIsAspectRatioRouteImport.update({
+  id: '/what-is-aspect-ratio',
+  path: '/what-is-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const YoutubeAspectRatioRoute = YoutubeAspectRatioRouteImport.update({
+  id: '/youtube-aspect-ratio',
+  path: '/youtube-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const YoutubeShortsAspectRatioRoute =
+  YoutubeShortsAspectRatioRouteImport.update({
+    id: '/youtube-shorts-aspect-ratio',
+    path: '/youtube-shorts-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
+  '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
+  '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
+  '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
   '/privacy': typeof PrivacyRoute
+  '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
+  '/tiktok-aspect-ratio': typeof TiktokAspectRatioRoute
   '/ultrawide-aspect-ratio-calculator': typeof UltrawideAspectRatioCalculatorRoute
   '/video-aspect-ratio': typeof VideoAspectRatioRoute
+  '/what-is-aspect-ratio': typeof WhatIsAspectRatioRoute
+  '/youtube-aspect-ratio': typeof YoutubeAspectRatioRoute
+  '/youtube-shorts-aspect-ratio': typeof YoutubeShortsAspectRatioRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
+  '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
+  '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
+  '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
   '/privacy': typeof PrivacyRoute
+  '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
+  '/tiktok-aspect-ratio': typeof TiktokAspectRatioRoute
   '/ultrawide-aspect-ratio-calculator': typeof UltrawideAspectRatioCalculatorRoute
   '/video-aspect-ratio': typeof VideoAspectRatioRoute
+  '/what-is-aspect-ratio': typeof WhatIsAspectRatioRoute
+  '/youtube-aspect-ratio': typeof YoutubeAspectRatioRoute
+  '/youtube-shorts-aspect-ratio': typeof YoutubeShortsAspectRatioRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculator': typeof CalculatorRoute
   '/contact': typeof ContactRoute
+  '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
+  '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
+  '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
   '/privacy': typeof PrivacyRoute
+  '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
+  '/tiktok-aspect-ratio': typeof TiktokAspectRatioRoute
   '/ultrawide-aspect-ratio-calculator': typeof UltrawideAspectRatioCalculatorRoute
   '/video-aspect-ratio': typeof VideoAspectRatioRoute
+  '/what-is-aspect-ratio': typeof WhatIsAspectRatioRoute
+  '/youtube-aspect-ratio': typeof YoutubeAspectRatioRoute
+  '/youtube-shorts-aspect-ratio': typeof YoutubeShortsAspectRatioRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/calculator'
     | '/contact'
+    | '/exact-fractions-vs-rounded-pixels'
     | '/image-aspect-ratio'
+    | '/instagram-reel-aspect-ratio'
+    | '/instagram-story-aspect-ratio'
     | '/privacy'
+    | '/social-media'
     | '/terms'
+    | '/tiktok-aspect-ratio'
     | '/ultrawide-aspect-ratio-calculator'
     | '/video-aspect-ratio'
+    | '/what-is-aspect-ratio'
+    | '/youtube-aspect-ratio'
+    | '/youtube-shorts-aspect-ratio'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/calculator'
     | '/contact'
+    | '/exact-fractions-vs-rounded-pixels'
     | '/image-aspect-ratio'
+    | '/instagram-reel-aspect-ratio'
+    | '/instagram-story-aspect-ratio'
     | '/privacy'
+    | '/social-media'
     | '/terms'
+    | '/tiktok-aspect-ratio'
     | '/ultrawide-aspect-ratio-calculator'
     | '/video-aspect-ratio'
+    | '/what-is-aspect-ratio'
+    | '/youtube-aspect-ratio'
+    | '/youtube-shorts-aspect-ratio'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/calculator'
     | '/contact'
+    | '/exact-fractions-vs-rounded-pixels'
     | '/image-aspect-ratio'
+    | '/instagram-reel-aspect-ratio'
+    | '/instagram-story-aspect-ratio'
     | '/privacy'
+    | '/social-media'
     | '/terms'
+    | '/tiktok-aspect-ratio'
     | '/ultrawide-aspect-ratio-calculator'
     | '/video-aspect-ratio'
+    | '/what-is-aspect-ratio'
+    | '/youtube-aspect-ratio'
+    | '/youtube-shorts-aspect-ratio'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CalculatorRoute: typeof CalculatorRoute
   ContactRoute: typeof ContactRoute
+  ExactFractionsVsRoundedPixelsRoute: typeof ExactFractionsVsRoundedPixelsRoute
   ImageAspectRatioRoute: typeof ImageAspectRatioRoute
+  InstagramReelAspectRatioRoute: typeof InstagramReelAspectRatioRoute
+  InstagramStoryAspectRatioRoute: typeof InstagramStoryAspectRatioRoute
   PrivacyRoute: typeof PrivacyRoute
+  SocialMediaRoute: typeof SocialMediaRoute
   TermsRoute: typeof TermsRoute
+  TiktokAspectRatioRoute: typeof TiktokAspectRatioRoute
   UltrawideAspectRatioCalculatorRoute: typeof UltrawideAspectRatioCalculatorRoute
   VideoAspectRatioRoute: typeof VideoAspectRatioRoute
+  WhatIsAspectRatioRoute: typeof WhatIsAspectRatioRoute
+  YoutubeAspectRatioRoute: typeof YoutubeAspectRatioRoute
+  YoutubeShortsAspectRatioRoute: typeof YoutubeShortsAspectRatioRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -151,11 +272,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exact-fractions-vs-rounded-pixels': {
+      id: '/exact-fractions-vs-rounded-pixels'
+      path: '/exact-fractions-vs-rounded-pixels'
+      fullPath: '/exact-fractions-vs-rounded-pixels'
+      preLoaderRoute: typeof ExactFractionsVsRoundedPixelsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/image-aspect-ratio': {
@@ -165,6 +300,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImageAspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/instagram-reel-aspect-ratio': {
+      id: '/instagram-reel-aspect-ratio'
+      path: '/instagram-reel-aspect-ratio'
+      fullPath: '/instagram-reel-aspect-ratio'
+      preLoaderRoute: typeof InstagramReelAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instagram-story-aspect-ratio': {
+      id: '/instagram-story-aspect-ratio'
+      path: '/instagram-story-aspect-ratio'
+      fullPath: '/instagram-story-aspect-ratio'
+      preLoaderRoute: typeof InstagramStoryAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -172,11 +321,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/social-media': {
+      id: '/social-media'
+      path: '/social-media'
+      fullPath: '/social-media'
+      preLoaderRoute: typeof SocialMediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tiktok-aspect-ratio': {
+      id: '/tiktok-aspect-ratio'
+      path: '/tiktok-aspect-ratio'
+      fullPath: '/tiktok-aspect-ratio'
+      preLoaderRoute: typeof TiktokAspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ultrawide-aspect-ratio-calculator': {
@@ -193,18 +356,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VideoAspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/what-is-aspect-ratio': {
+      id: '/what-is-aspect-ratio'
+      path: '/what-is-aspect-ratio'
+      fullPath: '/what-is-aspect-ratio'
+      preLoaderRoute: typeof WhatIsAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/youtube-aspect-ratio': {
+      id: '/youtube-aspect-ratio'
+      path: '/youtube-aspect-ratio'
+      fullPath: '/youtube-aspect-ratio'
+      preLoaderRoute: typeof YoutubeAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/youtube-shorts-aspect-ratio': {
+      id: '/youtube-shorts-aspect-ratio'
+      path: '/youtube-shorts-aspect-ratio'
+      fullPath: '/youtube-shorts-aspect-ratio'
+      preLoaderRoute: typeof YoutubeShortsAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CalculatorRoute: CalculatorRoute,
   ContactRoute: ContactRoute,
+  ExactFractionsVsRoundedPixelsRoute: ExactFractionsVsRoundedPixelsRoute,
   ImageAspectRatioRoute: ImageAspectRatioRoute,
+  InstagramReelAspectRatioRoute: InstagramReelAspectRatioRoute,
+  InstagramStoryAspectRatioRoute: InstagramStoryAspectRatioRoute,
   PrivacyRoute: PrivacyRoute,
+  SocialMediaRoute: SocialMediaRoute,
   TermsRoute: TermsRoute,
+  TiktokAspectRatioRoute: TiktokAspectRatioRoute,
   UltrawideAspectRatioCalculatorRoute: UltrawideAspectRatioCalculatorRoute,
   VideoAspectRatioRoute: VideoAspectRatioRoute,
+  WhatIsAspectRatioRoute: WhatIsAspectRatioRoute,
+  YoutubeAspectRatioRoute: YoutubeAspectRatioRoute,
+  YoutubeShortsAspectRatioRoute: YoutubeShortsAspectRatioRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

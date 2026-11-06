@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 302" role="img" aria-labelledby="ara-title ara-desc" width="100%" style="max-width:100%;height:auto">
+<title id="ara-title">Anatomy of a 16:9 aspect ratio</title>
+<desc id="ara-desc">A widescreen landscape frame divided into a grid 16 squares wide and 9 squares tall. Arrows mark the width as 16 and the height as 9, so the aspect ratio is 16:9, about 1.78 to 1.</desc>
+<style>
+.ara-brand{fill:var(--brand, #D96A1B)}
+.ara-tint{fill:var(--brand, #D96A1B);fill-opacity:.1}
+.ara-fg{fill:var(--foreground, #182332)}
+.ara-muted{fill:var(--muted-foreground, #566273)}
+.ara-card{fill:var(--card, #ffffff)}
+.ara-far{fill:var(--muted-foreground, #566273);fill-opacity:.32}
+.ara-near{fill:var(--foreground, #182332);fill-opacity:.72}
+.ara-sky{fill:var(--brand, #D96A1B);fill-opacity:.08}
+.ara-line{fill:none;stroke:var(--brand, #D96A1B);stroke-width:2}
+.ara-edge{fill:none;stroke:var(--border, #dce0e5);stroke-width:1.5}
+.ara-dim{fill:none;stroke:var(--muted-foreground, #566273);stroke-width:1.25;stroke-linecap:round}
+.ara-grid{fill:none;stroke:var(--card, #ffffff);stroke-opacity:.55;stroke-width:.75}
+.ara-t{font-family:var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);fill:var(--foreground, #182332)}
+.ara-s{font-family:var(--font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);fill:var(--muted-foreground, #566273)}
+</style>
+<text class="ara-s" x="236" y="26" text-anchor="middle" font-size="14">Aspect ratio = width : height</text>
+<clipPath id="ara-clip"><rect x="92" y="48" width="288" height="162" rx="4"/></clipPath>
+<g clip-path="url(#ara-clip)"><g transform="translate(92 48) scale(1.8)"><rect class="ara-card" width="160" height="90"/><rect class="ara-sky" width="160" height="90"/><circle class="ara-brand" cx="104" cy="30" r="13"/><path class="ara-far" d="M0 90V60L28 38L50 54L82 26L118 58L140 46L160 56V90Z"/><path class="ara-near" d="M0 90V72C26 62 52 64 80 71S134 76 160 66V90Z"/><rect class="ara-near" x="16.5" y="58" width="3" height="10"/><path class="ara-near" d="M18 40L27 60H9Z"/></g><path class="ara-grid" d="M110 48V210M128 48V210M146 48V210M164 48V210M182 48V210M200 48V210M218 48V210M236 48V210M254 48V210M272 48V210M290 48V210M308 48V210M326 48V210M344 48V210M362 48V210M92 66H380M92 84H380M92 102H380M92 120H380M92 138H380M92 156H380M92 174H380M92 192H380"/></g>
+<rect class="ara-line" x="92" y="48" width="288" height="162" rx="4"/>
+<path class="ara-dim" stroke-dasharray="2 4" d="M92 216V240M380 216V240M86 48H62M86 210H62"/>
+<path class="ara-dim" d="M92 232H380M99 228L92 232L99 236M373 228L380 232L373 236"/>
+<path class="ara-dim" d="M70 48V210M66 55L70 48L74 55M66 203L70 210L74 203"/>
+<text class="ara-t" x="236" y="258" text-anchor="middle" font-size="16" font-weight="600">Width <tspan class="ara-brand">16</tspan></text>
+<text class="ara-t" transform="translate(52 129) rotate(-90)" text-anchor="middle" font-size="16" font-weight="600">Height <tspan class="ara-brand">9</tspan></text>
+<text class="ara-s" x="236" y="284" text-anchor="middle" font-size="14">16 : 9 = 16 ÷ 9 ≈ 1.78 : 1</text>
+</svg>

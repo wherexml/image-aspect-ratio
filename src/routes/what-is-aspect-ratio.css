@@ -1,0 +1,68 @@
+.ratio-guide { color: var(--foreground); }
+.ratio-guide-header,.ratio-guide-main { max-width: 1152px; margin: 0 auto; padding-inline: 24px; }
+.ratio-guide-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; }
+.ratio-guide-brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; }
+.ratio-guide-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding-block: 48px 32px; }
+.ratio-guide-eyebrow { color: var(--muted-foreground); letter-spacing: .16em; font-size: 11px; font-weight: 600; margin-bottom: 18px; }
+.ratio-guide h1 { font-family: var(--font-display); font-size: clamp(48px, 5.5vw, 76px); font-weight: 800; line-height: .98; letter-spacing: -.045em; }
+.ratio-guide-lead { color: var(--muted-foreground); font-size: 17px; line-height: 1.75; margin-top: 26px; max-width: 520px; }
+.ratio-guide-action { display: inline-flex; gap: 18px; align-items: center; padding: 12px 18px; border-radius: 8px; background: var(--foreground); color: var(--background); font-weight: 600; font-size: 13px; margin-top: 24px; }
+.ratio-guide-action:hover { outline: 2px solid var(--brand); outline-offset: 3px; }
+.ratio-guide-hero-figure { min-width: 0; background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 18px; }
+.ratio-guide-diagram svg { display: block; width: 100%; height: auto; }
+.ratio-guide-meta { display: flex; gap: 5px; font-size: 12px; color: var(--muted-foreground); padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+.ratio-guide-layout { display: grid; grid-template-columns: 240px minmax(0,1fr); gap: 72px; padding-block: 48px 80px; }
+.ratio-guide-toc { position: sticky; top: 32px; font-size: 13px; }
+.ratio-guide-toc p { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted-foreground); margin-bottom: 16px; }
+.ratio-guide-toc a { display: flex; gap: 12px; align-items: baseline; padding-block: 9px; line-height: 1.5; }
+.ratio-guide-toc a span { color: var(--muted-foreground); font-size: 10px; font-family: var(--font-mono); }
+.ratio-guide-toc a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ratio-guide-body { min-width: 0; max-width: 728px; }
+.ratio-guide-body section { scroll-margin-top: 24px; padding-bottom: 40px; margin-bottom: 40px; border-bottom: 1px solid var(--border); }
+.ratio-guide-section-label { color: var(--muted-foreground); font-family: var(--font-mono); font-size: 11px; margin-bottom: 12px; }
+.ratio-guide h2 { font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.15; letter-spacing: -.025em; margin-bottom: 24px; text-wrap: balance; }
+.ratio-guide-body p { font-size: 16px; line-height: 1.85; margin-block: 16px; color: var(--muted-foreground); }
+.ratio-guide h3 { font-size: 18px; font-weight: 600; line-height: 1.4; margin-top: 28px; margin-bottom: 10px; }
+.ratio-guide-figure { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-block: 24px; padding: 16px; }
+.ratio-guide-table-wrap { margin-block: 24px; }
+.ratio-guide table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+.ratio-guide td,.ratio-guide th { padding: 14px 10px; border-bottom: 1px solid var(--border); }
+.ratio-guide thead th { font-size: 11px; font-weight: 600; color: var(--muted-foreground); }
+.ratio-guide tbody th { font-family: var(--font-mono); font-weight: 500; white-space: nowrap; }
+.ratio-guide td { color: var(--muted-foreground); }
+.ratio-guide-equation { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; padding: 20px; margin-block: 24px; background: var(--accent); border-radius: 10px; font-size: 14px; }
+.ratio-guide-equation span { font-weight: 700; }
+.ratio-guide-equation code { font-family: var(--font-mono); }
+.ratio-guide-source,.ratio-guide-related { display: flex; align-items: center; gap: 5px; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; margin-top: 20px; }
+.ratio-guide-source { color: var(--muted-foreground); }
+.ratio-guide-body .ratio-guide-next { border: none; margin: 0; padding: 0; }
+.ratio-guide-next h2 { margin-bottom: 0; }
+.ratio-guide-skip { position: absolute; top: -100px; left: 20px; z-index: 10; padding: 12px; background: var(--foreground); color: var(--background); }
+.ratio-guide-skip:focus { top: 8px; }
+.ratio-guide a:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 3px; }
+@media (max-width: 900px) {
+  .ratio-guide-hero { gap: 24px; }
+  .ratio-guide-layout { grid-template-columns: 180px minmax(0,1fr); gap: 32px; }
+}
+@media (max-width: 640px) {
+  .ratio-guide-header,.ratio-guide-main { padding-inline: 20px; }
+  .ratio-guide-header { gap: 8px; }
+  .ratio-guide-brand { font-size: 12px; gap: 6px; }
+  .ratio-guide-brand img { width: 24px; height: 24px; }
+  .ratio-guide-hero { grid-template-columns: 1fr; padding-top: 32px; gap: 28px; }
+  .ratio-guide h1 { font-size: clamp(48px, 13vw, 68px); }
+  .ratio-guide-lead { font-size: 16px; margin-top: 20px; }
+  .ratio-guide-hero-figure { padding: 10px; border-radius: 14px; }
+  .ratio-guide-layout { display: block; padding-top: 24px; }
+  .ratio-guide-toc { position: static; padding-bottom: 24px; margin-bottom: 32px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; font-size: 12px; }
+  .ratio-guide-toc p { grid-column: 1 / -1; }
+  .ratio-guide h2 { font-size: 28px; }
+  .ratio-guide-body p { font-size: 15px; line-height: 1.8; }
+  .ratio-guide-figure { padding: 8px; }
+  .ratio-guide-shapes,.ratio-guide-fit { overflow-x: auto; }
+  .ratio-guide-shapes .ratio-guide-diagram,.ratio-guide-fit .ratio-guide-diagram { min-width: 520px; }
+  .ratio-guide td,.ratio-guide th { padding: 12px 6px; font-size: 11px; }
+  .ratio-guide-equation { padding: 16px; font-size: 12px; }
+}
+
+.ratio-guide-figure:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }

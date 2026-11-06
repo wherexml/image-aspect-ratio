@@ -1,15 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Calculator } from "@/components/Calculator";
+import { ImageRatioGuide } from "@/components/ImageRatioGuide";
 import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
-const TITLE = "Aspect Ratio Calculator — Image & Video Dimensions";
-const DESC =
-  "Calculate image and video aspect ratios from width and height, or calculate a missing dimension. Compare common ratios and scale dimensions in your browser.";
+
+// Keep the calculator name while describing local image inspection and framing previews.
+const TITLE = "Image Aspect Ratio Calculator — Find Photo Dimensions & Ratio";
+const DESCRIPTION =
+  "Free image aspect ratio calculator. Read a photo’s dimensions and exact ratio, then preview Fit or Fill. Images stay in your browser.";
 
 export const Route = createFileRoute("/")({
-  component: Calculator,
-  head: () => ({ scripts: seoScripts(TITLE, DESC, "/"),
-    meta: previewSeoMeta(TITLE, DESC, "/"),
+  head: () => ({
+    scripts: seoScripts(TITLE, DESCRIPTION, "/", true, "2026-10-27"),
+    meta: previewSeoMeta(TITLE, DESCRIPTION, "/"),
     links: seoLinks("/"),
   }),
+  component: () => (
+    <Calculator media="image">
+      <ImageRatioGuide />
+    </Calculator>
+  ),
 });
-

@@ -1,5 +1,23 @@
-export const SITE_PAGES = ["/", "/image-aspect-ratio", "/video-aspect-ratio", "/ultrawide-aspect-ratio-calculator", "/about", "/contact", "/privacy", "/terms"] as const;
+export const SITE_PAGES = ["/", "/calculator", "/social-media", "/video-aspect-ratio", "/ultrawide-aspect-ratio-calculator", "/what-is-aspect-ratio", "/exact-fractions-vs-rounded-pixels", "/tiktok-aspect-ratio", "/youtube-aspect-ratio", "/instagram-reel-aspect-ratio", "/instagram-story-aspect-ratio", "/youtube-shorts-aspect-ratio", "/about", "/contact", "/privacy", "/terms"] as const;
 export type SitePath = typeof SITE_PAGES[number];
+export const SITE_LABELS: Record<SitePath, string> = {
+  "/": "Image ratio",
+  "/calculator": "Calculator",
+  "/social-media": "Social Media",
+  "/video-aspect-ratio": "Video ratio",
+  "/ultrawide-aspect-ratio-calculator": "Ultrawide ratio",
+  "/what-is-aspect-ratio": "Aspect ratio guide",
+  "/exact-fractions-vs-rounded-pixels": "Exact fractions vs pixels",
+  "/tiktok-aspect-ratio": "TikTok aspect ratio",
+  "/youtube-aspect-ratio": "YouTube aspect ratio",
+  "/instagram-reel-aspect-ratio": "Instagram Reel aspect ratio",
+  "/instagram-story-aspect-ratio": "Instagram Story aspect ratio",
+  "/youtube-shorts-aspect-ratio": "YouTube Shorts aspect ratio",
+  "/about": "About",
+  "/contact": "Contact",
+  "/privacy": "Privacy",
+  "/terms": "Terms",
+};
 export type SiteConfig = { origin: string | null; indexable: boolean };
 
 /** Public build-time values only. Never derive canonical URLs from request Host. */
@@ -33,3 +51,5 @@ export function sitemapXml(config: SiteConfig = site) {
 export function robotsTxt(config: SiteConfig = site) {
   return `User-agent: *\nAllow: /\n${config.origin ? `\nSitemap: ${config.origin}/sitemap.xml\n` : ""}`;
 }
+
+export const isSocialDetail = (path: SitePath) => ["/tiktok-aspect-ratio", "/youtube-aspect-ratio", "/instagram-reel-aspect-ratio", "/instagram-story-aspect-ratio", "/youtube-shorts-aspect-ratio"].includes(path);

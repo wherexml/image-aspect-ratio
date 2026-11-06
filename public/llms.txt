@@ -1,12 +1,22 @@
 # Aspect Ratio Calculator
 
-> Calculate image, video and ultrawide aspect ratios and pixel dimensions. Free browser-based tools maintained by wherexml.
+> Find your image aspect ratio and calculate the dimensions you need. Supporting video and ultrawide calculators. Free browser-based tools maintained by wherexml.
 
 ## Tools
-- [Aspect ratio calculator](https://imageaspectratio.com/): Calculate a missing dimension, reduce width and height to a ratio, or scale dimensions.
-- [Image aspect ratio](https://imageaspectratio.com/image-aspect-ratio): Read dimensions from a local image and preview Fit/Fill.
+- [Image aspect ratio calculator](https://imageaspectratio.com/): Read dimensions from a local photo and preview padding (Fit) or a centered crop (Fill) in common frames.
+- [Aspect ratio calculator](https://imageaspectratio.com/calculator): Find an aspect ratio from width and height, calculate a matching width or height, or scale dimensions.
 - [Video aspect ratio](https://imageaspectratio.com/video-aspect-ratio): Enter dimensions to compare frame fit; assumes square pixels.
 - [Ultrawide calculator](https://imageaspectratio.com/ultrawide-aspect-ratio-calculator): Distinguish exact pixel ratios from the 21:9 category.
+
+## Social media dimensions
+- [TikTok aspect ratio](https://imageaspectratio.com/tiktok-aspect-ratio): Plan a vertical frame; distinguish working examples from ad specifications.
+- [YouTube aspect ratio](https://imageaspectratio.com/youtube-aspect-ratio): Calculate 16:9 landscape dimensions and understand adaptive playback.
+- [Instagram Reel aspect ratio](https://imageaspectratio.com/instagram-reel-aspect-ratio): Plan a 9:16 video; distinguish accepted shapes and cover framing.
+- [Instagram Story aspect ratio](https://imageaspectratio.com/instagram-story-aspect-ratio): Plan a portrait photo/video canvas and distinguish Story ad guidance.
+- [YouTube Shorts aspect ratio](https://imageaspectratio.com/youtube-shorts-aspect-ratio): Compare vertical and square geometry; consult official classification rules.
+
+## Learn
+- [What is aspect ratio?](https://imageaspectratio.com/what-is-aspect-ratio): An illustrated guide to width:height, common ratios, exact calculations, cropping, padding and stretching.
 
 ## About and support
 - [About](https://imageaspectratio.com/about): Calculation methods, scope and maintainer.

@@ -1,19 +1,57 @@
+import { useToolTracking } from "@/lib/tool-analytics";
 import { useEffect, useRef, useState } from "react";
+import { Check, Copy } from "lucide-react";
 import { approxNumber, parsePositive, simplifyRatio } from "@/lib/ratio";
 
-type Props = { kind: "image" | "video"; width: string; height: string; onDimensions: (w: string, h: string) => void };
+// uploadOnly: dimensions come only from a successfully loaded image; no manual source fields.
+type Props = { kind: "image" | "video"; width?: string; height?: string; onDimensions?: (w: string, h: string) => void; uploadOnly?: boolean };
 type Loaded = { url: string; name: string; width: number; height: number };
 
-export function MediaPreview({ kind, width, height, onDimensions }: Props) {
+export function MediaPreview({ kind, width: manualWidth = "", height: manualHeight = "", onDimensions, uploadOnly = false }: Props) {
   const [fit, setFit] = useState<"contain" | "cover">("contain");
   const [loaded, setLoaded] = useState<Loaded | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "ok" | "fail">("idle");
+  const copyGeneration = useRef(0);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const generation = useRef(0);
   const urls = useRef(new Set<string>());
+  const width = uploadOnly ? (loaded ? String(loaded.width) : "") : manualWidth;
+  const height = uploadOnly ? (loaded ? String(loaded.height) : "") : manualHeight;
+  const showResults = !uploadOnly || !!loaded;
   const pw = parsePositive(width), ph = parsePositive(height);
   const ratio = pw.ok && ph.ok ? approxNumber(pw.value) / approxNumber(ph.value) : null;
   const image = loaded && Number(width) === loaded.width && Number(height) === loaded.height ? loaded : null;
+
+  const exactRatio = pw.ok && ph.ok ? simplifyRatio(pw.value, ph.value).join(":") : "";
+  const canCopy = !!exactRatio && !busy && !error;
+  const tracking = useToolTracking(kind, "ratio", canCopy ? `${width.trim()}:${height.trim()}` : null);
+  useEffect(() => {
+    copyGeneration.current++;
+    setCopyState("idle");
+    return () => { copyGeneration.current++; clearTimeout(copyTimer.current); };
+  }, [width, height, busy, error, loaded]);
+
+  async function copyRatio() {
+    if (!canCopy) return;
+    const id = ++copyGeneration.current;
+    clearTimeout(copyTimer.current);
+    try {
+      await navigator.clipboard.writeText(exactRatio);
+      if (id !== copyGeneration.current) return;
+      tracking.copy(exactRatio);
+      setCopyState("ok");
+      copyTimer.current = setTimeout(() => setCopyState("idle"), 2000);
+    } catch {
+      if (id === copyGeneration.current) setCopyState("fail");
+    }
+  }
+  function editDimensions(w: string, h: string) {
+    tracking.changed();
+    setError("");
+    onDimensions?.(w, h);
+  }
 
   useEffect(() => () => {
     generation.current++;
@@ -24,6 +62,7 @@ export function MediaPreview({ kind, width, height, onDimensions }: Props) {
 
   async function readFile(file?: File) {
     if (!file) return;
+    tracking.cancel();
     const id = ++generation.current;
     setError(""); setLoaded(null); setBusy(false);
     if (!["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"].includes(file.type)) {
@@ -36,8 +75,9 @@ export function MediaPreview({ kind, width, height, onDimensions }: Props) {
       await img.decode();
       if (id !== generation.current) { URL.revokeObjectURL(url); urls.current.delete(url); return; }
       if (!img.naturalWidth || !img.naturalHeight || img.naturalWidth * img.naturalHeight > 50_000_000) throw new Error("size");
-      onDimensions(String(img.naturalWidth), String(img.naturalHeight));
+      if (!uploadOnly) onDimensions?.(String(img.naturalWidth), String(img.naturalHeight));
       setLoaded({url, name:file.name, width:img.naturalWidth, height:img.naturalHeight});
+      tracking.imageRead(JSON.stringify([file.name, file.size, file.lastModified, file.type]));
     } catch (e) {
       URL.revokeObjectURL(url); urls.current.delete(url);
       if (id === generation.current) setError(e instanceof Error && e.message === "size" ? "Choose an image up to 50 megapixels." : "This image could not be read. Try another file.");
@@ -49,28 +89,44 @@ export function MediaPreview({ kind, width, height, onDimensions }: Props) {
     : [[16,9,"Widescreen display"],[9,16,"Vertical phone"]];
 
   return <section aria-labelledby="media-heading" className="mt-10 space-y-5">
+    <h2 id="media-heading" className="font-display text-2xl font-bold">{kind === "image" ? "Check image ratio" : "Video screen simulator"}</h2>
+    {kind === "image" && <div className={`mp-drop ${uploadOnly ? "mp-drop--upload" : ""}`} onDragOver={e => e.preventDefault()} onDrop={e => {e.preventDefault(); void readFile(e.dataTransfer.files[0]);}}>
+      {(() => {
+        const prompt = "Drop an image here, or choose a file";
+        const input = <input id="image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif" className="mt-3 block w-full text-sm file:mr-3 file:rounded-lg file:border file:bg-card file:px-3 file:py-2" onChange={e => {void readFile(e.target.files?.[0]); e.target.value = "";}} />;
+        const hint = <p className="mt-2 text-xs text-muted-foreground">JPG, PNG, WebP, GIF or AVIF · read locally · up to 20 MB / 50 MP.</p>;
+        // uploadOnly: the whole surface is the file label, so any click opens the picker.
+        return uploadOnly
+          ? <label className="mp-upload-target"><span className="block text-base font-semibold">{prompt}</span>{input}{hint}</label>
+          : <><label className="block text-sm font-semibold" htmlFor="image-file">{prompt}</label>{input}{hint}</>;
+      })()}
+      {busy && <p role="status" className="mt-2 text-sm">Reading image…</p>}
+      {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
+      {loaded && <div className="mt-3 flex flex-wrap items-center gap-3 text-sm"><span className="break-all">{loaded.name} · {loaded.width} × {loaded.height}</span><button className="underline" onClick={() => {tracking.cancel(); generation.current++; setLoaded(null); setBusy(false); if (!uploadOnly) onDimensions?.("", "");}}>Remove image</button></div>}
+      {loaded && !image && <p className="mt-2 text-xs text-muted-foreground">Dimensions changed. The frames below use a diagram instead of your image.</p>}
+    </div>}
+    {showResults && <>
+    <div className="flex flex-wrap items-start gap-x-4 gap-y-3" aria-label="Source dimensions">
+      <label className="w-28 shrink-0 text-sm sm:w-32">Width (px)<input className="field mt-2 w-full" inputMode="decimal" value={width} readOnly={uploadOnly} onChange={e=>editDimensions(e.target.value,height)} aria-label="Source width" aria-invalid={!pw.ok} /></label>
+      <label className="w-28 shrink-0 text-sm sm:w-32">Height (px)<input className="field mt-2 w-full" inputMode="decimal" value={height} readOnly={uploadOnly} onChange={e=>editDimensions(width,e.target.value)} aria-label="Source height" aria-invalid={!ph.ok} /></label>
+      <div className="min-w-32 text-sm">Exact ratio
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <p className="num break-all text-2xl font-bold text-primary" data-testid="media-exact-ratio">{exactRatio || "—"}</p>
+          <button type="button" onClick={copyRatio} disabled={!canCopy} aria-label="Copy ratio" className="flex min-h-11 items-center gap-1.5 rounded-full bg-foreground px-3.5 py-2 text-sm font-semibold text-background hover:ring-2 hover:ring-primary disabled:cursor-not-allowed disabled:opacity-40">
+            {copyState === "ok" ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
+            <span role="status">{copyState === "ok" ? "Copied" : "Copy ratio"}</span>
+          </button>
+        </div>
+        {copyState === "fail" && <div role="alert" className="mt-2 text-sm"><p>Clipboard unavailable. Copy manually:</p><input aria-label="Copy ratio manually" readOnly value={exactRatio} onFocus={e => e.target.select()} className="field mt-2" /></div>}
+      </div>
+    </div>
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <h2 id="media-heading" className="font-display text-2xl font-bold">{kind === "image" ? "Image fit & crop preview" : "Video screen simulator"}</h2>
+      <p className="text-sm text-muted-foreground" data-testid="media-source">{ratio ? `${width} × ${height} px · ${ratio === 1 ? "Square" : ratio > 1 ? "Landscape" : "Portrait"}` : "Enter valid dimensions to preview."}</p>
       <div role="radiogroup" aria-label="Frame fitting" className="seg">
         <button role="radio" aria-checked={fit === "contain"} onClick={() => setFit("contain")}>Fit · keep all</button>
         <button role="radio" aria-checked={fit === "cover"} onClick={() => setFit("cover")}>Fill · crop</button>
       </div>
     </div>
-    {kind === "image" && <div className="mp-drop" onDragOver={e => e.preventDefault()} onDrop={e => {e.preventDefault(); void readFile(e.dataTransfer.files[0]);}}>
-      <label className="block text-sm font-semibold" htmlFor="image-file">Drop an image here, or choose a file</label>
-      <input id="image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif" className="mt-3 block w-full text-sm file:mr-3 file:rounded-lg file:border file:bg-card file:px-3 file:py-2" onChange={e => {void readFile(e.target.files?.[0]); e.target.value = "";}} />
-      <p className="mt-2 text-xs text-muted-foreground">Read locally in your browser · up to 20 MB / 50 MP · animated images may show motion.</p>
-      {busy && <p role="status" className="mt-2 text-sm">Reading image…</p>}
-      {error && <p role="alert" className="mt-2 text-sm text-destructive">{error}</p>}
-      {loaded && <div className="mt-3 flex flex-wrap items-center gap-3 text-sm"><span className="break-all">{loaded.name} · {loaded.width} × {loaded.height}</span><button className="underline" onClick={() => {generation.current++; setLoaded(null); setBusy(false);}}>Remove image</button></div>}
-      {loaded && !image && <p className="mt-2 text-xs text-muted-foreground">Dimensions changed. The frames below use a diagram instead of your image.</p>}
-    </div>}
-    <div className="flex flex-wrap items-start gap-4" aria-label="Source dimensions">
-      <label className="min-w-0 flex-1 text-sm">Width (px)<input className="field mt-2" inputMode="decimal" value={width} onChange={e=>onDimensions(e.target.value,height)} aria-label="Source width" aria-invalid={!pw.ok} /></label>
-      <label className="min-w-0 flex-1 text-sm">Height (px)<input className="field mt-2" inputMode="decimal" value={height} onChange={e=>onDimensions(width,e.target.value)} aria-label="Source height" aria-invalid={!ph.ok} /></label>
-      <div className="min-w-32 text-sm">Exact ratio<p className="num mt-2 break-all text-2xl font-bold text-primary">{pw.ok && ph.ok ? simplifyRatio(pw.value,ph.value).join(":") : "—"}</p></div>
-    </div>
-    <p className="text-sm text-muted-foreground" data-testid="media-source">{ratio ? `${width} × ${height} px · ${ratio === 1 ? "Square" : ratio > 1 ? "Landscape" : "Portrait"}` : "Enter valid dimensions to preview."}</p>
     <div className={`grid gap-4 ${kind === "image" ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-2"}`}>
       {frames.map(([w,h,name]) => {
         const target = w/h;
@@ -125,6 +181,7 @@ export function MediaPreview({ kind, width, height, onDimensions }: Props) {
         </article>;
       })}
     </div>
+    </>}
     {kind === "video" && <p className="text-xs text-muted-foreground">Uses pixel dimensions with square pixels. No video upload or transcoding.</p>}
   </section>;
 }

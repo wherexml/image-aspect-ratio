@@ -1,15 +1,63 @@
 # Cloudflare deployment
 
+## Source synchronization boundary — 2026-11-07
+
+The current source includes the separate Image homepage and `/calculator` route described in [the product specification](product-spec.md). These latest changes are local and are not deployed by this synchronization. Earlier release/version entries below are dated historical observations, not a statement of today's active production version.
+
+Before this push, the coordinating agent verified that fetched main matched local HEAD (0 ahead/0 behind), the GitHub Actions workflow count was zero, repository webhooks and deployment records were empty, and the old HEAD had no check runs. The local `.github/workflows` directory was also empty. This observation applies to that check time; verify again for future pushes. No deployment is authorized in this synchronization.
+
 ## Production configuration
 
 - Canonical origin: `https://imageaspectratio.com`.
 - Worker: `aspect-ratio-canvas`, with apex and `www.imageaspectratio.com` Custom Domains.
 - Public build settings: `.env.production` sets `VITE_SITE_URL` and `VITE_SITE_INDEXABLE=true`. Development remains noindex by default.
-- Eight pages share the production origin in canonical, Open Graph, JSON-LD and sitemap. `public/llms.txt` uses the same origin.
+- Nine pages share the production origin in canonical, Open Graph, JSON-LD and sitemap. `public/llms.txt` uses the same origin.
 - The server redirects explicitly listed production aliases (www, legacy workers.dev, and HTTP apex) to HTTPS apex with status 308, preserving path and query. Local and unknown hosts are not redirected. Existing trailing-slash normalization and 404 handling remain active. Workers Assets serves static files directly.
 - `scripts/prepare-worker.mjs` declares the Worker account, name, compatibility date and Custom Domains. The local `dev.host` prevents Wrangler from inferring a public upstream and producing a redirect loop.
-- Verified active version: `3579388d-8d51-4550-b42e-e1ecc9669255`, serving 100% of traffic on 2026-10-23. Initial domain migration: `badf7b79-3049-4b12-9b08-e37f5f8e608f`; pre-migration: `088d17ba-1c78-42ec-b073-4941aa79c7b4`.
+- Previous TASK-24 version: `4bd3a58f-f084-4a50-bb99-eb0bdea6666b`, released on 2026-10-25 (Asia/Singapore) for TASK-24 social metadata and descriptions. Production HTTP and desktop Chrome checks passed. Previous active version observed immediately before release: `b1ddf8bc-da2b-434b-8a75-ade61310f27a`. Evidence: `verification/task24-release-20261025/`.
 - Deployment is manual. GitHub CI/CD remains removed; pushing a commit does not deploy it.
+
+## Mobile performance release — 2026-10-27
+
+Current version: `17aba283-1729-4bd4-b791-d896ba20855e`. Rollback target before this optimization: `34a81e98-15d2-4a1e-bfcf-952f5dc1fc7a`. The user requested continued mobile optimization above 90 without changing functionality or styling. Framework-managed inline CSS, embedded UI font subsets with original-font fallback, unused utility exclusion and removal of unused QueryClient initialization are live. GA4/GEO timing and calculator behavior are preserved.
+
+Final independent mobile PSI samples at 10:53 and 10:54 Asia/Singapore scored 95 and 93, with LCP 2.1 and 2.6 seconds; Accessibility/Best Practices/SEO remain 100. Typecheck/build, 16 production HTTP checks, 17 rendered checks, 38 byte-matched public build assets and live Chrome regression checks passed. The 390px homepage matches the pre-optimization screenshot pixel-for-pixel. All intermediate scores, cached-repeat exclusion, measurement limits and rollback details are in `verification/mobile-performance-20261027/README.md`. Maintenance: `docs/performance.md`. No Git commit or push was performed.
+
+## Search appearance release — 2026-10-27
+
+Released version: `34a81e98-15d2-4a1e-bfcf-952f5dc1fc7a`. Previous active and rollback version: `52e04172-c790-4ed2-b41f-f6b0d8ce19ad`. The user explicitly authorized publishing the accepted search appearance candidate and measuring mobile performance. Four supporting destinations, white favicon assets, free-first descriptions, matching breadcrumbs/schema, same-origin licensed fonts and mobile/contrast fixes are live. Existing integrations were preserved. No Git commit/push or indexing submission was performed.
+
+Typecheck, build, 16 local and 16 production HTTP checks, 17 production rendered checks and 35 byte-matched public build assets passed. Chrome verified all four destinations, matching SPA metadata, exact calculations and the 390px layout. Google mobile PageSpeed at 10:33 Asia/Singapore measured Performance 75 (previous 70), LCP 4.4 s (previous 4.9 s), Accessibility/Best Practices/SEO 100. These are single lab samples, with no CrUX field data. Remaining first-render CSS/JS work and full evidence: `verification/search-release-20261027/README.md`.
+
+## Aspect ratio guide release — 2026-10-27
+
+Released version: `52e04172-c790-4ed2-b41f-f6b0d8ce19ad`. Previous active and rollback version: `17231890-7094-498b-9991-7ccb0a545957`. The user authorized publishing the accepted guide. `/what-is-aspect-ratio`, its internal links and nine-page sitemap are live. Existing analytics and GEOInflow integration were preserved. No commit or push was performed.
+
+Typecheck, build, 16 local and 16 production HTTP checks passed. All 23 public assets matched the local build; `_headers` is deployment configuration and is not a served asset. Live Chrome verified the guide diagrams, table of contents, guide-to-calculator navigation, 1200 × 675 calculation, and return link. Search Console live inspection passed and visibly confirmed the indexing request; this is not proof of indexed inclusion or ranking. Evidence and repeatable steps: `verification/task28-release-20261027/README.md`.
+
+## GEOInflow collection release — 2026-10-26
+
+Released version: `17231890-7094-498b-9991-7ccb0a545957`. Prior production version before this integration: `6787add2-c514-4654-b13e-56b9cf995265`. The user authorized retaining the existing Worker and sending analytics through an existing VPS, without adding Cloudflare services.
+
+Browser pageviews use `/_geo/script.js` and `/_geo/api/send` on the official website. The existing Tokyo VPS HTTPS host `llm.tothemars.top` accepts only authenticated `/_geoinflow/` relay requests, forwarded through a restricted SSH reverse connection to Zoppo. No new Cloudflare Tunnel, DNS record, Worker, log service or cloud resource was created for this path. Private Worker secrets `GEO_RELAY_KEY` and `GEO_SOURCE_TOKEN` must remain configured; neither belongs in source or VITE variables.
+
+The server records best-effort HTML, sitemap and robots requests using `waitUntil`, a ten-second delivery bound and a source-specific token. Static assets served directly by Workers Assets are outside log coverage. Interruptions can lose logs; coverage is deliberately reported as incomplete, with no claim of exhaustive request accounting. GEOInflow's admin UI remains private at `geo.skylance.cc`.
+
+Browser tracking respects Do Not Track, omits URL queries/fragments, skips explicit `analytics_test=1` sessions, and never sends images or calculator inputs. Browser automation tests are not organic growth. Public requests cannot choose another website ID or supply privileged IP/timestamp overrides. Original inbound Origin, content type and body size are checked.
+
+Typecheck, build and 15 local/production HTTP checks passed. Native Chrome on Zoppo produced a homepage and SPA image-page visit; GEOInflow displayed two pageviews and one visitor. Server logs were processed by an active source. Unknown routes, missing Origin, wrong website IDs and oversized bodies were rejected with 404/403/400/413 respectively. Evidence: `../reports/2026-10-26/geoinflow-integration/`.
+
+Rollback: restore the prior Worker version to stop both site integrations, then remove only the Tokyo nginx GEOINFLOW block and `zz-geoinflow-auth.conf` after validating nginx configuration, and unload Zoppo `cc.skylance.geoinflow-relay`. Do not restore whole historical nginx files over unrelated changes. Revoke only this source and relay credentials if retiring the integration.
+
+## Tool analytics and image guide release — 2026-10-26
+
+Released version: `6787add2-c514-4654-b13e-56b9cf995265`. Rollback version for that release: `0d7f3230-5ca9-44d3-9444-3470d5081ee6`. User authorized this release. The image page retains **Image Aspect Ratio Calculator**; the proposed Checker rename was withdrawn. The release adds the image guide and outcome analytics while preserving earlier deployed workspace changes.
+
+Typecheck, production build and local HTTP acceptance passed. Production verification passed 15 HTTP checks, social metadata on eight pages, and byte comparisons for all 18 public assets. Chrome verified calculation, copy and local image decoding on the live site. GA4 property 560549779 DebugView received two `qa_tool_complete` events and one `qa_result_copy`; the image completion parameter `task_type=image_read` was inspected. These are internal test events, not evidence of organic traffic or indexing. No Git commit or push was performed for this release. Evidence and repeatable steps: `verification/tool-analytics-release-20261026/README.md`.
+
+## Repository-link release — 2026-10-25
+
+Version `0d7f3230-5ca9-44d3-9444-3470d5081ee6` updates the live repository URL to `https://github.com/wherexml/image-aspect-ratio`. Previous active version: `4b7b5e45-8b67-4580-a321-2eb14449f3d7`. The release was rebuilt from the existing production workspace, preserving earlier deployed changes that remain uncommitted. All eight pages matched the previous production HTML after normalizing the repository URL, generated asset hashes and per-request router timestamps. Typecheck, build, local/production HTTP and social metadata checks passed. Chrome verified calculator interaction and the Source, About and Contact links. Evidence and repeatable checks: `verification/repository-rename-release-20261025/README.md`.
 
 ## Build and verify from a clean checkout
 
@@ -37,6 +85,12 @@ python3 scripts/verify-http.py https://imageaspectratio.com https://imageaspectr
 Verify alias redirects, deep links, query preservation, assets and relevant browser workflows after publishing. The HTTP checker uses an explicit deployment-check User-Agent and a timeout. Keep security protections enabled.
 
 DNS, certificates, Custom Domain bindings and Search Console verification are external account state. A Git clone reproduces application configuration, not ownership of these resources. The preparation script declares the domain routes; a new deployment still needs account permissions.
+
+## IndexNow ownership and change notification
+
+Released version `4b7b5e45-8b67-4580-a321-2eb14449f3d7` on 2026-10-25 adds the verification file. Previous active version: `4bd3a58f-f084-4a50-bb99-eb0bdea6666b`. Typecheck, build, local and production HTTP checks, and eight-page social metadata checks passed. Evidence is in the parent SEO workspace at `reports/2026-10-25/indexnow-performance/`.
+
+The root text file in `public/` whose name matches its contents is the IndexNow ownership verification file configured in Ahrefs project 10584883. Keep it in subsequent builds; do not rotate or remove it independently of the Ahrefs setting. Verify its public URL returns 200 and the expected UTF-8 text before submitting changed canonical URLs. Use Ahrefs manual submission for actual changes after a successful release; automatic submission requires a paid Ahrefs upgrade and is not enabled. Submission acceptance is not proof of indexing.
 
 ## Search Console and evidence
 
@@ -104,3 +158,7 @@ Steve 已明确授权当前 workers.dev 地址开放索引并部署。`.env.prod
 ## 开源及身份完善（2026-10-23）
 
 用户授权仓库按当前域名命名并公开：`wherexml/aspect-ratio-canvas.geekmooc.workers.dev`，MIT 许可证，Contact 使用公开 GitHub Issues。维护者为公开账户 wherexml。页脚标明实际内容更新时间，JSON-LD 使用相同 dateModified，不自动取构建时间。新增 Contact 后 sitemap 与 HTTP 验收覆盖 8 个页面。llms.txt 是用途及入口说明，不代表 AI 搜索准入或引用承诺。上述内容覆盖早期 Contact 留空和缺少作者/日期的记录。
+
+## Social navigation release — 2026-11-05
+
+Released version `d6730cb2-d4f7-40ed-977f-302ac90970f2`; previous active/rollback version `17aba283-1729-4bd4-b791-d896ba20855e`. The user authorized publishing the accepted compact Social Media navigation, grouped hub and five platform destinations. Production build, TypeScript, 23 local and 23 production HTTP checks passed; Chrome confirmed compact menu styling and the detail-to-hub journey. Evidence: `verification/social-navigation-release/`. No Git commit/push or indexing submission was performed.

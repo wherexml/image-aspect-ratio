@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { InfoPage } from "@/components/InfoPage";
 import { previewSeoMeta, seoLinks, seoScripts, SITE_NAME } from "@/lib/seo";
 const TITLE = "Terms — " + SITE_NAME;
-const DESCRIPTION = "Usage and output limitations for Aspect Ratio Calculator.";
+const DESCRIPTION = "Read the usage terms for Aspect Ratio Calculator, including rounded dimensions, preview limitations, and checking results before use.";
 export const Route = createFileRoute("/terms")({
   head: () => ({ meta: previewSeoMeta(TITLE, DESCRIPTION, "/terms"), links: seoLinks("/terms"), scripts: seoScripts(TITLE, DESCRIPTION, "/terms", false) }),
   component: () => <InfoPage title="Terms"><section><h2 className="text-lg font-semibold text-foreground">Using the tools</h2><p>Use the calculator to explore dimensions and frame proportions. Select only files you are entitled to use. No account or payment is required by this version of the calculator.</p></section>

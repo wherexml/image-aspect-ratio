@@ -20,7 +20,16 @@ Video clarity: retain realistic monitor/phone shells with narrow 5px bezels, met
 Copy action uses theme foreground as its background and theme background as its text/icon color for strong contrast in both themes. This neutral control replaces the earlier solid orange Copy button. Browser evidence: `verification/photo-flow/report.html`.
 
 ## Browser identity
-`public/favicon.svg` reuses the header's exact overlapping horizontal/vertical frame geometry and brand #D96A1B. Its neutral outline follows browser light/dark appearance. `public/favicon.ico` contains 16/32/48/64px raster fallbacks. Root head links use a versioned URL to refresh the old Lovable icon cache; all routes inherit this identity. Validate both public assets and all route head links after deploying.
+`public/favicon.svg` retains the orange bar and dark horizontal frame, with a fixed pure-white circular backplate and a pixel-aligned 48-unit grid for small sizes. Search and browser icons use the same appearance in light and dark environments. PNG fallbacks are 96/192px, the touch icon is 180px, and the ICO includes 16/32/48/64/96/128/256px frames. Root head links declare actual dimensions; keep their URLs stable after this release. `public/brand-mark.svg` preserves the original adaptive, transparent header mark for the guide; the calculator header keeps its existing inline geometry. Local acceptance: `verification/search-appearance-20261027/README.md`. These assets are not proof of Google cache refresh.
 
 ## General ratio presets
 Use a three-column, three-row selector with a thumbnail, ratio and concise use label per button. Preserve the separate Ultrawide source layout. Behavior and acceptance: [component contract](src/components/README.md#general-preset-contract-2026-10-23).
+
+## Font and mobile readability candidate — 2026-10-27
+
+The original Bricolage Grotesque, Instrument Sans and JetBrains Mono Latin fonts are now served from public/fonts with their OFL licenses; retain swap display and the existing font-family tokens. Common UI glyph subsets are embedded in production CSS; original fonts supply all remaining glyphs through complementary unicode ranges. Separate font preloads are removed. Glyph shapes and variable weight/optical-size ranges are preserved. Small result captions use the theme foreground to meet contrast requirements. On narrow screens, media source dimensions occupy two equal columns and the ratio/copy row spans both. Local verification: verification/search-appearance-20261027/README.md.
+
+
+## Mobile first-render delivery — 2026-10-27
+
+Production uses TanStack Start manifest-managed inline CSS and Vite inline font URLs. Preserve all used CSS rules, original fallback WOFF2 files, theme tokens and calculator behavior. Exclude unused component-library/test/documentation utility candidates; do not exclude classes used by product routes. Generate UI font subsets with scripts/build-font-subsets.py; retain full original glyph coverage through fallback faces. Initial 390px screenshots matched the prior release pixel-for-pixel. The tradeoff is a larger initial HTML document in exchange for removing CSS/font request chains; SPA navigation retains the styles. Evidence: `verification/mobile-performance-20261027/README.md`.

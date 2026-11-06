@@ -9,6 +9,8 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
+- Current product and route contract: `docs/product-spec.md`; consult module READMEs for details and preserve their dated evidence.
+
 - Aspect-ratio math lives in src/lib/ratio.ts using BigInt fractions; keep it exact and covered by src/test/ratio.test.ts (floats only for the preview drawing).
 
 - Theme rules: see `DESIGN.md`. Keep all brand emphasis sourced from `--brand`; preserve separate semantic error and neutral colors.

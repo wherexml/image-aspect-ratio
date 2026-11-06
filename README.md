@@ -9,20 +9,24 @@ Image Aspect Ratio is a free, browser-based calculator for image dimensions and 
 
 ### Calculate without losing precision
 
-Switch between **Calculate size**, **Aspect ratio** and **Resize**. Choose one of nine visible presets, enter your dimensions and copy the result. Exact fractions remain available alongside rounded pixel values.
+Open `/calculator` and switch between **Calculate size**, **Aspect ratio** and **Scale dimensions**. Choose from ten primary ratios and one additional ratio, enter your dimensions and copy the result. Exact fractions remain available alongside rounded pixel values.
 
 ### Preview an image in a different frame
 
-Open [Image aspect ratio](https://imageaspectratio.com/image-aspect-ratio), select a local image and inspect its dimensions. Compare **Fit** and **Fill** to see padding or the visible crop area. The selected image is read locally in your browser.
+In this source revision, `/` opens the Image tool. Select a local image and inspect its read-only dimensions. Compare **Fit** and **Fill** to see padding or the visible crop area. The selected image is read locally in your browser.
 
 ### Compare video and ultrawide proportions
 
 [Video aspect ratio](https://imageaspectratio.com/video-aspect-ratio) compares horizontal and vertical frames using entered dimensions. The [Ultrawide calculator](https://imageaspectratio.com/ultrawide-aspect-ratio-calculator) distinguishes exact screen-resolution ratios from the familiar 21:9 category.
 
+### Understand aspect ratio
+
+The `/what-is-aspect-ratio` guide explains proportions, pixel dimensions and framing with original SVG diagrams, worked examples and links to primary documentation.
+
 ## Features
 
 - **Exact ratio math:** BigInt fractions preserve the calculation; rounding is labeled.
-- **Nine common presets:** square, portrait, landscape, social post and vertical video shapes.
+- **Ordered presets:** eleven ratios from portrait to wide; social examples order matching ratios by size and place comparisons last.
 - **Related workflows:** carry results between dimension, ratio and resize modes.
 - **Fit/Fill previews:** inspect framing before deciding how to prepare an image or video.
 - **Responsive interface:** shared navigation and system, light and dark themes.
@@ -57,7 +61,7 @@ The built Worker runs locally at [127.0.0.1:18767](http://127.0.0.1:18767/). Pro
 python3 scripts/verify-http.py http://127.0.0.1:18767 https://imageaspectratio.com indexable
 ```
 
-The application uses React, TypeScript, TanStack Start and Tailwind CSS, with Cloudflare Workers SSR and Static Assets. Deployment is manual; pushing to GitHub does not publish the site. See [deployment and rollback](docs/deployment.md) and [source reproduction](docs/release-reproduction.md).
+The application uses React, TypeScript, TanStack Start and Tailwind CSS, with Cloudflare Workers SSR and Static Assets. Deployment requires separate authorization. Verify repository workflows and connected hosting integrations before pushing; a historical CI configuration is not proof of current automation. See [deployment and rollback](docs/deployment.md) and [source reproduction](docs/release-reproduction.md).
 
 ## Privacy and scope
 
@@ -65,6 +69,9 @@ Local image selection is processed in the browser. The application does not uplo
 
 ## Project documentation
 
+- [Current product specification](docs/product-spec.md)
+- [Measurement and privacy](docs/tool-analytics.md)
+- [Rendering and font delivery](docs/performance.md)
 - [Component workflows](src/components/README.md)
 - [Routes and SEO contracts](src/routes/README.md)
 - [Design principles](DESIGN.md)
@@ -76,4 +83,4 @@ New content, documentation, code comments and GitHub records use English. Older 
 
 Maintained by [wherexml](https://github.com/wherexml). Originally exported from [Lovable](https://lovable.dev); provenance is recorded in `LOCAL-EXPORT.json`. The repository remains connected to Lovable, so published Git history must not be rewritten.
 
-The public site is available at **imageaspectratio.com**. Search Console ownership and sitemap submission are configured; indexing requests do not guarantee inclusion or ranking. [Report an issue](https://github.com/wherexml/image-aspect-ratio/issues) with the page, input dimensions, expected result and steps to reproduce.
+The public site is **imageaspectratio.com**. This README describes the source revision, not a claim that its latest routes are deployed. Deployment, ownership verification and indexing are separate checks; indexing requests do not guarantee inclusion or ranking. [Report an issue](https://github.com/wherexml/image-aspect-ratio/issues) with the page, input dimensions, expected result and steps to reproduce.

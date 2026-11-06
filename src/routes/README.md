@@ -1,5 +1,7 @@
 # Routes
 
+Current source contract: [product specification](../../docs/product-spec.md). `/` is Image; `/calculator` is the manual calculator; `/image-aspect-ratio` is a compatibility redirect. This current contract supersedes earlier dated route inventories below; historical release records do not imply this revision is deployed.
+
 TanStack Start uses **file-based routing**. Every `.tsx` file in this directory
 defines a route. Do **not** create `src/pages/`, `src/routes/_app/index.tsx`, or
 `app/layout.tsx` — those are Next.js / Remix conventions. The only root layout
@@ -22,7 +24,7 @@ is `src/routes/__root.tsx`.
 
 ## Aspect ratio tools
 
-- `/`: general numeric calculator, simplify ratio and compute missing dimension.
+- `/calculator`: general numeric calculator, simplify ratio and compute missing dimension (was `/` until 2026-11-07).
 - `/ultrawide-aspect-ratio-calculator`: locked source ratios: strict 21:9; 3440x1440 = 43:18; 2560x1080 and 5120x2160 = 64:27; 3840x1600 = 12:5.
 - Both routes share the `Calculator` component (`src/components/Calculator.tsx`) and BigInt rational math. Switching ultrawide presets preserves the known dimension. Reset restores width 3440 and 43:18 on the ultrawide route.
 - If either resulting dimension is below 1px, show a warning and disable copy. Exact values remain visible. Preview clamping is disclosed; it never changes the calculation.
@@ -36,7 +38,7 @@ is `src/routes/__root.tsx`.
 - Use original size restores the selected source width or height according to the current known-side selection; it keeps the ratio and side unchanged.
 - Solve results show full width x height plus px, using exactly the same dimension string as clipboard output. Ratio mode stays a simplified ratio.
 - Chrome verification: `verification/refinement-results.json` (21 checks passed), desktop and 390px screenshots in `verification/refinement-*.png`. Types and build passed; no deployment.
-- Repeat: change known size, restore each of four source sizes in Width and Height modes; compare visible result with copied text; verify strict mode hides source-size button; return home via logo and breadcrumb; check both pages at 390px.
+- Repeat: change known size, restore each of four source sizes in Width and Height modes; compare visible result with copied text; verify strict mode hides source-size button; return home via logo; check both pages at 390px.
 
 ## Compact precision display (2026-10-17)
 - Canvas preserves short exact target ratios (including 21:9 and 2.39:1). Other custom ratios use at most two decimal places with an approximation sign when rounded; tiny positive ratios display <0.01, never zero. Exact simplified ratios remain available in Find ratio.
@@ -52,7 +54,7 @@ is `src/routes/__root.tsx`.
 - Replay: enter 0.7597:1 at width1920 (Near3:4,1920x2527), expand details; enter3:4 (exact),1.2:1 (6:5,no forced match); Find ratio1920x2527 (Near3:4,copy1920:2527); check ultrawide43:18 remains exact.
 
 ## Image, video and workflow expansion (2026-10-17)
-- `/image-aspect-ratio`: local image dimension detection and 1:1, 4:5, 9:16, 16:9 fit/center-crop preview.
+- `/` (formerly `/image-aspect-ratio`): local image dimension detection and 1:1, 4:5, 9:16, 16:9 fit/center-crop preview.
 - `/video-aspect-ratio`: numeric dimensions and 16:9 / 9:16 screen simulator.
 - Shared state and rendering contract: [components/README.md](../components/README.md).
 - Current acceptance: [workflows-report.html](../../verification/workflows-report.html).
@@ -91,3 +93,35 @@ Homepage copy refinement: title is `Aspect Ratio Calculator — Image & Video Di
 ## Production domain migration (2026-10-23)
 
 Production origin is `https://imageaspectratio.com`; the eight-page sitemap includes Contact. SEO URLs and llms.txt use this origin. The server redirects only explicitly listed production aliases (www, legacy workers.dev and HTTP apex) to HTTPS apex with 308, preserving path and query. Local and unknown hosts stay local. Workers Assets serves static files directly. This supersedes earlier notes prohibiting cross-domain redirects. See `../../docs/deployment.md` for deployment and acceptance details.
+
+## Image checker experiment (2026-10-26)
+
+The existing `/image-aspect-ratio` URL keeps its canonical and indexability behavior. Its title, description and H1 now identify an image aspect ratio checker. A supporting guide renders inside the shared main region and explains unfamiliar exact ratios without claiming file editing or export. Local acceptance: `../../verification/tool-analytics-20261026/README.md`; no deployment is implied by this source change.
+
+## Visual aspect ratio guide (2026-10-26)
+
+`/what-is-aspect-ratio` is an English educational guide with SSR content, three original theme-aware SVGs, section anchors, a ratio table and related calculator links. It uses WebPage schema with a page-specific review date, standard canonical/robots metadata and the shared SITE_PAGES sitemap/redirect contract (nine routes in indexable builds). Copy lives in `src/content/aspect-ratio-guide.json`; illustrations live in `public/illustrations/`. The reviewed draft was processed by humanizer-zh through agy with explicit English instructions. Fedora Claude created the SVGs. Local evidence: `verification/task28-guide-20261026/`. No deployment or indexing submission is implied.
+
+## Search appearance candidate — 2026-10-27 (local, unreleased)
+
+The shared SEO graph keeps the established WebSite name and adds the visible short brand as alternateName. Tool routes model WebApplication separately from WebPage and declare real free access without invented reviews. Visible breadcrumbs were removed site-wide on 2026-11-06; BreadcrumbList metadata remains. Shared footer navigation exposes the four tools and guide on all pages. Head metadata serves the white icon set and preloads same-origin licensed fonts; the original header mark is preserved. Evidence and publication boundary: `verification/search-appearance-20261027/README.md`. This implementation does not guarantee sitelinks, ratings or rankings.
+
+## Exact fractions article (2026-10-27)
+
+`/exact-fractions-vs-rounded-pixels` is an SSR English article that explains reduced ratios, whole-pixel scaling, rounding direction, exact crops and CSS `aspect-ratio`. Prose, code and tables live in the route file and follow `../../../reports/2026-10-27/exact-fraction-article/article.md` verbatim. Its three PNG illustrations live in `public/illustrations/exact-fractions/` (1536 × 1024); each has alt text, a caption and a full-size link, and only the first loads eagerly. Styles are scoped to `.exact-fractions`/`.xf-*` in the route CSS; code blocks and tables scroll independently and are keyboard focusable. The route uses WebPage schema with its own review date and the shared SITE_PAGES sitemap/redirect contract (ten routes in indexable builds). It is linked from the shared footer and the guide's calculation section. Failure cases: `verification/exact-fractions-20261027/failure-cases.md`. Browser acceptance belongs to the Mac host; no deployment is implied.
+
+## Social media pages (2026-11-04)
+
+Five English routes cover TikTok, YouTube landscape video, Instagram Reels, Instagram Stories and YouTube Shorts. Each has an independent title, description, H1, self-canonical path, WebApplication graph, worked framing examples and dated primary sources. Content lives in src/content/social-ratios.ts; the shared SocialRatioPage renders the calculator and guidance. All five paths participate in SITE_PAGES, sitemap generation, trailing-slash normalization and the shared footer. Local preview remains noindex/nofollow.
+
+The YouTube page defaults to 1920 × 1080 at 16:9; the others default to 1080 × 1920 at 9:16. Shorts also offers a square comparison. These are calculation examples, not upload validation or media export. Requirements sourced from advertising documentation are explicitly labeled as ad specifications. Source review and local acceptance do not establish a production release or search performance.
+
+## Social navigation hub (2026-11-05)
+
+`/social-media` groups the five existing platform routes under Instagram, YouTube and TikTok. Shared navigation exposes this group from the homepage and calculators. Social detail hierarchy remains in JSON-LD; visible breadcrumbs were removed site-wide on 2026-11-06. The hub participates in SITE_PAGES and indexable sitemap generation. Local acceptance: `../../verification/social-navigation/README.md`. This change has not been deployed.
+
+Site-wide visible breadcrumb removal acceptance: `../../verification/breadcrumb-removal/README.md`.
+
+## Home image route migration (2026-11-07)
+
+`/` renders the upload-only image checker (`Calculator media="image"` + `ImageRatioGuide`) with the former image title, description and guide; it never redirects. `/calculator` renders the manual calculator (H1 and title `Aspect Ratio Calculator`, unchanged defaults, Reset and preset order). `/image-aspect-ratio` (with or without trailing slash) answers 308 to `/` in `src/server.ts`, keeping the query string; its route also throws a client `redirect` to `/`. It is not in SITE_PAGES, so it is excluded from the sitemap and canonicals. SITE_PAGES lists `/` and `/calculator`; SITE_LABELS names `/` "Image ratio" (breadcrumb home) and `/calculator` "Calculator". Logos stay on `/`; photo-inspection links go to `/`, manual-ratio links go to `/calculator`. Noindex/nofollow and the build-time-origin rule are unchanged. Not deployed.
