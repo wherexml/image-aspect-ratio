@@ -1,5 +1,10 @@
 # Cloudflare deployment
 
+## Image uploader release candidate — 2026-11-07
+
+The user authorized committing and deploying the accepted Image uploader changes: native image paste, simplified uploader, always-visible pale placeholder previews, restored dimension layout and foreground frame borders. Existing production origin, indexability, routes and Worker bindings remain unchanged. Local build and browser evidence are retained in the parent workspace reports. Production acceptance is recorded separately after deployment.
+
+
 ## Source synchronization boundary — 2026-11-07
 
 The current source includes the separate Image homepage and `/calculator` route described in [the product specification](product-spec.md). These latest changes are local and are not deployed by this synchronization. Earlier release/version entries below are dated historical observations, not a statement of today's active production version.

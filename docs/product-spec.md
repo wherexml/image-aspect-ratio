@@ -19,7 +19,7 @@ Shared navigation orders Image, Calculator, Video, Social Media and Ultrawide. L
 
 ## State and calculation
 
-Image begins empty and has no manual numeric tools. Only a successful local decode reveals read-only dimensions, ratio/copy and previews. Replacing, removing or failing a file clears its displayed image results; asynchronous stale reads cannot win. State is not promised to survive navigation or reload. Video's editable workflow is distinct and unchanged.
+Image begins empty and has no manual numeric tools. Read-only dimensions, ratio/copy, Fit/Fill and four preview frames are always visible. Before selection, values stay blank, Copy is disabled, and a pale square generated placeholder demonstrates fitting. A successful local decode replaces the placeholder and fills the values. Replacing, removing or failing a file clears its displayed image results while retaining the placeholder layout; asynchronous stale reads cannot win. State is not promised to survive navigation or reload. Video's editable workflow is distinct and unchanged.
 
 Manual modes retain independent target dimensions and known sides. Reset restores the established defaults; selecting a different presentation order must never redefine default state. BigInt fractions remain authoritative; floating-point approximations are for drawing only. Copy never substitutes a nearby common ratio or reports success after failure.
 
