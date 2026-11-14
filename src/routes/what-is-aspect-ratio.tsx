@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { ThemeControl } from "@/components/ThemeControl";
+import { guideCommonRatioLinks } from "@/lib/internal-links";
 import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
 import guide from "@/content/aspect-ratio-guide.json";
 import anatomy from "../../public/illustrations/aspect-ratio-anatomy.svg?raw";
@@ -80,7 +81,7 @@ function AspectRatioGuide() {
               {section.id === "calculate-aspect-ratio" && <div className="ratio-guide-equation" aria-label="Example: at 16 to 9, 1200 pixels wide gives 675 pixels high"><span>16:9</span><code>1200 × 9 ÷ 16 = 675 px</code></div>}
               {sectionSources[section.id] && <a className="ratio-guide-source" href={sources[sectionSources[section.id]!].url}>{sources[sectionSources[section.id]!].title} <ArrowUpRight size={13} aria-hidden /></a>}
               {section.id === "calculate-aspect-ratio" && <Link className="ratio-guide-related" to="/exact-fractions-vs-rounded-pixels">Why 1366 × 768 isn't exactly 16:9 <ArrowUpRight size={15} aria-hidden /></Link>}
-              {section.id === "common-ratios" && <Link className="ratio-guide-related" to="/ultrawide-aspect-ratio-calculator">Check an ultrawide ratio <ArrowUpRight size={15} aria-hidden /></Link>}
+              {section.id === "common-ratios" && guideCommonRatioLinks.map(link => <Link key={link.to} className="ratio-guide-related" to={link.to}>{link.label} <ArrowUpRight size={15} aria-hidden /></Link>)}
               {section.id === "choosing-a-ratio" && <Link className="ratio-guide-related" to="/">Check a photo and preview its fit <ArrowUpRight size={15} aria-hidden /></Link>}
               {section.id === "faq" && <Link className="ratio-guide-related" to="/video-aspect-ratio">Compare video frames <ArrowUpRight size={15} aria-hidden /></Link>}
             </section>)}

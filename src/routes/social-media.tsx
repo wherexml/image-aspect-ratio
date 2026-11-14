@@ -19,6 +19,7 @@ function SocialMedia() {
       <CalculatorNavigation />
       <h1 className="mb-12 mt-8 font-display text-4xl font-extrabold tracking-tight sm:text-6xl">Social Media <span className="text-primary">Aspect Ratios</span></h1>
       <SocialPlatformLinks hub />
+      <p className="mt-10 max-w-3xl text-sm leading-7 text-muted-foreground">These pages calculate example dimensions for each format. To preview a photo in 1:1, 4:5, 9:16 or 16:9 frames, open the <Link to="/" className="underline underline-offset-4">image aspect ratio checker</Link>. For any other width or height, use the <Link to="/calculator" className="underline underline-offset-4">aspect ratio calculator</Link>.</p>
     </main>
   </div>;
 }

@@ -6,6 +6,7 @@ import { ArrowLeftRight, Check, ChevronDown, Copy, RotateCcw } from "lucide-reac
 import { RatioCanvas } from "@/components/RatioCanvas";
 import { ThemeControl } from "@/components/ThemeControl";
 import { MediaPreview } from "@/components/MediaPreview";
+import { frameFollowUpLinks } from "@/lib/internal-links";
 import { approxNumber, decimalString, fmtInt, isInteger, parsePositive, roundFrac, simplifyRatio, solve, type Frac, type ParseResult } from "@/lib/ratio";
 type Mode = "solve" | "ratio" | "resize";
 type Side = "height" | "width";
@@ -442,6 +443,7 @@ export function Calculator({ ultrawide = false, media, children }: { ultrawide?:
             <Link to="/ultrawide-aspect-ratio-calculator" className="flex min-h-12 items-center justify-between gap-4 border-b py-3 text-sm hover:text-primary">
               <span>Calculate actual monitor resolutions</span><span aria-hidden="true">→</span>
             </Link>
+            {frameFollowUpLinks("calculator").map(link => <Link key={link.to} to={link.to} className="flex min-h-12 items-center justify-between gap-4 border-b py-3 text-sm hover:text-primary"><span>{link.label}</span><span aria-hidden="true">→</span></Link>)}
           </div>
         </section>}
 
@@ -539,11 +541,12 @@ export function Calculator({ ultrawide = false, media, children }: { ultrawide?:
           </div>
         </section>}
         {children}
-        <nav aria-label="Related calculators" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <nav aria-label="Related tools" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <Link to="/what-is-aspect-ratio" className="font-medium underline-offset-4 hover:underline">What is aspect ratio? — a visual guide</Link>
           {media && <Link to="/calculator" className="font-medium underline-offset-4 hover:underline">Aspect ratio calculator — find the ratio of any other resolution</Link>}
           {(home || media === "video") && <Link to="/" className="font-medium underline-offset-4 hover:underline">Image aspect ratio — check an image</Link>}
           {media !== "video" && <Link to="/video-aspect-ratio" className="font-medium underline-offset-4 hover:underline">Video aspect ratio calculator — compare screen fit</Link>}
+          {(media === "image" || media === "video") && frameFollowUpLinks(media).map(link => <Link key={link.to} to={link.to} className="font-medium underline-offset-4 hover:underline">{link.label}</Link>)}
         </nav>
       </main>
     </div>

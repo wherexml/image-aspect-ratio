@@ -17,6 +17,7 @@ import {
   simplifyRatio,
   solve,
 } from "@/lib/ratio";
+import { fitFillGuideLink } from "@/lib/internal-links";
 import { useToolTracking } from "@/lib/tool-analytics";
 import { RatioCanvas } from "./RatioCanvas";
 import { ThemeControl } from "./ThemeControl";
@@ -394,6 +395,7 @@ export function SocialRatioPage({ page }: { page: PageContent }) {
             <Link to="/calculator" className="underline underline-offset-4">
               Calculate a custom ratio
             </Link>
+            <Link to={fitFillGuideLink.to} hash={fitFillGuideLink.hash} className="underline underline-offset-4">{fitFillGuideLink.label}</Link>
           </nav>
         </section>
       </main>

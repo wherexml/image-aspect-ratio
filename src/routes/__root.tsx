@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { footerInfoLinks, footerSocialLinks, footerToolLinks } from "@/lib/internal-links";
 import { CONTENT_UPDATED, MAINTAINER, REPOSITORY_URL } from "@/lib/seo";
 
 import { analyticsScript, geoAnalyticsScript } from "../lib/analytics";
@@ -122,27 +123,15 @@ function RootComponent() {
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3 sm:px-6">
           <nav aria-labelledby="footer-tools" className="footer-group">
             <h2 id="footer-tools">Tools &amp; guides</h2>
-            <Link to="/">Image Aspect Ratio</Link>
-            <Link to="/video-aspect-ratio">Video ratio calculator</Link>
-            <Link to="/ultrawide-aspect-ratio-calculator">Ultrawide calculator</Link>
-            <Link to="/what-is-aspect-ratio">What is aspect ratio?</Link>
-            <Link to="/exact-fractions-vs-rounded-pixels">Exact fractions vs rounded pixels</Link>
+            {footerToolLinks.map(link => <Link key={link.to} to={link.to}>{link.label}</Link>)}
           </nav>
           <nav aria-labelledby="footer-social" className="footer-group">
             <h2 id="footer-social">Social platforms</h2>
-            <Link to="/social-media">All social media sizes</Link>
-            <Link to="/tiktok-aspect-ratio">TikTok aspect ratio</Link>
-            <Link to="/youtube-aspect-ratio">YouTube aspect ratio</Link>
-            <Link to="/youtube-shorts-aspect-ratio">YouTube Shorts aspect ratio</Link>
-            <Link to="/instagram-reel-aspect-ratio">Instagram Reel aspect ratio</Link>
-            <Link to="/instagram-story-aspect-ratio">Instagram Story aspect ratio</Link>
+            {footerSocialLinks.map(link => <Link key={link.to} to={link.to}>{link.label}</Link>)}
           </nav>
           <nav aria-labelledby="footer-info" className="footer-group">
             <h2 id="footer-info">Information</h2>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
-            <Link to="/privacy">Privacy</Link>
-            <Link to="/terms">Terms</Link>
+            {footerInfoLinks.map(link => <Link key={link.to} to={link.to}>{link.label}</Link>)}
             <a href={REPOSITORY_URL}>Source</a>
           </nav>
           <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs sm:col-span-3">
