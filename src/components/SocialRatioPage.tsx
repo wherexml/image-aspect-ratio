@@ -47,7 +47,9 @@ function displayOrder(sizes: PageContent["sizes"]): number[] {
   const base = sizes[0]!;
   const group = (index: number) => {
     const s = sizes[index]!;
-    return BigInt(s.width) * BigInt(base.height) === BigInt(s.height) * BigInt(base.width) ? 0 : 1;
+    return BigInt(s.width) * BigInt(base.height) === BigInt(s.height) * BigInt(base.width)
+      ? 0
+      : 1;
   };
   const area = (index: number) => BigInt(sizes[index]!.width) * BigInt(sizes[index]!.height);
   return sizes
@@ -170,10 +172,7 @@ function Dimensions({ page }: { page: PageContent }) {
                   setKnownSide(value as "width" | "height");
                 }}
               >
-                <SelectTrigger
-                  id="social-known-side"
-                  className="field h-auto w-full rounded-[var(--radius-md)] border-[1.5px] bg-card px-[0.85rem] py-[0.7rem] font-mono text-[1.15rem] shadow-none"
-                >
+                <SelectTrigger id="social-known-side" className="field h-auto w-full rounded-[var(--radius-md)] border-[1.5px] bg-card px-[0.85rem] py-[0.7rem] font-mono text-[1.15rem] shadow-none">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -396,13 +395,7 @@ export function SocialRatioPage({ page }: { page: PageContent }) {
             <Link to="/calculator" className="underline underline-offset-4">
               Calculate a custom ratio
             </Link>
-            <Link
-              to={fitFillGuideLink.to}
-              hash={fitFillGuideLink.hash}
-              className="underline underline-offset-4"
-            >
-              {fitFillGuideLink.label}
-            </Link>
+            <Link to={fitFillGuideLink.to} hash={fitFillGuideLink.hash} className="underline underline-offset-4">{fitFillGuideLink.label}</Link>
           </nav>
         </section>
       </main>

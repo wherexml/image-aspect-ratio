@@ -1,87 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { InfoPage } from "@/components/InfoPage";
-import {
-  previewSeoMeta,
-  seoLinks,
-  seoScripts,
-  SITE_NAME,
-  REPOSITORY_URL,
-  MAINTAINER,
-} from "@/lib/seo";
+import { previewSeoMeta, seoLinks, seoScripts, SITE_NAME, REPOSITORY_URL, MAINTAINER } from "@/lib/seo";
 const TITLE = "About — " + SITE_NAME;
-const DESCRIPTION =
-  "About Aspect Ratio Calculator: image ratio and dimension tools, video and ultrawide calculators, how results are calculated, and preview limits.";
+const DESCRIPTION = "About Aspect Ratio Calculator: image ratio and dimension tools, video and ultrawide calculators, how results are calculated, and preview limits.";
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: previewSeoMeta(TITLE, DESCRIPTION, "/about"),
-    links: seoLinks("/about"),
-    scripts: seoScripts(TITLE, DESCRIPTION, "/about", false),
-  }),
-  component: () => (
-    <InfoPage title="About">
-      <p>
-        Aspect Ratio Calculator helps you find an image’s aspect ratio and calculate the dimensions
-        you need. Separate tools cover video and ultrawide proportions.
-      </p>
-      <section>
-        <h2 className="text-lg font-semibold text-foreground">Tools and limits</h2>
-        <p>
-          The{" "}
-          <Link to="/" className="underline">
-            image tool
-          </Link>{" "}
-          reads a local image’s dimensions and previews Fit and Fill in common frames. The{" "}
-          <Link to="/calculator" className="underline">
-            calculator
-          </Link>{" "}
-          finds a ratio from dimensions you enter, calculates a matching width or height, or scales
-          a size. The{" "}
-          <Link to="/video-aspect-ratio" className="underline">
-            video tool
-          </Link>{" "}
-          uses dimensions you enter to simulate widescreen and vertical frames. The{" "}
-          <Link to="/ultrawide-aspect-ratio-calculator" className="underline">
-            ultrawide tool
-          </Link>{" "}
-          distinguishes exact pixel ratios from strict 21:9. Instagram, YouTube and TikTok examples
-          are grouped under{" "}
-          <Link to="/social-media" className="underline">
-            social media aspect ratios
-          </Link>
-          .
-        </p>
-        <p>
-          These tools calculate dimensions and show previews. They do not export resized images,
-          crop files or transcode video.
-        </p>
-      </section>
-      <section>
-        <h2 className="text-lg font-semibold text-foreground">Calculation method</h2>
-        <p>
-          Aspect ratio expresses width relative to height. For whole-pixel dimensions, divide width
-          and height by their greatest common divisor. For example, 1920 ÷ 120 = 16 and 1080 ÷ 120 =
-          9, giving 16:9.
-        </p>
-        <p>
-          For a target ratio W:H, height = width × H ÷ W. Decimal inputs use exact fraction
-          calculations. Rounded pixel results and approximate preview labels are identified
-          separately.
-        </p>
-      </section>
-      <section>
-        <h2 className="text-lg font-semibold text-foreground">Maintenance and source</h2>
-        <p>
-          Maintained by{" "}
-          <a className="underline" href={MAINTAINER.url}>
-            {MAINTAINER.name}
-          </a>
-          . The{" "}
-          <a className="underline" href={REPOSITORY_URL}>
-            source code
-          </a>{" "}
-          is available under the MIT license.
-        </p>
-      </section>
-    </InfoPage>
-  ),
+  head: () => ({ meta: previewSeoMeta(TITLE, DESCRIPTION, "/about"), links: seoLinks("/about"), scripts: seoScripts(TITLE, DESCRIPTION, "/about", false) }),
+  component: () => <InfoPage title="About"><p>Aspect Ratio Calculator helps you find an image’s aspect ratio and calculate the dimensions you need. Separate tools cover video and ultrawide proportions.</p>
+<section><h2 className="text-lg font-semibold text-foreground">Tools and limits</h2><p>The <Link to="/" className="underline">image tool</Link> reads a local image’s dimensions and previews Fit and Fill in common frames. The <Link to="/calculator" className="underline">calculator</Link> finds a ratio from dimensions you enter, calculates a matching width or height, or scales a size. The <Link to="/video-aspect-ratio" className="underline">video tool</Link> uses dimensions you enter to simulate widescreen and vertical frames. The <Link to="/ultrawide-aspect-ratio-calculator" className="underline">ultrawide tool</Link> distinguishes exact pixel ratios from strict 21:9. Instagram, YouTube and TikTok examples are grouped under <Link to="/social-media" className="underline">social media aspect ratios</Link>.</p><p>These tools calculate dimensions and show previews. They do not export resized images, crop files or transcode video.</p></section>
+<section><h2 className="text-lg font-semibold text-foreground">Calculation method</h2><p>Aspect ratio expresses width relative to height. For whole-pixel dimensions, divide width and height by their greatest common divisor. For example, 1920 ÷ 120 = 16 and 1080 ÷ 120 = 9, giving 16:9.</p><p>For a target ratio W:H, height = width × H ÷ W. Decimal inputs use exact fraction calculations. Rounded pixel results and approximate preview labels are identified separately.</p></section><section><h2 className="text-lg font-semibold text-foreground">Maintenance and source</h2><p>Maintained by <a className="underline" href={MAINTAINER.url}>{MAINTAINER.name}</a>. The <a className="underline" href={REPOSITORY_URL}>source code</a> is available under the MIT license.</p></section></InfoPage>,
 });
