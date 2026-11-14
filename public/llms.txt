@@ -9,6 +9,7 @@
 - [Ultrawide calculator](https://imageaspectratio.com/ultrawide-aspect-ratio-calculator): Distinguish exact pixel ratios from the 21:9 category.
 
 ## Social media dimensions
+- [Social media aspect ratios](https://imageaspectratio.com/social-media): Instagram, YouTube and TikTok size groups, with a calculator on each format page.
 - [TikTok aspect ratio](https://imageaspectratio.com/tiktok-aspect-ratio): Plan a vertical frame; distinguish working examples from ad specifications.
 - [YouTube aspect ratio](https://imageaspectratio.com/youtube-aspect-ratio): Calculate 16:9 landscape dimensions and understand adaptive playback.
 - [Instagram Reel aspect ratio](https://imageaspectratio.com/instagram-reel-aspect-ratio): Plan a 9:16 video; distinguish accepted shapes and cover framing.
@@ -17,6 +18,7 @@
 
 ## Learn
 - [What is aspect ratio?](https://imageaspectratio.com/what-is-aspect-ratio): An illustrated guide to width:height, common ratios, exact calculations, cropping, padding and stretching.
+- [Exact fractions vs rounded pixels](https://imageaspectratio.com/exact-fractions-vs-rounded-pixels): Why a near-16:9 pixel size is not an exact 16:9 ratio, and how whole-pixel rounding changes the shape.
 
 ## About and support
 - [About](https://imageaspectratio.com/about): Calculation methods, scope and maintainer.
