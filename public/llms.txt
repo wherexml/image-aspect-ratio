@@ -6,13 +6,21 @@
 - [Image aspect ratio calculator](https://imageaspectratio.com/): Read pixel dimensions and exact reduced aspect ratio from a local photo, then preview padding (Fit) or centered crop (Fill) in common frames.
 - [Make image square](https://imageaspectratio.com/make-image-square): Pad a local photo with a solid, blurred, or transparent background—or crop and reposition it—then download a 1:1 PNG or JPEG up to 4096 px.
 - [Change image aspect ratio](https://imageaspectratio.com/change-image-aspect-ratio): Crop or pad a local photo to 1:1, 4:5, 9:16, 16:9, or custom ratios without stretching and download a PNG or JPEG up to 4096 px.
+- [Add padding & border to image](https://imageaspectratio.com/add-padding-to-image): Add symmetric or custom white, colored, or transparent PNG borders around any photo locally up to 4096 px.
+- [Round corners & circle crop](https://imageaspectratio.com/round-corners-image): Apply smooth rounded corners or a 1:1 circle mask to any image and export a transparent PNG locally.
 - [Screenshot Beautifier](https://imageaspectratio.com/screenshot-beautifier): Open or paste (`Cmd/Ctrl+V`) a local screenshot, frame on studio gradients, ambient blur, or solid backgrounds, annotate with curved arrows (`A`), step badges (`N`), text callouts (`T`), freehand ink (`P`), highlighter (`H`), spotlight (`S`), Gaussian blur (`B`), or mosaic pixelation (`M`), and export flattened PNG or JPEG up to 4096 px.
+- [Annotate screenshot](https://imageaspectratio.com/annotate-screenshot): Add curved arrows, numbered step badges, highlight boxes, and text callouts to screenshots locally in browser.
+- [Blur & pixelate screenshot](https://imageaspectratio.com/blur-screenshot): Permanently redact sensitive emails, API keys, and tokens using flattened Gaussian blur or mosaic pixelation before exporting.
 - [Aspect ratio calculator](https://imageaspectratio.com/calculator): Find an aspect ratio from width and height, solve a matching width or height in pixels, or scale dimensions using exact fraction math.
 - [16:9 aspect ratio calculator](https://imageaspectratio.com/16-9-aspect-ratio-calculator): Solve width or height at exact 16:9 in whole pixels; apply 640×360 to 3840×2160 examples.
 - [Video aspect ratio](https://imageaspectratio.com/video-aspect-ratio): Enter dimensions to compare widescreen and vertical frame fit; assumes square pixels.
 - [Ultrawide calculator](https://imageaspectratio.com/ultrawide-aspect-ratio-calculator): Distinguish exact pixel ratios (43:18, 64:27, 12:5) from the 21:9 marketing category.
 
-## Social media dimensions
+## Social media dimensions & safe zones
+- [TikTok, Reels & Shorts safe zone checker](https://imageaspectratio.com/safe-zone-checker): Preview 1080×1920 vertical frames against TikTok, Instagram Reels, and YouTube Shorts UI overlays and download a transparent PNG guide.
+- [Instagram 3:4 grid & carousel splitter](https://imageaspectratio.com/instagram-grid-splitter): Slice seamless 4:5 carousels or 3:4 profile grids in reverse post order and download numbered slides or a ZIP archive locally.
+- [Fit photo to Instagram without cropping](https://imageaspectratio.com/fit-photo-to-instagram): Fit full landscape or tall vertical photos into Instagram 4:5 (1080×1350) or 3:4 frames with blurred or solid borders.
+- [OG image 1200×630 safe zone tester](https://imageaspectratio.com/og-image-safe-zone): Preview unpublished local 1200×630 Open Graph images across X, LinkedIn, Discord, Slack, iMessage, and WhatsApp 1:1 crops, and export a <280 KB JPG.
 - [Social media aspect ratios](https://imageaspectratio.com/social-media): Compare recommended dimensions and aspect ratios across TikTok, YouTube, and Instagram placements.
 - [TikTok aspect ratio](https://imageaspectratio.com/tiktok-aspect-ratio): Plan a 9:16 (1080×1920) vertical frame; distinguish working examples from ad specifications.
 - [YouTube aspect ratio](https://imageaspectratio.com/youtube-aspect-ratio): Calculate 16:9 landscape dimensions and understand adaptive playback.

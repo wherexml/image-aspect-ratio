@@ -75,24 +75,24 @@ function V3ThemeControl() {
 }
 
 const V3_IMAGE_TOOLS = [
-  { to: "/v3", label: "Image ratio" },
-  { to: "/v3/make-image-square", label: "Make square" },
-  { to: "/v3/change-image-aspect-ratio", label: "Change ratio" },
-  { to: "/v3/add-padding-to-image", label: "Add padding & border" },
-  { to: "/v3/round-corners-image", label: "Round corners & circle" },
-  { to: "/v3/screenshot-beautifier", label: "Screenshot Beautifier" },
-  { to: "/v3/annotate-screenshot", label: "Annotate screenshot" },
-  { to: "/v3/blur-screenshot", label: "Blur screenshot" },
+  { to: "/", label: "Image ratio" },
+  { to: "/make-image-square", label: "Make square" },
+  { to: "/change-image-aspect-ratio", label: "Change ratio" },
+  { to: "/add-padding-to-image", label: "Add padding & border" },
+  { to: "/round-corners-image", label: "Round corners & circle" },
+  { to: "/screenshot-beautifier", label: "Screenshot Beautifier" },
+  { to: "/annotate-screenshot", label: "Annotate screenshot" },
+  { to: "/blur-screenshot", label: "Blur screenshot" },
 ] as const;
 
 const V3_CALC_TOOLS = [
-  { to: "/v3/calculator", label: "All ratios" },
-  { to: "/v2/16-9-aspect-ratio-calculator", label: "16:9" },
+  { to: "/calculator", label: "All ratios" },
+  { to: "/16-9-aspect-ratio-calculator", label: "16:9" },
 ] as const;
 
 const V3_DIRECT_TOOLS = [
-  { to: "/v3/video-aspect-ratio", label: "Video" },
-  { to: "/v2/ultrawide-aspect-ratio-calculator", label: "Ultrawide" },
+  { to: "/video-aspect-ratio", label: "Video" },
+  { to: "/ultrawide-aspect-ratio-calculator", label: "Ultrawide" },
 ] as const;
 
 const V3_SOCIAL_GROUPS = [
@@ -101,25 +101,25 @@ const V3_SOCIAL_GROUPS = [
     icon: Instagram,
     links: [
       {
-        to: "/v3/instagram-grid-splitter",
+        to: "/instagram-grid-splitter",
         label: "Grid & Carousel",
         mobileLabel: "Instagram Grid & Carousel",
         ratio: "3:4",
       },
       {
-        to: "/v3/fit-photo-to-instagram",
+        to: "/fit-photo-to-instagram",
         label: "Fit Photo",
         mobileLabel: "Instagram Fit Photo",
         ratio: "4:5",
       },
       {
-        to: "/v2/instagram-reel-aspect-ratio",
+        to: "/instagram-reel-aspect-ratio",
         label: "Reels",
         mobileLabel: "Instagram Reels",
         ratio: "9:16",
       },
       {
-        to: "/v2/instagram-story-aspect-ratio",
+        to: "/instagram-story-aspect-ratio",
         label: "Stories",
         mobileLabel: "Instagram Stories",
         ratio: "9:16",
@@ -131,13 +131,13 @@ const V3_SOCIAL_GROUPS = [
     icon: Youtube,
     links: [
       {
-        to: "/v2/youtube-aspect-ratio",
+        to: "/youtube-aspect-ratio",
         label: "Video",
         mobileLabel: "YouTube Video",
         ratio: "16:9",
       },
       {
-        to: "/v2/youtube-shorts-aspect-ratio",
+        to: "/youtube-shorts-aspect-ratio",
         label: "Shorts",
         mobileLabel: "YouTube Shorts",
         ratio: "9:16",
@@ -149,19 +149,19 @@ const V3_SOCIAL_GROUPS = [
     icon: Music2,
     links: [
       {
-        to: "/v2/tiktok-aspect-ratio",
+        to: "/tiktok-aspect-ratio",
         label: "TikTok Video",
         mobileLabel: "TikTok Video",
         ratio: "9:16",
       },
       {
-        to: "/v3/safe-zone-checker",
+        to: "/safe-zone-checker",
         label: "Safe Zones",
         mobileLabel: "Safe Zones",
         ratio: "9:16",
       },
       {
-        to: "/v3/og-image-safe-zone",
+        to: "/og-image-safe-zone",
         label: "OG Safe Zone",
         mobileLabel: "OG Safe Zone",
         ratio: "1.91:1",
@@ -177,27 +177,35 @@ function V3DropdownNavigation() {
   const navRef = useRef<HTMLElement>(null);
 
   const normalizedPath =
-    pathname === "/v3/" || pathname === "/v3" || pathname === "/v3/image-aspect-ratio"
-      ? "/v3"
-      : pathname;
+    pathname === "" || pathname === "/" || pathname === "/image-aspect-ratio"
+      ? "/"
+      : pathname.replace(/\/+$/, "");
   const imageActive =
     V3_IMAGE_TOOLS.some(t => t.to === normalizedPath) ||
-    normalizedPath === "/v3/pixelate-image";
+    normalizedPath === "/pixelate-image";
   const calcActive = V3_CALC_TOOLS.some(t => t.to === normalizedPath);
-  const socialActive = V3_SOCIAL_GROUPS.some(g => g.links.some(l => l.to === normalizedPath));
+  const socialActive =
+    normalizedPath === "/social-media" ||
+    V3_SOCIAL_GROUPS.some(g => g.links.some(l => l.to === normalizedPath));
 
   const socialLinks: { label: string; to: string }[] = V3_SOCIAL_GROUPS.flatMap(g =>
-    g.links.map(l => ({ label: l.label, to: l.to })),
+    g.links.map(l => ({ label: l.mobileLabel, to: l.to })),
   );
   const socialMatch = socialLinks.find(l => l.to === normalizedPath);
   const mobileLabel =
     V3_IMAGE_TOOLS.find(t => t.to === normalizedPath)?.label ??
     socialMatch?.label ??
-    (normalizedPath === "/v3/video-aspect-ratio"
+    (normalizedPath === "/video-aspect-ratio"
       ? "Video"
-      : normalizedPath === "/v3/calculator"
-        ? "Calculator"
-        : "Tools");
+      : normalizedPath === "/ultrawide-aspect-ratio-calculator"
+        ? "Ultrawide"
+        : normalizedPath === "/16-9-aspect-ratio-calculator"
+          ? "16:9 Calculator"
+          : normalizedPath === "/calculator"
+            ? "Calculator"
+            : normalizedPath === "/social-media"
+              ? "Social Media"
+              : "Tools");
 
   const closeAll = (except?: HTMLDetailsElement) => {
     navRef.current?.querySelectorAll("details[open]").forEach(el => {
@@ -291,10 +299,10 @@ function V3DropdownNavigation() {
         </details>
 
         <Link
-          to="/v3/video-aspect-ratio"
+          to="/video-aspect-ratio"
           activeOptions={exact}
-          aria-current={normalizedPath === "/v3/video-aspect-ratio" ? "page" : undefined}
-          data-active={normalizedPath === "/v3/video-aspect-ratio" ? "" : undefined}
+          aria-current={normalizedPath === "/video-aspect-ratio" ? "page" : undefined}
+          data-active={normalizedPath === "/video-aspect-ratio" ? "" : undefined}
           onClick={() => closeAll()}
           className="v2-nav-item"
         >
@@ -338,8 +346,9 @@ function V3DropdownNavigation() {
             </div>
             <div className="mt-3 border-t border-zinc-200 pt-2 dark:border-zinc-800">
               <Link
-                to="/v2/social-media"
+                to="/social-media"
                 activeOptions={exact}
+                aria-current={normalizedPath === "/social-media" ? "page" : undefined}
                 onClick={() => closeAll()}
                 className="v2-nav-link whitespace-nowrap"
               >
@@ -353,8 +362,10 @@ function V3DropdownNavigation() {
         </details>
 
         <Link
-          to="/v2/ultrawide-aspect-ratio-calculator"
+          to="/ultrawide-aspect-ratio-calculator"
           activeOptions={exact}
+          aria-current={normalizedPath === "/ultrawide-aspect-ratio-calculator" ? "page" : undefined}
+          data-active={normalizedPath === "/ultrawide-aspect-ratio-calculator" ? "" : undefined}
           onClick={() => closeAll()}
           className="v2-nav-item"
         >
@@ -403,6 +414,7 @@ function V3DropdownNavigation() {
             <Link
               key={item.to}
               to={item.to}
+              aria-current={normalizedPath === item.to ? "page" : undefined}
               onClick={() => closeAll()}
               className="v2-nav-link whitespace-nowrap"
             >
@@ -427,7 +439,8 @@ function V3DropdownNavigation() {
             )),
           )}
           <Link
-            to="/v2/social-media"
+            to="/social-media"
+            aria-current={normalizedPath === "/social-media" ? "page" : undefined}
             onClick={() => closeAll()}
             className="v2-nav-link whitespace-nowrap"
           >
@@ -449,7 +462,7 @@ export function V3PageShell({
   children,
 }: {
   title: string;
-  compareV2To: V2RoutePath;
+  compareV2To?: V2RoutePath;
   hero?: { title: ReactNode; description: string };
   children: ReactNode;
 }) {
@@ -458,14 +471,14 @@ export function V3PageShell({
       <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 pt-5 sm:px-6">
         <div className="flex items-center gap-2.5">
           <Link
-            to="/v3"
-            aria-label="Image Aspect Ratio V3 home"
+            to="/"
+            aria-label="Image Aspect Ratio home"
             className="flex items-center gap-2.5 font-display text-sm font-bold tracking-tight"
           >
             <img src="/brand-mark.svg" width="28" height="28" alt="" />
             <span>Image Aspect Ratio</span>
           </Link>
-          {hero && (
+          {hero && compareV2To && (
             <span className="v2-badge" data-testid="v3-preview-badge">
               V3 Preview
             </span>
@@ -473,7 +486,7 @@ export function V3PageShell({
         </div>
 
         <div className="flex items-center gap-2.5">
-          {hero && (
+          {hero && compareV2To && (
             <Link to={compareV2To} className="v2-compare-link" data-testid="v3-compare-v2">
               <span>Compare V2</span>
               <svg
@@ -512,26 +525,30 @@ export function V3PageShell({
               <h1 className="text-lg font-semibold tracking-[-0.02em] text-zinc-900 dark:text-zinc-100">
                 {title}
               </h1>
-              <span className="v2-badge" data-testid="v3-preview-badge">
-                V3 Preview
-              </span>
+              {compareV2To && (
+                <span className="v2-badge" data-testid="v3-preview-badge">
+                  V3 Preview
+                </span>
+              )}
             </div>
 
-            <Link to={compareV2To} className="v2-compare-link" data-testid="v3-compare-v2">
-              <span>Compare V2</span>
-              <svg
-                viewBox="0 0 14 14"
-                aria-hidden="true"
-                className="size-3"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4.2 9.8 9.8 4.2M5.2 4.2h4.6v4.6" />
-              </svg>
-            </Link>
+            {compareV2To && (
+              <Link to={compareV2To} className="v2-compare-link" data-testid="v3-compare-v2">
+                <span>Compare V2</span>
+                <svg
+                  viewBox="0 0 14 14"
+                  aria-hidden="true"
+                  className="size-3"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M4.2 9.8 9.8 4.2M5.2 4.2h4.6v4.6" />
+                </svg>
+              </Link>
+            )}
           </div>
         )}
 

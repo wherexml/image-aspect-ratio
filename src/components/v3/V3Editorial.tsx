@@ -28,21 +28,7 @@ export type V3FaqItem = {
 };
 
 export type V3RelatedToolItem = {
-  to:
-    | "/v3"
-    | "/v3/make-image-square"
-    | "/v3/change-image-aspect-ratio"
-    | "/v3/add-padding-to-image"
-    | "/v3/fit-photo-to-instagram"
-    | "/v3/round-corners-image"
-    | "/v3/instagram-grid-splitter"
-    | "/v3/safe-zone-checker"
-    | "/v3/og-image-safe-zone"
-    | "/v3/screenshot-beautifier"
-    | "/v3/blur-screenshot"
-    | "/v3/annotate-screenshot"
-    | "/v3/calculator"
-    | "/v3/video-aspect-ratio";
+  to: CanonicalPath;
   title: string;
   description: string;
   badge?: string;

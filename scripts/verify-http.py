@@ -7,7 +7,7 @@ assert mode in ("preview", "indexable"), "Mode must be preview or indexable"
 indexable=mode=="indexable"
 assert not indexable or origin, "Indexable verification requires canonical origin"
 expected_robots="index, follow" if indexable else "noindex, nofollow"
-site_paths=["/","/calculator","/16-9-aspect-ratio-calculator","/make-image-square","/change-image-aspect-ratio","/screenshot-beautifier","/social-media","/video-aspect-ratio","/ultrawide-aspect-ratio-calculator","/what-is-aspect-ratio","/exact-fractions-vs-rounded-pixels","/tiktok-aspect-ratio","/youtube-aspect-ratio","/instagram-reel-aspect-ratio","/instagram-story-aspect-ratio","/youtube-shorts-aspect-ratio","/about","/contact","/privacy","/terms"]
+site_paths=["/","/calculator","/16-9-aspect-ratio-calculator","/make-image-square","/change-image-aspect-ratio","/add-padding-to-image","/round-corners-image","/screenshot-beautifier","/annotate-screenshot","/blur-screenshot","/social-media","/video-aspect-ratio","/ultrawide-aspect-ratio-calculator","/fit-photo-to-instagram","/instagram-grid-splitter","/safe-zone-checker","/og-image-safe-zone","/what-is-aspect-ratio","/exact-fractions-vs-rounded-pixels","/tiktok-aspect-ratio","/youtube-aspect-ratio","/instagram-reel-aspect-ratio","/instagram-story-aspect-ratio","/youtube-shorts-aspect-ratio","/about","/contact","/privacy","/terms"]
 class P(HTMLParser):
  def __init__(self):super().__init__();self.m=[];self.l=[];self.s=[];self.in_json=False
  def handle_starttag(self,t,a):

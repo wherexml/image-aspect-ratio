@@ -1,76 +1,208 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalculatorNavigation } from "@/components/CalculatorNavigation";
-import { SquareImageMaker } from "@/components/SquareImageMaker";
-import { ThemeControl } from "@/components/ThemeControl";
-import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
+import { createFileRoute } from "@tanstack/react-router";
+import { Crop, Image as ImageIcon, Sparkles } from "lucide-react";
+import { StudioFrameEditorV2 } from "@/components/v2/StudioFrameEditorV2";
+import {
+  buildV3RouteHead,
+  V3Editorial,
+  type V3FaqItem,
+  type V3FeatureItem,
+  type V3StepItem,
+} from "@/components/v3/V3Editorial";
+import { V3PageShell } from "@/components/v3/V3PageShell";
 
-// Proposed SEO strings; the visible UI uses only the reviewed labels.
-const TITLE = "Make Image Square — Pad or Crop a Photo";
-const DESCRIPTION = "Make a photo square in your browser. Pad it with a solid background or crop and reposition it, then download a PNG or JPEG up to 4096 px.";
+const PAGE_TITLE = "Make Image Square Without Cropping — Free 1:1 Photo Tool";
+const DESCRIPTION =
+  "Make any landscape or portrait photo a 1:1 square without cropping. Add white, blurred, dark, or transparent PNG borders locally in your browser.";
+
+const STEPS: readonly V3StepItem[] = [
+  {
+    title: "Drop or paste your photo",
+    description:
+      "Select a landscape or portrait image up to 20 MB and 50 MP, or paste directly from your clipboard.",
+  },
+  {
+    title: "Pad whole image or crop 1:1",
+    description:
+      "Choose Fit whole image to add clean white, dark, blurred, or transparent borders — or Crop to fill to drag and zoom.",
+  },
+  {
+    title: "Pick output size & export",
+    description:
+      "Select 512, 1080, 1440, or 2048 px (or enter any custom edge up to 4096 px) and download crisp PNG or JPG.",
+  },
+];
+
+const FEATURES: readonly V3FeatureItem[] = [
+  {
+    title: "No-Crop Square Padding",
+    description:
+      "Fit tall portraits or wide panoramas into a 1:1 square without slicing off heads, shoulders, or product edges.",
+  },
+  {
+    title: "Blurred, Solid & Transparent Borders",
+    description:
+      "Match marketplace rules with pure `#FFFFFF` white, blend naturally with blurred photo borders, or export transparent PNGs.",
+  },
+  {
+    title: "Precision 1:1 Crop & Pan",
+    description:
+      "Switch to Crop to fill to center faces for profile avatars using direct canvas dragging and smooth zoom.",
+  },
+  {
+    title: "One-Click Square Presets",
+    description:
+      "Jump instantly between 512 px avatars, 1080 px Instagram posts, 1440 px HD carousels, and 2048 px e-commerce catalog listings.",
+  },
+  {
+    title: "Lossless PNG & Compact JPG",
+    description:
+      "Choose PNG for logos, UI graphics, and transparency, or 92%-quality JPG for lightweight photographic uploads.",
+  },
+  {
+    title: "100% On-Device Processing",
+    description:
+      "Your image stays inside your browser tab from start to finish — zero cloud uploads or watermarks.",
+  },
+];
+
+const SQUARE_SIZES = [
+  { size: "512 × 512 px", use: "Slack, GitHub, Discord & profile avatars" },
+  { size: "1080 × 1080 px", use: "Instagram square feed, LinkedIn & community posts" },
+  { size: "1440 × 1440 px", use: "High-DPI Retina carousels & digital album art" },
+  { size: "2048 × 2048 px", use: "Shopify, Amazon & Etsy zoomable product listings" },
+] as const;
+
+const FAQS: readonly V3FaqItem[] = [
+  {
+    question: "How can I make a photo square without cropping anything out?",
+    answer:
+      "Keep Framing set to Fit whole image. The entire photo scales proportionally inside the 1:1 frame while the remaining top/bottom or left/right bars fill with white, black, ambient blur, or transparency.",
+  },
+  {
+    question: "What square pixel size is best for e-commerce product photos?",
+    answer:
+      "Most storefronts (including Shopify, Amazon, and Etsy) recommend 2048 × 2048 px on a pure white background so customer hover-zoom remains sharp.",
+  },
+  {
+    question: "Can I export a square PNG with transparent borders?",
+    answer:
+      "Yes. Select the checkerboard Transparent swatch under Background and keep Format set to PNG.",
+  },
+  {
+    question: "Are my personal or product photos uploaded anywhere?",
+    answer:
+      "No. Everything runs locally on an HTML5 canvas inside your browser.",
+  },
+];
 
 export const Route = createFileRoute("/make-image-square")({
-  head: () => ({
-    scripts: seoScripts(TITLE, DESCRIPTION, "/make-image-square", true, "2026-11-16"),
-    meta: previewSeoMeta(TITLE, DESCRIPTION, "/make-image-square"),
-    links: seoLinks("/make-image-square"),
-  }),
-  component: MakeImageSquare,
+  head: () =>
+    buildV3RouteHead({
+    forceNoindex: false,
+      title: PAGE_TITLE,
+      description: DESCRIPTION,
+      canonicalPath: "/make-image-square",
+      appName: "Make Image Square",
+      howToTitle: "How to Make an Image Square Without Cropping",
+      steps: STEPS,
+      faqs: FAQS,
+    }),
+  component: MakeImageSquareV3Page,
 });
 
-function MakeImageSquare() {
-  return <div className="min-h-screen">
-    <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 pt-5 sm:px-6">
-      <Link to="/" aria-label="Image Aspect Ratio home" className="flex items-center gap-2.5 font-display text-sm font-bold"><img src="/brand-mark.svg" width="28" height="28" alt="" />Image Aspect Ratio</Link>
-      <ThemeControl />
-    </header>
-    <main className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-      <CalculatorNavigation />
-      <h1 className="mt-6 font-display text-[2.1rem] font-extrabold leading-[0.95] tracking-[-0.035em] sm:text-6xl">Make image <span className="text-primary">square</span></h1>
-      <SquareImageMaker />
+function MakeImageSquareV3Page() {
+  return (
+    <V3PageShell
+      title="Make Image Square"
+      hero={{
+        title: (
+          <>
+            Make Image <span className="text-primary">Square</span>
+          </>
+        ),
+        description:
+          "Fit a whole photo inside a 1:1 square with clean borders, or crop to fill — privately in your browser.",
+      }}
+    >
+      <StudioFrameEditorV2 mode="square" />
 
-      <section aria-labelledby="square-guide" className="mt-14 grid gap-10 text-sm md:grid-cols-2">
-        <div className="space-y-3">
-          <h2 id="square-guide" className="font-display text-2xl font-bold tracking-tight">
-            Two ways to turn a rectangular photo into a 1:1 square
-          </h2>
-          <p className="text-muted-foreground">
-            A 1:1 square has equal pixel width and height, such as 1080 × 1080 px. Stretching a landscape or portrait photo into a square distorts faces and objects; padding or cropping keeps proportions intact.
-          </p>
-          <ul className="space-y-2 text-muted-foreground">
-            <li><strong className="font-semibold text-foreground">Fit whole image (pad):</strong> places the complete photo inside the square and fills top/bottom or left/right margins with a solid color.</li>
-            <li><strong className="font-semibold text-foreground">Crop to fill:</strong> fills the 1:1 canvas edge to edge and lets you drag or zoom to position the subject.</li>
-          </ul>
-        </div>
+      <V3Editorial
+        overview={{
+          eyebrow: "1:1 Square Framing",
+          heading: "Convert Landscape or Portrait Photos Into Clean 1:1 Squares",
+          lead: "Avatars, album covers, and e-commerce catalogs require equal width and height. Frame the full image with clean padding or crop tightly around your subject in seconds.",
+        }}
+        howTo={{
+          heading: "How to Make an Image Square",
+          steps: STEPS,
+        }}
+        features={{
+          heading: "Built for Avatars, Social Grids & Product Listings",
+          items: FEATURES,
+        }}
+        referenceSection={
+          <section aria-labelledby="v3-square-sizes" className="space-y-4">
+            <div className="space-y-1">
+              <p className="v3-eyebrow">Common Sizes</p>
+              <h2
+                id="v3-square-sizes"
+                className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl"
+              >
+                Standard 1:1 Square Pixel Sizes
+              </h2>
+            </div>
 
-        <div className="space-y-3">
-          <h2 className="font-display text-2xl font-bold tracking-tight">
-            Common square sizes and local processing
-          </h2>
-          <ul className="divide-y">
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">Profile avatar or icon</span>
-              <span className="num text-right font-medium">512 × 512 px</span>
-            </li>
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">Standard social post</span>
-              <span className="num text-right font-medium">1080 × 1080 px</span>
-            </li>
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">Product catalog image</span>
-              <span className="num text-right font-medium">2048 × 2048 px</span>
-            </li>
-          </ul>
-          <p className="pt-1 text-xs text-muted-foreground">
-            Output size accepts whole pixels from 1 to 4096 px (PNG or JPEG). Your photo is decoded and rendered locally in your browser up to 20 MB / 50 MP and is never uploaded to a server.
-          </p>
-        </div>
-      </section>
-
-      <nav aria-label="Related tools" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-        <Link to="/" className="font-medium underline-offset-4 hover:underline">Image aspect ratio</Link>
-        <Link to="/change-image-aspect-ratio" className="font-medium underline-offset-4 hover:underline">Change image aspect ratio</Link>
-        <Link to="/screenshot-beautifier" className="font-medium underline-offset-4 hover:underline">Screenshot Beautifier</Link>
-      </nav>
-    </main>
-  </div>;
+            <div className="v3-table-wrap">
+              <table className="v3-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Square Resolution</th>
+                    <th scope="col">Typical Destination</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SQUARE_SIZES.map(row => (
+                    <tr key={row.size}>
+                      <td className="num font-semibold text-foreground whitespace-nowrap">
+                        {row.size}
+                      </td>
+                      <td className="text-muted-foreground">{row.use}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+        faq={{
+          items: FAQS,
+        }}
+        relatedTools={{
+          items: [
+            {
+              to: "/change-image-aspect-ratio",
+              title: "Change Image Aspect Ratio",
+              description:
+                "Frame or crop photos into 4:5, 9:16, 16:9, 4:3, or any custom aspect ratio.",
+              icon: <Crop className="h-4 w-4" />,
+            },
+            {
+              to: "/",
+              title: "Image Aspect Ratio Calculator",
+              description:
+                "Inspect any image’s pixel dimensions, exact reduced GCD ratio, and 300 DPI print size.",
+              icon: <ImageIcon className="h-4 w-4" />,
+            },
+            {
+              to: "/screenshot-beautifier",
+              title: "Screenshot Beautifier",
+              description:
+                "Add gradient backgrounds, rounded corners, shadow, and callouts to captures.",
+              icon: <Sparkles className="h-4 w-4" />,
+            },
+          ],
+        }}
+      />
+    </V3PageShell>
+  );
 }

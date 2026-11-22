@@ -1,9 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Calculator } from "@/components/Calculator";
+import { AspectRatioCalculatorV2 } from "@/components/v2/AspectRatioCalculatorV2";
+import { V3PageShell } from "@/components/v3/V3PageShell";
 import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
 
 const TITLE = "Ultrawide Aspect Ratio Calculator — True Pixel Ratios & 21:9";
-const DESCRIPTION = "Free ultrawide aspect ratio calculator. Scale 3440×1440, 2560×1080 and other resolutions using exact ratios, or compare strict 21:9.";
+const DESCRIPTION =
+  "Free ultrawide aspect ratio calculator. Scale 3440×1440, 2560×1080 and other resolutions using exact ratios, or compare strict 21:9.";
+
+const ULTRAWIDE_ROWS = [
+  ["3440 × 1440", "43:18", "1720 × 720"],
+  ["2560 × 1080", "64:27", "1280 × 540"],
+  ["3840 × 1600", "12:5", "1920 × 800"],
+  ["5120 × 2160", "64:27", "2560 × 1080"],
+  ["5120 × 1440", "32:9", "2560 × 720"],
+] as const;
 
 const ULTRAWIDE_RELATED_TOOLS = [
   {
@@ -36,17 +46,64 @@ const ULTRAWIDE_RELATED_TOOLS = [
     title: "Instagram Reel aspect ratio",
     description: "Plan 9:16 Reels frames and verify how wide visuals crop on profile grids.",
   },
-  {
-    to: "/youtube-shorts-aspect-ratio",
-    title: "YouTube Shorts aspect ratio",
-    description: "Compare vertical 9:16 and square 1:1 Shorts geometry against 16:9 desktop video.",
-  },
 ] as const;
 
 export const Route = createFileRoute("/ultrawide-aspect-ratio-calculator")({
-  head: () => ({ scripts: seoScripts(TITLE, DESCRIPTION, "/ultrawide-aspect-ratio-calculator", true, "2026-10-27"), meta: previewSeoMeta(TITLE, DESCRIPTION, "/ultrawide-aspect-ratio-calculator"), links: seoLinks("/ultrawide-aspect-ratio-calculator") }),
-  component: () => (
-    <Calculator ultrawide>
+  head: () => ({
+    scripts: seoScripts(TITLE, DESCRIPTION, "/ultrawide-aspect-ratio-calculator", true, "2026-11-22"),
+    meta: previewSeoMeta(TITLE, DESCRIPTION, "/ultrawide-aspect-ratio-calculator"),
+    links: seoLinks("/ultrawide-aspect-ratio-calculator"),
+  }),
+  component: UltrawidePage,
+});
+
+function UltrawidePage() {
+  return (
+    <V3PageShell
+      title="Ultrawide Aspect Ratio Calculator"
+      hero={{
+        title: (
+          <>
+            Ultrawide Aspect Ratio <span className="text-primary">Calculator</span>
+          </>
+        ),
+        description: "Scale using your screen’s actual pixel ratio, or choose strict 21:9.",
+      }}
+    >
+      <AspectRatioCalculatorV2 variant="ultrawide" />
+
+      <section className="mt-12 space-y-4" aria-labelledby="ultrawide-real-ratios">
+        <h2 id="ultrawide-real-ratios" className="font-display text-2xl font-bold">
+          21:9 is a category, not every screen’s exact ratio
+        </h2>
+        <p className="max-w-3xl text-sm text-muted-foreground">
+          3440 × 1440 reduces to 43:18. Scaling it to 1720 pixels wide gives 720 pixels high. Strict
+          21:9 at 3440 wide gives approximately 1474.29 pixels high instead of 1440.
+        </p>
+        <div className="v3-table-wrap max-w-3xl">
+          <table className="v3-table">
+            <thead>
+              <tr>
+                <th scope="col">Resolution</th>
+                <th scope="col">Exact ratio</th>
+                <th scope="col">Half-size example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ULTRAWIDE_ROWS.map(row => (
+                <tr key={row[0]}>
+                  {row.map(cell => (
+                    <td key={cell} className="num">
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section
         aria-labelledby="ultrawide-related-tools"
         data-testid="ultrawide-internal-links"
@@ -56,8 +113,8 @@ export const Route = createFileRoute("/ultrawide-aspect-ratio-calculator")({
           Other aspect ratio calculators &amp; social format guides
         </h2>
         <p className="max-w-3xl text-sm text-muted-foreground">
-          Reframing ultrawide gameplay, cinema footage, or desktop captures for standard displays and
-          vertical social feeds? Use these calculators and platform guides directly.
+          Reframing ultrawide gameplay, cinema footage, or desktop captures for standard displays
+          and vertical social feeds? Use these calculators and platform guides directly.
         </p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {ULTRAWIDE_RELATED_TOOLS.map(item => (
@@ -66,7 +123,7 @@ export const Route = createFileRoute("/ultrawide-aspect-ratio-calculator")({
               to={item.to}
               className="group rounded-xl border bg-card p-4 transition-colors hover:border-foreground/30 hover:bg-accent/40"
             >
-              <p className="text-sm font-semibold text-foreground group-hover:underline underline-offset-4">
+              <p className="text-sm font-semibold text-foreground underline-offset-4 group-hover:underline">
                 {item.title}
               </p>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
@@ -76,6 +133,6 @@ export const Route = createFileRoute("/ultrawide-aspect-ratio-calculator")({
           ))}
         </div>
       </section>
-    </Calculator>
-  ),
-});
+    </V3PageShell>
+  );
+}

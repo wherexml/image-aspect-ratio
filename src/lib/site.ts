@@ -1,10 +1,37 @@
-export const SITE_PAGES = ["/", "/calculator", "/16-9-aspect-ratio-calculator", "/make-image-square", "/change-image-aspect-ratio", "/screenshot-beautifier", "/social-media", "/video-aspect-ratio", "/ultrawide-aspect-ratio-calculator", "/what-is-aspect-ratio", "/exact-fractions-vs-rounded-pixels", "/tiktok-aspect-ratio", "/youtube-aspect-ratio", "/instagram-reel-aspect-ratio", "/instagram-story-aspect-ratio", "/youtube-shorts-aspect-ratio", "/about", "/contact", "/privacy", "/terms"] as const;
+export const SITE_PAGES = [
+  "/",
+  "/calculator",
+  "/16-9-aspect-ratio-calculator",
+  "/make-image-square",
+  "/change-image-aspect-ratio",
+  "/add-padding-to-image",
+  "/round-corners-image",
+  "/screenshot-beautifier",
+  "/annotate-screenshot",
+  "/blur-screenshot",
+  "/social-media",
+  "/video-aspect-ratio",
+  "/ultrawide-aspect-ratio-calculator",
+  "/fit-photo-to-instagram",
+  "/instagram-grid-splitter",
+  "/safe-zone-checker",
+  "/og-image-safe-zone",
+  "/what-is-aspect-ratio",
+  "/exact-fractions-vs-rounded-pixels",
+  "/tiktok-aspect-ratio",
+  "/youtube-aspect-ratio",
+  "/instagram-reel-aspect-ratio",
+  "/instagram-story-aspect-ratio",
+  "/youtube-shorts-aspect-ratio",
+  "/about",
+  "/contact",
+  "/privacy",
+  "/terms",
+] as const;
 export type SitePath = typeof SITE_PAGES[number];
 
 /**
- * New canonical root paths ready to be merged into SITE_PAGES once V3 routes are
- * promoted from /v3/* to root. Kept separate from SITE_PAGES so sitemap.xml never
- * advertises unpromoted /v3/* preview URLs or 404 root paths.
+ * Promoted V3 tool paths (now merged into SITE_PAGES for full 28-page sitemap coverage).
  */
 export const V3_NEW_CANONICAL_PAGES = [
   "/add-padding-to-image",
@@ -17,7 +44,7 @@ export const V3_NEW_CANONICAL_PAGES = [
   "/annotate-screenshot",
 ] as const;
 export type V3NewCanonicalPath = typeof V3_NEW_CANONICAL_PAGES[number];
-export type CanonicalPath = SitePath | V3NewCanonicalPath;
+export type CanonicalPath = SitePath;
 
 /** Canonical V3 preview paths for trailing-slash 308 normalization (excludes consolidated aliases). */
 export const V3_PREVIEW_PAGES = [
@@ -57,6 +84,17 @@ export const V3_PROMOTION_MAP: Record<string, CanonicalPath> = {
   "/v3/video-aspect-ratio": "/video-aspect-ratio",
 };
 
+export const V3_CANONICAL_LABELS: Record<V3NewCanonicalPath, string> = {
+  "/add-padding-to-image": "Add padding & border",
+  "/fit-photo-to-instagram": "Fit photo to Instagram",
+  "/round-corners-image": "Round corners & circle",
+  "/instagram-grid-splitter": "Instagram 3:4 grid splitter",
+  "/safe-zone-checker": "Safe zone checker",
+  "/og-image-safe-zone": "OG image safe zone tester",
+  "/blur-screenshot": "Blur & pixelate screenshot",
+  "/annotate-screenshot": "Annotate screenshot",
+};
+
 export const SITE_LABELS: Record<SitePath, string> = {
   "/": "Image ratio",
   "/calculator": "Calculator",
@@ -78,23 +116,10 @@ export const SITE_LABELS: Record<SitePath, string> = {
   "/contact": "Contact",
   "/privacy": "Privacy",
   "/terms": "Terms",
-};
-
-export const V3_CANONICAL_LABELS: Record<V3NewCanonicalPath, string> = {
-  "/add-padding-to-image": "Add padding & border",
-  "/fit-photo-to-instagram": "Fit photo to Instagram",
-  "/round-corners-image": "Round corners & circle",
-  "/instagram-grid-splitter": "Instagram 3:4 grid splitter",
-  "/safe-zone-checker": "Safe zone checker",
-  "/og-image-safe-zone": "OG image safe zone tester",
-  "/blur-screenshot": "Blur & pixelate screenshot",
-  "/annotate-screenshot": "Annotate screenshot",
-};
-
-export const ALL_CANONICAL_LABELS: Record<CanonicalPath, string> = {
-  ...SITE_LABELS,
   ...V3_CANONICAL_LABELS,
 };
+
+export const ALL_CANONICAL_LABELS: Record<CanonicalPath, string> = SITE_LABELS;
 
 export type SiteConfig = { origin: string | null; indexable: boolean };
 

@@ -1,81 +1,247 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalculatorNavigation } from "@/components/CalculatorNavigation";
-import { ImageRatioChanger } from "@/components/ImageRatioChanger";
-import { ThemeControl } from "@/components/ThemeControl";
-import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
+import { createFileRoute } from "@tanstack/react-router";
+import { Calculator, Image as ImageIcon, Maximize2 } from "lucide-react";
+import { StudioFrameEditorV2 } from "@/components/v2/StudioFrameEditorV2";
+import {
+  buildV3RouteHead,
+  V3Editorial,
+  type V3FaqItem,
+  type V3FeatureItem,
+  type V3StepItem,
+} from "@/components/v3/V3Editorial";
+import { V3PageShell } from "@/components/v3/V3PageShell";
 
-const PATH = "/change-image-aspect-ratio";
-const TITLE = "Change Image Aspect Ratio — Crop or Pad to 1:1, 4:5, 9:16, 16:9";
-const DESCRIPTION = "Change a photo's aspect ratio in your browser. Crop or pad it to 1:1, 4:5, 9:16 or 16:9, see the exact output size, then download a PNG or JPEG.";
+const PAGE_TITLE = "Change Image Aspect Ratio Online — 16:9, 4:5 & 9:16 Resizer";
+const DESCRIPTION =
+  "Crop or pad any photo to 1:1, 4:5, 3:4, 9:16, 16:9, or custom aspect ratios without stretching. Export crisp PNG or JPG files locally in browser.";
+
+const STEPS: readonly V3StepItem[] = [
+  {
+    title: "Select a target aspect ratio",
+    description:
+      "Pick a common frame like 1:1, 4:5, 9:16, 16:9, 4:3, 3:2, or 21:9 — or choose Custom to enter any W : H proportion.",
+  },
+  {
+    title: "Choose Fit whole or Crop to fill",
+    description:
+      "Keep 100% of your photo with clean solid, blurred, or transparent margins — or crop to cover the frame and drag to re-center.",
+  },
+  {
+    title: "Set pixel width & download",
+    description:
+      "Check the Export canvas pixel readout, choose lossless PNG or compact JPG, and download up to 4096 px.",
+  },
+];
+
+const FEATURES: readonly V3FeatureItem[] = [
+  {
+    title: "Zero Stretching or Squashing",
+    description:
+      "Source proportions are strictly preserved using exact rational math — switch freely between letterboxed padding and edge-to-edge cropping.",
+  },
+  {
+    title: "Ambient Photo Blur & Alpha Backdrops",
+    description:
+      "Fill letterbox bars with a soft blurred echo of your own photo, a true transparent PNG alpha channel, or any custom hex color.",
+  },
+  {
+    title: "Interactive Drag & Zoom Reframing",
+    description:
+      "Pan directly on the live canvas and fine-tune zoom with smooth logarithmic scaling when cropping portraits or product shots.",
+  },
+  {
+    title: "Exact BigInt Pixel Calculation",
+    description:
+      "Custom ratios (including decimal forms like 1.91:1 or 1200:630) compute exact output heights without floating-point drift.",
+  },
+  {
+    title: "Social & Presentation Ready",
+    description:
+      "Defaults to standard publishing widths (1080 px for 1:1, 4:5, 9:16 and 1920 px for 16:9) while letting you enter any width from 1 to 4096 px.",
+  },
+  {
+    title: "Private Local Browser Encoding",
+    description:
+      "Photos up to 20 MB and 50 MP are framed and encoded inside your browser — personal photos and campaign drafts never upload.",
+  },
+];
+
+const PLATFORM_TABLE = [
+  {
+    destination: "Instagram Feed Portrait / Grid",
+    ratio: "4:5 · 3:4",
+    pixels: "1080 × 1350 / 1080 × 1440 px",
+    notes: "4:5 classic portrait & 3:4 native profile grid (official 1.91:1–3:4 range)",
+  },
+  {
+    destination: "Instagram / LinkedIn Square",
+    ratio: "1:1",
+    pixels: "1080 × 1080 px",
+    notes: "Classic square post, avatar frame, and carousel card",
+  },
+  {
+    destination: "Stories, Reels, TikTok & Shorts",
+    ratio: "9:16",
+    pixels: "1080 × 1920 px",
+    notes: "Full-screen vertical mobile frame",
+  },
+  {
+    destination: "YouTube Thumbnail & Widescreen",
+    ratio: "16:9",
+    pixels: "1920 × 1080 px",
+    notes: "Full HD video cover, presentation slide, and hero image",
+  },
+  {
+    destination: "Open Graph / X / LinkedIn Link",
+    ratio: "1.91:1 (40:21)",
+    pixels: "1200 × 630 px",
+    notes: "Standard social link-preview card (og:image)",
+  },
+  {
+    destination: "Classic Presentation & Tablet",
+    ratio: "4:3",
+    pixels: "1600 × 1200 px",
+    notes: "Editorial photo frame, iPad canvas, and traditional decks",
+  },
+] as const;
+
+const FAQS: readonly V3FaqItem[] = [
+  {
+    question: "How do I change an image’s aspect ratio without stretching it?",
+    answer:
+      "You have two distortion-free choices: Fit whole image keeps the entire photo intact and fills the extra space with a solid color, blurred photo backdrop, or transparency; Crop to fill enlarges the photo to cover the new frame so you can drag to position the subject.",
+  },
+  {
+    question: "What pixel size should I use for Instagram posts?",
+    answer:
+      "Use 1080 × 1350 px (4:5 portrait) for maximum vertical feed presence, 1080 × 1080 px (1:1) for square posts, and 1080 × 1920 px (9:16) for Stories and Reels.",
+  },
+  {
+    question: "Why does JPG export turn transparent margins white?",
+    answer:
+      "The JPEG format does not support an alpha transparency channel. If you want transparent padding around a fitted image, keep the export format set to PNG.",
+  },
+  {
+    question: "Can I enter a custom pixel width like 1200 px or 2560 px?",
+    answer:
+      "Yes. Type any whole-pixel width from 1 to 4096 px into Width (px); the matching height updates automatically in Export canvas while keeping both sides within 4096 px.",
+  },
+];
 
 export const Route = createFileRoute("/change-image-aspect-ratio")({
-  head: () => ({
-    scripts: seoScripts(TITLE, DESCRIPTION, PATH, true, "2026-11-16"),
-    meta: previewSeoMeta(TITLE, DESCRIPTION, PATH),
-    links: seoLinks(PATH),
-  }),
-  component: ChangeImageAspectRatio,
+  head: () =>
+    buildV3RouteHead({
+    forceNoindex: false,
+      title: PAGE_TITLE,
+      description: DESCRIPTION,
+      canonicalPath: "/change-image-aspect-ratio",
+      appName: "Change Image Aspect Ratio",
+      howToTitle: "How to Change an Image Aspect Ratio Without Distortion",
+      steps: STEPS,
+      faqs: FAQS,
+    }),
+  component: ChangeImageAspectRatioV3Page,
 });
 
-function ChangeImageAspectRatio() {
-  return <div className="min-h-screen">
-    <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 pt-5 sm:px-6">
-      <Link to="/" aria-label="Image Aspect Ratio home" className="flex items-center gap-2.5 font-display text-sm font-bold"><img src="/brand-mark.svg" width="28" height="28" alt="" />Image Aspect Ratio</Link>
-      <ThemeControl />
-    </header>
-    <main className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-      <CalculatorNavigation />
-      <h1 className="mt-6 font-display text-[2.1rem] font-extrabold leading-[0.95] tracking-[-0.035em] sm:text-6xl">Change Image <span className="text-primary">Aspect Ratio</span></h1>
-      <ImageRatioChanger />
+function ChangeImageAspectRatioV3Page() {
+  return (
+    <V3PageShell
+      title="Change Image Aspect Ratio"
+      hero={{
+        title: (
+          <>
+            Change Image <span className="text-primary">Aspect Ratio</span>
+          </>
+        ),
+        description:
+          "Crop or pad a photo to 1:1, 4:5, 9:16, 16:9 or any custom ratio in your browser, then download a crisp PNG or JPG.",
+      }}
+    >
+      <StudioFrameEditorV2 mode="ratio" />
 
-      <section aria-labelledby="change-ratio-guide" className="mt-14 grid gap-10 text-sm md:grid-cols-2">
-        <div className="space-y-3">
-          <h2 id="change-ratio-guide" className="font-display text-2xl font-bold tracking-tight">
-            Crop or pad a photo without stretching it
-          </h2>
-          <p className="text-muted-foreground">
-            Changing an image’s aspect ratio without distortion requires either fitting the whole photo inside the new shape with background bars, or cropping the edges to fill the frame completely.
-          </p>
-          <ul className="space-y-2 text-muted-foreground">
-            <li><strong className="font-semibold text-foreground">Fit whole image:</strong> keeps 100% of the source photo and fills any remaining margin with your chosen solid background color.</li>
-            <li><strong className="font-semibold text-foreground">Crop to fill:</strong> scales the photo to cover the entire target frame; drag on the canvas or use the zoom slider to reframe the subject.</li>
-          </ul>
-        </div>
+      <V3Editorial
+        overview={{
+          eyebrow: "Distortion-Free Framing",
+          heading: "Convert Any Photo to Exact Social & Web Dimensions",
+          lead: "Every platform crops differently: a 3:2 camera shot loses its edges in an Instagram 4:5 portrait feed, while a vertical phone capture gets sliced in a 16:9 YouTube thumbnail. Preview Fit vs. Crop live and export exact pixel dimensions in one step.",
+        }}
+        howTo={{
+          heading: "How to Change Image Aspect Ratio",
+          steps: STEPS,
+        }}
+        features={{
+          heading: "Designed for Fast Social & Publishing Workflows",
+          items: FEATURES,
+        }}
+        referenceSection={
+          <section aria-labelledby="v3-social-sizes-heading" className="space-y-4">
+            <div className="space-y-1">
+              <p className="v3-eyebrow">Reference Sizes</p>
+              <h2
+                id="v3-social-sizes-heading"
+                className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl"
+              >
+                Popular Social Media &amp; Web Pixel Dimensions
+              </h2>
+            </div>
 
-        <div className="space-y-3">
-          <h2 className="font-display text-2xl font-bold tracking-tight">
-            Preset output sizes and browser limits
-          </h2>
-          <ul className="divide-y">
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">1:1 Square</span>
-              <span className="num text-right font-medium">Default 1080 × 1080 px</span>
-            </li>
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">4:5 Portrait feed</span>
-              <span className="num text-right font-medium">Default 1080 × 1350 px</span>
-            </li>
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">9:16 Vertical Story / Reel</span>
-              <span className="num text-right font-medium">Default 1080 × 1920 px</span>
-            </li>
-            <li className="flex items-baseline justify-between gap-4 py-2.5">
-              <span className="text-muted-foreground">16:9 Widescreen</span>
-              <span className="num text-right font-medium">Default 1920 × 1080 px</span>
-            </li>
-          </ul>
-          <p className="pt-1 text-xs text-muted-foreground">
-            Enter any output width so both sides stay within 1–4096 px; non-integer heights round to the nearest whole pixel and are labeled. Processing happens locally in your browser (inputs up to 20 MB and 50 MP, one still PNG or JPEG export, no server upload).
-          </p>
-        </div>
-      </section>
-
-      <nav aria-label="Related tools" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-        <Link to="/" className="font-medium underline-offset-4 hover:underline">Image aspect ratio</Link>
-        <Link to="/make-image-square" className="font-medium underline-offset-4 hover:underline">Make image square</Link>
-        <Link to="/screenshot-beautifier" className="font-medium underline-offset-4 hover:underline">Screenshot Beautifier</Link>
-        <Link to="/16-9-aspect-ratio-calculator" className="font-medium underline-offset-4 hover:underline">16:9 aspect ratio calculator</Link>
-      </nav>
-    </main>
-  </div>;
+            <div className="v3-table-wrap">
+              <table className="v3-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Aspect Ratio</th>
+                    <th scope="col">Recommended Pixels</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {PLATFORM_TABLE.map(row => (
+                    <tr key={row.destination}>
+                      <td>
+                        <div className="font-semibold text-foreground">{row.destination}</div>
+                        <div className="text-xs text-muted-foreground">{row.notes}</div>
+                      </td>
+                      <td className="num font-semibold text-foreground whitespace-nowrap">
+                        {row.ratio}
+                      </td>
+                      <td className="num font-medium text-foreground whitespace-nowrap">
+                        {row.pixels}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+        faq={{
+          items: FAQS,
+        }}
+        relatedTools={{
+          items: [
+            {
+              to: "/make-image-square",
+              title: "Make Image Square",
+              description:
+                "Pad or crop any landscape or portrait photo into a clean 1:1 square avatar or post.",
+              icon: <Maximize2 className="h-4 w-4" />,
+            },
+            {
+              to: "/",
+              title: "Image Aspect Ratio Calculator",
+              description:
+                "Check any photo’s exact reduced ratio, 300 DPI print size, and nearest standard frame.",
+              icon: <ImageIcon className="h-4 w-4" />,
+            },
+            {
+              to: "/calculator",
+              title: "Aspect Ratio Calculator",
+              description:
+                "Calculate missing widths, heights, and exact fractions for any custom resolution.",
+              icon: <Calculator className="h-4 w-4" />,
+            },
+          ],
+        }}
+      />
+    </V3PageShell>
+  );
 }

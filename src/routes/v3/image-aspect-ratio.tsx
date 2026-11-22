@@ -2,6 +2,6 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/v3/image-aspect-ratio")({
   beforeLoad: () => {
-    throw redirect({ to: "/v3", statusCode: 308, replace: true });
+    throw redirect({ to: "/", statusCode: 308, replace: true });
   },
 });

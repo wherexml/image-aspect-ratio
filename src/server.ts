@@ -1,5 +1,5 @@
 import { geoCollection, recordGeoRequest } from "./lib/geo-collection";
-import { SITE_PAGES, V3_PREVIEW_PAGES, site, robotsDirective, robotsTxt, sitemapXml } from "./lib/site";
+import { SITE_PAGES, V3_PROMOTION_MAP, site, robotsDirective, robotsTxt, sitemapXml } from "./lib/site";
 import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
@@ -71,28 +71,23 @@ const app = {
         });
       }
       const cleanPath = url.pathname.replace(/\/+$/, "") || "/";
-      const isPreviewRoute =
-        cleanPath === "/v2" ||
-        cleanPath.startsWith("/v2/") ||
-        cleanPath === "/v3" ||
-        cleanPath.startsWith("/v3/");
+      const isPreviewRoute = cleanPath === "/v2" || cleanPath.startsWith("/v2/");
+      if (isRead && (cleanPath === "/v3" || cleanPath.startsWith("/v3/"))) {
+        const promoted = V3_PROMOTION_MAP[cleanPath];
+        if (promoted) {
+          return new Response(null, { status: 308, headers: { Location: promoted + url.search } });
+        }
+      }
       if (isRead && cleanPath === "/image-aspect-ratio") {
         return new Response(null, { status: 308, headers: { Location: "/" + url.search } });
-      }
-      if (isRead && cleanPath === "/v3/image-aspect-ratio") {
-        return new Response(null, { status: 308, headers: { Location: "/v3" + url.search } });
       }
       if (isRead && cleanPath === "/pixelate-image") {
         return new Response(null, { status: 308, headers: { Location: "/blur-screenshot" + url.search } });
       }
-      if (isRead && cleanPath === "/v3/pixelate-image") {
-        return new Response(null, { status: 308, headers: { Location: "/v3/blur-screenshot" + url.search } });
-      }
       if (
         isRead &&
         cleanPath !== url.pathname &&
-        (SITE_PAGES.some(path => path === cleanPath) ||
-          V3_PREVIEW_PAGES.some(path => path === cleanPath))
+        SITE_PAGES.some(path => path === cleanPath)
       ) {
         return new Response(null, { status: 308, headers: { Location: cleanPath + url.search } });
       }

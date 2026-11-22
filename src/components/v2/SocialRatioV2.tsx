@@ -466,20 +466,45 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
   );
 }
 
-export function SocialPlatformRelatedNav({ currentPath }: { currentPath: SocialRatioPage["path"] }) {
+export function SocialPlatformRelatedNav({
+  currentPath,
+  rootLinks = false,
+}: {
+  currentPath: SocialRatioPage["path"];
+  rootLinks?: boolean;
+}) {
   return (
     <nav aria-label="Plan another format" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t pt-6 text-sm">
       {SOCIAL_PAGES.map(item => (
         <Link
           key={item.path}
-          to={`/v2${item.path}` as "/v2/tiktok-aspect-ratio"}
+          to={(rootLinks ? item.path : `/v2${item.path}`) as "/tiktok-aspect-ratio"}
           aria-current={item.path === currentPath ? "page" : undefined}
           className="font-medium underline-offset-4 hover:underline aria-[current=page]:text-primary"
         >
           {item.name} aspect ratio
         </Link>
       ))}
-      <Link to="/v2/social-media" className="font-medium underline-offset-4 hover:underline">
+      {rootLinks && (
+        <>
+          <Link to="/safe-zone-checker" className="font-medium underline-offset-4 hover:underline">
+            9:16 safe zone checker
+          </Link>
+          <Link to="/instagram-grid-splitter" className="font-medium underline-offset-4 hover:underline">
+            Instagram 3:4 grid &amp; carousel
+          </Link>
+          <Link to="/fit-photo-to-instagram" className="font-medium underline-offset-4 hover:underline">
+            Fit photo to Instagram
+          </Link>
+          <Link to="/og-image-safe-zone" className="font-medium underline-offset-4 hover:underline">
+            OG 1200×630 safe zone
+          </Link>
+        </>
+      )}
+      <Link
+        to={rootLinks ? "/social-media" : "/v2/social-media"}
+        className="font-medium underline-offset-4 hover:underline"
+      >
         All social platforms
       </Link>
     </nav>
@@ -491,42 +516,58 @@ const HUB_GROUPS = [
     name: "Instagram",
     icon: Instagram,
     links: [
-      { to: "/v2/instagram-reel-aspect-ratio", label: "Reels", ratio: "9:16", example: "1080 × 1920 px" },
-      { to: "/v2/instagram-story-aspect-ratio", label: "Stories", ratio: "9:16", example: "1080 × 1920 px" },
+      { to: "/v2/instagram-reel-aspect-ratio", rootTo: "/instagram-reel-aspect-ratio", label: "Reels", ratio: "9:16", example: "1080 × 1920 px" },
+      { to: "/v2/instagram-story-aspect-ratio", rootTo: "/instagram-story-aspect-ratio", label: "Stories", ratio: "9:16", example: "1080 × 1920 px" },
+    ],
+    rootExtra: [
+      { rootTo: "/instagram-grid-splitter", label: "Grid & Carousel", ratio: "3:4", example: "1080 × 1440 / 1350 px" },
+      { rootTo: "/fit-photo-to-instagram", label: "Fit Photo", ratio: "4:5", example: "1080 × 1350 no-crop" },
     ],
   },
   {
     name: "YouTube",
     icon: Youtube,
     links: [
-      { to: "/v2/youtube-aspect-ratio", label: "Video", ratio: "16:9", example: "1920 × 1080 px" },
-      { to: "/v2/youtube-shorts-aspect-ratio", label: "Shorts", ratio: "9:16", example: "1080 × 1920 px" },
+      { to: "/v2/youtube-aspect-ratio", rootTo: "/youtube-aspect-ratio", label: "Video", ratio: "16:9", example: "1920 × 1080 px" },
+      { to: "/v2/youtube-shorts-aspect-ratio", rootTo: "/youtube-shorts-aspect-ratio", label: "Shorts", ratio: "9:16", example: "1080 × 1920 px" },
     ],
+    rootExtra: [],
   },
   {
-    name: "TikTok",
+    name: "TikTok & Cards",
     icon: Music2,
     links: [
-      { to: "/v2/tiktok-aspect-ratio", label: "Video", ratio: "9:16", example: "1080 × 1920 px" },
+      { to: "/v2/tiktok-aspect-ratio", rootTo: "/tiktok-aspect-ratio", label: "TikTok Video", ratio: "9:16", example: "1080 × 1920 px" },
+    ],
+    rootExtra: [
+      { rootTo: "/safe-zone-checker", label: "Safe Zones", ratio: "9:16", example: "TikTok / Reels / Shorts" },
+      { rootTo: "/og-image-safe-zone", label: "OG Safe Zone", ratio: "1.91:1", example: "1200 × 630 link cards" },
     ],
   },
 ] as const;
 
-export function SocialMediaHubV2() {
+export function SocialMediaHubV2({ rootLinks = false }: { rootLinks?: boolean } = {}) {
   return (
     <div className="mt-8 space-y-14">
       <section aria-label="Platform calculators" className="grid gap-5 sm:grid-cols-3">
-        {HUB_GROUPS.map(({ name, icon: Icon, links }) => (
+        {HUB_GROUPS.map(({ name, icon: Icon, links, rootExtra }) => {
+          const items = rootLinks
+            ? [
+                ...rootExtra.map(x => ({ to: x.rootTo, label: x.label, ratio: x.ratio, example: x.example })),
+                ...links.map(x => ({ to: x.rootTo, label: x.label, ratio: x.ratio, example: x.example })),
+              ]
+            : links.map(x => ({ to: x.to, label: x.label, ratio: x.ratio, example: x.example }));
+          return (
           <div key={name} className="v2-panel space-y-3">
             <div className="flex items-center gap-2">
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-secondary/60 text-foreground">
                 <Icon aria-hidden="true" className="h-4 w-4" />
               </span>
-              <h2 className="font-display text-lg font-bold">{name}</h2>
+              <h2 className="font-display text-lg font-bold">{rootLinks ? name : name.replace(" & Cards", "")}</h2>
             </div>
 
             <div className="grid gap-2">
-              {links.map(link => (
+              {items.map(link => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -547,7 +588,8 @@ export function SocialMediaHubV2() {
               ))}
             </div>
           </div>
-        ))}
+          );
+        })}
       </section>
 
       <section aria-labelledby="v2-image-sizes">
@@ -570,7 +612,7 @@ export function SocialMediaHubV2() {
           </thead>
           <tbody>
             {IMAGE_PLACEMENTS.map(p => (
-              <tr key={p.id} className="border-b align-top">
+              <tr key={p.id} data-testid={`placement-${p.id}`} className="border-b align-top">
                 <th scope="row" className="break-words py-3 pr-3 font-medium">
                   {p.placement}
                 </th>

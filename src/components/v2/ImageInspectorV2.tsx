@@ -97,8 +97,10 @@ function PlaceholderGlyph() {
 
 export function ImageInspectorV2({
   onNavigate,
+  handoffPrefix = "/v2",
 }: {
   onNavigate?: (to: InspectorTargetRoute) => void;
+  handoffPrefix?: "" | "/v2";
 } = {}) {
   const [fileController] = useState(createFileInputController);
   const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -592,7 +594,7 @@ export function ImageInspectorV2({
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <a
-              href="/v2/change-image-aspect-ratio"
+              href={`${handoffPrefix}/change-image-aspect-ratio`}
               onClick={e => handleHandoffClick(e, "/v2/change-image-aspect-ratio")}
               className="v2-handoff-chip"
               data-testid="v2-inspector-goto-ratio"
@@ -601,7 +603,7 @@ export function ImageInspectorV2({
               <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
             </a>
             <a
-              href="/v2/make-image-square"
+              href={`${handoffPrefix}/make-image-square`}
               onClick={e => handleHandoffClick(e, "/v2/make-image-square")}
               className="v2-handoff-chip"
               data-testid="v2-inspector-goto-square"
@@ -610,11 +612,11 @@ export function ImageInspectorV2({
               <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
             </a>
             <a
-              href="/v2/screenshot-beautifier"
+              href={`${handoffPrefix}/screenshot-beautifier`}
               onClick={e => handleHandoffClick(e, "/v2/screenshot-beautifier")}
               className="v2-handoff-chip"
             >
-              <span>Screenshot Studio</span>
+              <span>Screenshot Beautifier</span>
               <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
             </a>
           </div>

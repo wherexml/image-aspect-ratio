@@ -103,10 +103,15 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
 
   it("keeps sitemap.xml free of /v3 preview URLs, uses Screenshot Beautifier label, and emits canonical + OG + BreadcrumbList JSON-LD", () => {
     expect(SITE_LABELS["/screenshot-beautifier"]).toBe("Screenshot Beautifier");
-    expect(SITE_PAGES.some(p => p.startsWith("/v3"))).toBe(false);
-    expect(V3_NEW_CANONICAL_PAGES.every(p => !p.startsWith("/v3"))).toBe(true);
+    expect(SITE_PAGES.length).toBe(28);
+    expect(SITE_PAGES.some(p => p.startsWith("/v3") || p.startsWith("/v2"))).toBe(false);
+    expect(V3_NEW_CANONICAL_PAGES.every(p => SITE_PAGES.includes(p))).toBe(true);
     const xml = sitemapXml({ origin: "https://imageaspectratio.com", indexable: true });
     expect(xml).not.toContain("/v3");
+    expect(xml).not.toContain("/v2");
+    for (const p of V3_NEW_CANONICAL_PAGES) {
+      expect(xml).toContain(`https://imageaspectratio.com${p}`);
+    }
 
     const previewHead = buildV3RouteHead({
       title: "TikTok, Reels & Shorts Safe Zone Checker Online (1080×1920)",
@@ -187,16 +192,25 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
       expect(r, `Social Media menu ratio "${r}" must be pure X:Y`).toMatch(/^\d+(?:\.\d+)?:\d+$/);
     }
 
-    const v3Dir = resolve(process.cwd(), "src/routes/v3");
-    const files = readdirSync(v3Dir).filter(f => f.endsWith(".tsx"));
-    const redirectAliases = new Set(["image-aspect-ratio.tsx", "pixelate-image.tsx"]);
-
-    for (const file of files) {
-      const src = readFileSync(resolve(v3Dir, file), "utf8");
-      if (redirectAliases.has(file)) {
-        expect(src).toContain("statusCode: 308");
-        continue;
-      }
+    const promotedV3Files = [
+      "index.tsx",
+      "make-image-square.tsx",
+      "change-image-aspect-ratio.tsx",
+      "add-padding-to-image.tsx",
+      "fit-photo-to-instagram.tsx",
+      "round-corners-image.tsx",
+      "instagram-grid-splitter.tsx",
+      "safe-zone-checker.tsx",
+      "og-image-safe-zone.tsx",
+      "screenshot-beautifier.tsx",
+      "blur-screenshot.tsx",
+      "annotate-screenshot.tsx",
+      "calculator.tsx",
+      "video-aspect-ratio.tsx",
+    ];
+    const routesDir = resolve(process.cwd(), "src/routes");
+    for (const file of promotedV3Files) {
+      const src = readFileSync(resolve(routesDir, file), "utf8");
       const titleMatch = src.match(/const PAGE_TITLE\s*=\s*"([^"]+)"/);
       const descMatch = src.match(/const DESCRIPTION\s*=\s*\n?\s*"([^"]+)"/);
       expect(titleMatch, `${file} PAGE_TITLE`).not.toBeNull();
@@ -207,8 +221,16 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
       expect(titleLen, `${file} title length (${titleLen})`).toBeLessThanOrEqual(60);
       expect(descLen, `${file} desc length (${descLen})`).toBeGreaterThanOrEqual(135);
       expect(descLen, `${file} desc length (${descLen})`).toBeLessThanOrEqual(160);
-      expect(src).not.toContain('to: "/v3/image-aspect-ratio"');
-      expect(src).not.toContain('to: "/v3/pixelate-image"');
+      expect(src).toContain("forceNoindex: false");
+      expect(src).not.toContain("compareV2To=");
+      expect(src).not.toContain('to: "/v3');
+      expect(src).not.toContain('to="/v3');
+    }
+
+    const v3Dir = resolve(process.cwd(), "src/routes/v3");
+    for (const file of readdirSync(v3Dir).filter(f => f.endsWith(".tsx"))) {
+      const src = readFileSync(resolve(v3Dir, file), "utf8");
+      expect(src, `/v3/${file} should be a 308 redirect stub`).toContain("statusCode: 308");
     }
 
     const { unmount } = render(
@@ -247,14 +269,14 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
     unmount();
   });
 
-  it("answers 308 permanent redirects with Location preservation on consolidated V3 and trailing-slash URLs", async () => {
+  it("answers 308 permanent redirects with Location preservation on promoted /v3/*, consolidated, and trailing-slash URLs", async () => {
     const r1 = await server.fetch(
       new Request("https://imageaspectratio.com/v3/pixelate-image?utm_source=qa"),
       {},
       {},
     );
     expect(r1.status).toBe(308);
-    expect(r1.headers.get("Location")).toBe("/v3/blur-screenshot?utm_source=qa");
+    expect(r1.headers.get("Location")).toBe("/blur-screenshot?utm_source=qa");
 
     const r2 = await server.fetch(
       new Request("https://imageaspectratio.com/v3/image-aspect-ratio?ref=nav"),
@@ -262,7 +284,7 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
       {},
     );
     expect(r2.status).toBe(308);
-    expect(r2.headers.get("Location")).toBe("/v3?ref=nav");
+    expect(r2.headers.get("Location")).toBe("/?ref=nav");
 
     const r3 = await server.fetch(
       new Request("https://imageaspectratio.com/v3/safe-zone-checker/?a=1"),
@@ -270,7 +292,7 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
       {},
     );
     expect(r3.status).toBe(308);
-    expect(r3.headers.get("Location")).toBe("/v3/safe-zone-checker?a=1");
+    expect(r3.headers.get("Location")).toBe("/safe-zone-checker?a=1");
 
     const r4 = await server.fetch(
       new Request("https://imageaspectratio.com/pixelate-image"),
@@ -279,5 +301,13 @@ describe("V3 Page-1 Image & Creator Tool Suite", () => {
     );
     expect(r4.status).toBe(308);
     expect(r4.headers.get("Location")).toBe("/blur-screenshot");
+
+    const r5 = await server.fetch(
+      new Request("https://imageaspectratio.com/safe-zone-checker/?x=2"),
+      {},
+      {},
+    );
+    expect(r5.status).toBe(308);
+    expect(r5.headers.get("Location")).toBe("/safe-zone-checker?x=2");
   });
 });

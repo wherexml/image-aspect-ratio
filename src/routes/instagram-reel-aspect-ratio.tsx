@@ -1,9 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SocialRatioPage } from "@/components/SocialRatioPage";
-import { SOCIAL_PAGES, SOCIAL_UPDATED } from "@/content/social-ratios";
+import {
+  getSocialPageByPath,
+  SocialPlatformRelatedNav,
+  SocialPlatformStudioV2,
+} from "@/components/v2/SocialRatioV2";
+import { V3PageShell } from "@/components/v3/V3PageShell";
+import { SOCIAL_UPDATED } from "@/content/social-ratios";
 import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
 
-const page = SOCIAL_PAGES.find((page) => page.path === "/instagram-reel-aspect-ratio")!;
+const page = getSocialPageByPath("/instagram-reel-aspect-ratio");
 
 export const Route = createFileRoute("/instagram-reel-aspect-ratio")({
   head: () => ({
@@ -11,5 +16,24 @@ export const Route = createFileRoute("/instagram-reel-aspect-ratio")({
     links: seoLinks(page.path),
     scripts: seoScripts(page.title, page.description, page.path, true, SOCIAL_UPDATED),
   }),
-  component: () => <SocialRatioPage page={page} />,
+  component: InstagramReelPage,
 });
+
+function InstagramReelPage() {
+  return (
+    <V3PageShell
+      title={`${page.name} Aspect Ratio`}
+      hero={{
+        title: (
+          <>
+            {page.name} <span className="text-primary">Aspect Ratio</span>
+          </>
+        ),
+        description: page.answer,
+      }}
+    >
+      <SocialPlatformStudioV2 path="/instagram-reel-aspect-ratio" />
+      <SocialPlatformRelatedNav currentPath="/instagram-reel-aspect-ratio" rootLinks />
+    </V3PageShell>
+  );
+}

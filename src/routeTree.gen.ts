@@ -12,15 +12,24 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as R169AspectRatioCalculatorRouteImport } from './routes/16-9-aspect-ratio-calculator'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AddPaddingToImageRouteImport } from './routes/add-padding-to-image'
+import { Route as AnnotateScreenshotRouteImport } from './routes/annotate-screenshot'
+import { Route as BlurScreenshotRouteImport } from './routes/blur-screenshot'
 import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as ChangeImageAspectRatioRouteImport } from './routes/change-image-aspect-ratio'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExactFractionsVsRoundedPixelsRouteImport } from './routes/exact-fractions-vs-rounded-pixels'
+import { Route as FitPhotoToInstagramRouteImport } from './routes/fit-photo-to-instagram'
 import { Route as ImageAspectRatioRouteImport } from './routes/image-aspect-ratio'
+import { Route as InstagramGridSplitterRouteImport } from './routes/instagram-grid-splitter'
 import { Route as InstagramReelAspectRatioRouteImport } from './routes/instagram-reel-aspect-ratio'
 import { Route as InstagramStoryAspectRatioRouteImport } from './routes/instagram-story-aspect-ratio'
 import { Route as MakeImageSquareRouteImport } from './routes/make-image-square'
+import { Route as OgImageSafeZoneRouteImport } from './routes/og-image-safe-zone'
+import { Route as PixelateImageRouteImport } from './routes/pixelate-image'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RoundCornersImageRouteImport } from './routes/round-corners-image'
+import { Route as SafeZoneCheckerRouteImport } from './routes/safe-zone-checker'
 import { Route as ScreenshotBeautifierRouteImport } from './routes/screenshot-beautifier'
 import { Route as SocialMediaRouteImport } from './routes/social-media'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -78,6 +87,21 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AddPaddingToImageRoute = AddPaddingToImageRouteImport.update({
+  id: '/add-padding-to-image',
+  path: '/add-padding-to-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnnotateScreenshotRoute = AnnotateScreenshotRouteImport.update({
+  id: '/annotate-screenshot',
+  path: '/annotate-screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlurScreenshotRoute = BlurScreenshotRouteImport.update({
+  id: '/blur-screenshot',
+  path: '/blur-screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CalculatorRoute = CalculatorRouteImport.update({
   id: '/calculator',
   path: '/calculator',
@@ -99,9 +123,19 @@ const ExactFractionsVsRoundedPixelsRoute =
     path: '/exact-fractions-vs-rounded-pixels',
     getParentRoute: () => rootRouteImport,
   } as any)
+const FitPhotoToInstagramRoute = FitPhotoToInstagramRouteImport.update({
+  id: '/fit-photo-to-instagram',
+  path: '/fit-photo-to-instagram',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ImageAspectRatioRoute = ImageAspectRatioRouteImport.update({
   id: '/image-aspect-ratio',
   path: '/image-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstagramGridSplitterRoute = InstagramGridSplitterRouteImport.update({
+  id: '/instagram-grid-splitter',
+  path: '/instagram-grid-splitter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InstagramReelAspectRatioRoute =
@@ -121,9 +155,29 @@ const MakeImageSquareRoute = MakeImageSquareRouteImport.update({
   path: '/make-image-square',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OgImageSafeZoneRoute = OgImageSafeZoneRouteImport.update({
+  id: '/og-image-safe-zone',
+  path: '/og-image-safe-zone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PixelateImageRoute = PixelateImageRouteImport.update({
+  id: '/pixelate-image',
+  path: '/pixelate-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoundCornersImageRoute = RoundCornersImageRouteImport.update({
+  id: '/round-corners-image',
+  path: '/round-corners-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SafeZoneCheckerRoute = SafeZoneCheckerRouteImport.update({
+  id: '/safe-zone-checker',
+  path: '/safe-zone-checker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScreenshotBeautifierRoute = ScreenshotBeautifierRouteImport.update({
@@ -340,15 +394,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/16-9-aspect-ratio-calculator': typeof R169AspectRatioCalculatorRoute
   '/about': typeof AboutRoute
+  '/add-padding-to-image': typeof AddPaddingToImageRoute
+  '/annotate-screenshot': typeof AnnotateScreenshotRoute
+  '/blur-screenshot': typeof BlurScreenshotRoute
   '/calculator': typeof CalculatorRoute
   '/change-image-aspect-ratio': typeof ChangeImageAspectRatioRoute
   '/contact': typeof ContactRoute
   '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
+  '/fit-photo-to-instagram': typeof FitPhotoToInstagramRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
+  '/instagram-grid-splitter': typeof InstagramGridSplitterRoute
   '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
   '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
   '/make-image-square': typeof MakeImageSquareRoute
+  '/og-image-safe-zone': typeof OgImageSafeZoneRoute
+  '/pixelate-image': typeof PixelateImageRoute
   '/privacy': typeof PrivacyRoute
+  '/round-corners-image': typeof RoundCornersImageRoute
+  '/safe-zone-checker': typeof SafeZoneCheckerRoute
   '/screenshot-beautifier': typeof ScreenshotBeautifierRoute
   '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
@@ -394,15 +457,24 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/16-9-aspect-ratio-calculator': typeof R169AspectRatioCalculatorRoute
   '/about': typeof AboutRoute
+  '/add-padding-to-image': typeof AddPaddingToImageRoute
+  '/annotate-screenshot': typeof AnnotateScreenshotRoute
+  '/blur-screenshot': typeof BlurScreenshotRoute
   '/calculator': typeof CalculatorRoute
   '/change-image-aspect-ratio': typeof ChangeImageAspectRatioRoute
   '/contact': typeof ContactRoute
   '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
+  '/fit-photo-to-instagram': typeof FitPhotoToInstagramRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
+  '/instagram-grid-splitter': typeof InstagramGridSplitterRoute
   '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
   '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
   '/make-image-square': typeof MakeImageSquareRoute
+  '/og-image-safe-zone': typeof OgImageSafeZoneRoute
+  '/pixelate-image': typeof PixelateImageRoute
   '/privacy': typeof PrivacyRoute
+  '/round-corners-image': typeof RoundCornersImageRoute
+  '/safe-zone-checker': typeof SafeZoneCheckerRoute
   '/screenshot-beautifier': typeof ScreenshotBeautifierRoute
   '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
@@ -449,15 +521,24 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/16-9-aspect-ratio-calculator': typeof R169AspectRatioCalculatorRoute
   '/about': typeof AboutRoute
+  '/add-padding-to-image': typeof AddPaddingToImageRoute
+  '/annotate-screenshot': typeof AnnotateScreenshotRoute
+  '/blur-screenshot': typeof BlurScreenshotRoute
   '/calculator': typeof CalculatorRoute
   '/change-image-aspect-ratio': typeof ChangeImageAspectRatioRoute
   '/contact': typeof ContactRoute
   '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
+  '/fit-photo-to-instagram': typeof FitPhotoToInstagramRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
+  '/instagram-grid-splitter': typeof InstagramGridSplitterRoute
   '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
   '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
   '/make-image-square': typeof MakeImageSquareRoute
+  '/og-image-safe-zone': typeof OgImageSafeZoneRoute
+  '/pixelate-image': typeof PixelateImageRoute
   '/privacy': typeof PrivacyRoute
+  '/round-corners-image': typeof RoundCornersImageRoute
+  '/safe-zone-checker': typeof SafeZoneCheckerRoute
   '/screenshot-beautifier': typeof ScreenshotBeautifierRoute
   '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
@@ -505,15 +586,24 @@ export interface FileRouteTypes {
     | '/'
     | '/16-9-aspect-ratio-calculator'
     | '/about'
+    | '/add-padding-to-image'
+    | '/annotate-screenshot'
+    | '/blur-screenshot'
     | '/calculator'
     | '/change-image-aspect-ratio'
     | '/contact'
     | '/exact-fractions-vs-rounded-pixels'
+    | '/fit-photo-to-instagram'
     | '/image-aspect-ratio'
+    | '/instagram-grid-splitter'
     | '/instagram-reel-aspect-ratio'
     | '/instagram-story-aspect-ratio'
     | '/make-image-square'
+    | '/og-image-safe-zone'
+    | '/pixelate-image'
     | '/privacy'
+    | '/round-corners-image'
+    | '/safe-zone-checker'
     | '/screenshot-beautifier'
     | '/social-media'
     | '/terms'
@@ -559,15 +649,24 @@ export interface FileRouteTypes {
     | '/'
     | '/16-9-aspect-ratio-calculator'
     | '/about'
+    | '/add-padding-to-image'
+    | '/annotate-screenshot'
+    | '/blur-screenshot'
     | '/calculator'
     | '/change-image-aspect-ratio'
     | '/contact'
     | '/exact-fractions-vs-rounded-pixels'
+    | '/fit-photo-to-instagram'
     | '/image-aspect-ratio'
+    | '/instagram-grid-splitter'
     | '/instagram-reel-aspect-ratio'
     | '/instagram-story-aspect-ratio'
     | '/make-image-square'
+    | '/og-image-safe-zone'
+    | '/pixelate-image'
     | '/privacy'
+    | '/round-corners-image'
+    | '/safe-zone-checker'
     | '/screenshot-beautifier'
     | '/social-media'
     | '/terms'
@@ -613,15 +712,24 @@ export interface FileRouteTypes {
     | '/'
     | '/16-9-aspect-ratio-calculator'
     | '/about'
+    | '/add-padding-to-image'
+    | '/annotate-screenshot'
+    | '/blur-screenshot'
     | '/calculator'
     | '/change-image-aspect-ratio'
     | '/contact'
     | '/exact-fractions-vs-rounded-pixels'
+    | '/fit-photo-to-instagram'
     | '/image-aspect-ratio'
+    | '/instagram-grid-splitter'
     | '/instagram-reel-aspect-ratio'
     | '/instagram-story-aspect-ratio'
     | '/make-image-square'
+    | '/og-image-safe-zone'
+    | '/pixelate-image'
     | '/privacy'
+    | '/round-corners-image'
+    | '/safe-zone-checker'
     | '/screenshot-beautifier'
     | '/social-media'
     | '/terms'
@@ -668,15 +776,24 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R169AspectRatioCalculatorRoute: typeof R169AspectRatioCalculatorRoute
   AboutRoute: typeof AboutRoute
+  AddPaddingToImageRoute: typeof AddPaddingToImageRoute
+  AnnotateScreenshotRoute: typeof AnnotateScreenshotRoute
+  BlurScreenshotRoute: typeof BlurScreenshotRoute
   CalculatorRoute: typeof CalculatorRoute
   ChangeImageAspectRatioRoute: typeof ChangeImageAspectRatioRoute
   ContactRoute: typeof ContactRoute
   ExactFractionsVsRoundedPixelsRoute: typeof ExactFractionsVsRoundedPixelsRoute
+  FitPhotoToInstagramRoute: typeof FitPhotoToInstagramRoute
   ImageAspectRatioRoute: typeof ImageAspectRatioRoute
+  InstagramGridSplitterRoute: typeof InstagramGridSplitterRoute
   InstagramReelAspectRatioRoute: typeof InstagramReelAspectRatioRoute
   InstagramStoryAspectRatioRoute: typeof InstagramStoryAspectRatioRoute
   MakeImageSquareRoute: typeof MakeImageSquareRoute
+  OgImageSafeZoneRoute: typeof OgImageSafeZoneRoute
+  PixelateImageRoute: typeof PixelateImageRoute
   PrivacyRoute: typeof PrivacyRoute
+  RoundCornersImageRoute: typeof RoundCornersImageRoute
+  SafeZoneCheckerRoute: typeof SafeZoneCheckerRoute
   ScreenshotBeautifierRoute: typeof ScreenshotBeautifierRoute
   SocialMediaRoute: typeof SocialMediaRoute
   TermsRoute: typeof TermsRoute
@@ -742,6 +859,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/add-padding-to-image': {
+      id: '/add-padding-to-image'
+      path: '/add-padding-to-image'
+      fullPath: '/add-padding-to-image'
+      preLoaderRoute: typeof AddPaddingToImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/annotate-screenshot': {
+      id: '/annotate-screenshot'
+      path: '/annotate-screenshot'
+      fullPath: '/annotate-screenshot'
+      preLoaderRoute: typeof AnnotateScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blur-screenshot': {
+      id: '/blur-screenshot'
+      path: '/blur-screenshot'
+      fullPath: '/blur-screenshot'
+      preLoaderRoute: typeof BlurScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/calculator': {
       id: '/calculator'
       path: '/calculator'
@@ -770,11 +908,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExactFractionsVsRoundedPixelsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fit-photo-to-instagram': {
+      id: '/fit-photo-to-instagram'
+      path: '/fit-photo-to-instagram'
+      fullPath: '/fit-photo-to-instagram'
+      preLoaderRoute: typeof FitPhotoToInstagramRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/image-aspect-ratio': {
       id: '/image-aspect-ratio'
       path: '/image-aspect-ratio'
       fullPath: '/image-aspect-ratio'
       preLoaderRoute: typeof ImageAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instagram-grid-splitter': {
+      id: '/instagram-grid-splitter'
+      path: '/instagram-grid-splitter'
+      fullPath: '/instagram-grid-splitter'
+      preLoaderRoute: typeof InstagramGridSplitterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/instagram-reel-aspect-ratio': {
@@ -798,11 +950,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MakeImageSquareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/og-image-safe-zone': {
+      id: '/og-image-safe-zone'
+      path: '/og-image-safe-zone'
+      fullPath: '/og-image-safe-zone'
+      preLoaderRoute: typeof OgImageSafeZoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pixelate-image': {
+      id: '/pixelate-image'
+      path: '/pixelate-image'
+      fullPath: '/pixelate-image'
+      preLoaderRoute: typeof PixelateImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/round-corners-image': {
+      id: '/round-corners-image'
+      path: '/round-corners-image'
+      fullPath: '/round-corners-image'
+      preLoaderRoute: typeof RoundCornersImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/safe-zone-checker': {
+      id: '/safe-zone-checker'
+      path: '/safe-zone-checker'
+      fullPath: '/safe-zone-checker'
+      preLoaderRoute: typeof SafeZoneCheckerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/screenshot-beautifier': {
@@ -1092,15 +1272,24 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R169AspectRatioCalculatorRoute: R169AspectRatioCalculatorRoute,
   AboutRoute: AboutRoute,
+  AddPaddingToImageRoute: AddPaddingToImageRoute,
+  AnnotateScreenshotRoute: AnnotateScreenshotRoute,
+  BlurScreenshotRoute: BlurScreenshotRoute,
   CalculatorRoute: CalculatorRoute,
   ChangeImageAspectRatioRoute: ChangeImageAspectRatioRoute,
   ContactRoute: ContactRoute,
   ExactFractionsVsRoundedPixelsRoute: ExactFractionsVsRoundedPixelsRoute,
+  FitPhotoToInstagramRoute: FitPhotoToInstagramRoute,
   ImageAspectRatioRoute: ImageAspectRatioRoute,
+  InstagramGridSplitterRoute: InstagramGridSplitterRoute,
   InstagramReelAspectRatioRoute: InstagramReelAspectRatioRoute,
   InstagramStoryAspectRatioRoute: InstagramStoryAspectRatioRoute,
   MakeImageSquareRoute: MakeImageSquareRoute,
+  OgImageSafeZoneRoute: OgImageSafeZoneRoute,
+  PixelateImageRoute: PixelateImageRoute,
   PrivacyRoute: PrivacyRoute,
+  RoundCornersImageRoute: RoundCornersImageRoute,
+  SafeZoneCheckerRoute: SafeZoneCheckerRoute,
   ScreenshotBeautifierRoute: ScreenshotBeautifierRoute,
   SocialMediaRoute: SocialMediaRoute,
   TermsRoute: TermsRoute,

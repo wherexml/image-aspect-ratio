@@ -1,111 +1,237 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalculatorNavigation } from "@/components/CalculatorNavigation";
+import { createFileRoute } from "@tanstack/react-router";
+import { Crop, Droplets, PenLine } from "lucide-react";
 import { ScreenshotStudio } from "@/components/ScreenshotStudio";
-import { ThemeControl } from "@/components/ThemeControl";
-import { previewSeoMeta, seoLinks, seoScripts } from "@/lib/seo";
+import {
+  buildV3RouteHead,
+  V3Editorial,
+  type V3FaqItem,
+  type V3FeatureItem,
+  type V3StepItem,
+} from "@/components/v3/V3Editorial";
+import { V3PageShell } from "@/components/v3/V3PageShell";
 
-const PATH = "/screenshot-beautifier";
-const TITLE = "Screenshot Studio — Annotate & Beautify Screenshots";
+const PAGE_TITLE = "Screenshot Beautifier — Add Backgrounds & Frames Online";
 const DESCRIPTION =
-  "Open or paste a screenshot, crop, annotate with curved arrows, shapes, steps, text, spotlight and pixelation, add clean gradients or plain backgrounds, and export PNG or JPEG in your browser.";
+  "Free online screenshot beautifier to add gradient, blurred, or solid backgrounds, rounded window frames, drop shadows, and crisp callouts in your browser.";
+
+const STEPS: readonly V3StepItem[] = [
+  {
+    title: "Drop or paste your capture",
+    description:
+      "Drag a PNG, JPG, or WebP screenshot onto the canvas, click Choose screenshot, or press Cmd+V / Ctrl+V directly from your clipboard.",
+  },
+  {
+    title: "Add background, frame & shadow",
+    description:
+      "Pick a studio gradient, ambient blur backdrop, wallpaper, or solid color, then dial in balanced padding, corner radius, glass bezel, and elevation.",
+  },
+  {
+    title: "Annotate & export crisp PNG",
+    description:
+      "Add curved arrows, step badges, pill or transparent labels, or Gaussian blur redaction, then copy or download up to 4096 px.",
+  },
+];
+
+const FEATURES: readonly V3FeatureItem[] = [
+  {
+    title: "Curated Gradients, Blur & Custom Stops",
+    description:
+      "Add a clean background to any screenshot using studio mesh gradients, ambient image blur, custom 3-stop gradients, or reusable saved presets.",
+  },
+  {
+    title: "Auto-Balanced Padding & Glass Bezels",
+    description:
+      "Wrap raw captures in rounded corners, subtle drop shadows, optional translucent glass bezels, and edge-color-matched inset balance.",
+  },
+  {
+    title: "Full-Canvas Callouts & Margin Notes",
+    description:
+      "Place curved arrows, numbered steps, freehand strokes, and transparent or pill text labels anywhere — including across the outer background margin.",
+  },
+  {
+    title: "Built-In Blur, Mosaic & Spotlight",
+    description:
+      "Hide private emails or tokens with smooth Gaussian blur (B) or coarse mosaic blocks, or dim surrounding UI with a spotlight cutout.",
+  },
+  {
+    title: "Exact Social & Presentation Ratios",
+    description:
+      "Keep natural screenshot proportions with Auto, or lock export frames to 16:9, 4:3, 3:2, 1:1, 4:5, or 9:16 for slides, X, LinkedIn, and docs.",
+  },
+  {
+    title: "100% Client-Side Privacy",
+    description:
+      "Decoding, background framing, annotation rendering, and PNG/JPG encoding run entirely on an HTML5 canvas inside your browser — zero server uploads.",
+  },
+];
+
+const EXPORT_SPECS = [
+  { preset: "Auto (Fit capture)", ratio: "Source + padding", typical: "Docs, GitHub PRs, changelogs, Slack" },
+  { preset: "Widescreen Deck", ratio: "16:9", typical: "Slide decks, YouTube chapters, hero banners" },
+  { preset: "Presentation Classic", ratio: "4:3 · 3:2", typical: "Blog illustrations, Notion & Substack embeds" },
+  { preset: "Square Feed", ratio: "1:1", typical: "LinkedIn carousels, Instagram grid, community posts" },
+  { preset: "Portrait & Vertical", ratio: "4:5 · 9:16", typical: "Mobile showcases, Instagram Portrait, Stories" },
+] as const;
+
+const FAQS: readonly V3FaqItem[] = [
+  {
+    question: "Is Screenshot Beautifier completely free without watermarks?",
+    answer:
+      "Yes. Every gradient background, custom preset, annotation tool, aspect ratio lock, and high-resolution PNG or JPG export is free to use with zero watermarks or sign-up gates.",
+  },
+  {
+    question: "How do I add a background to a screenshot without losing text sharpness?",
+    answer:
+      "Paste or open your capture, pick a gradient, solid, or blurred backdrop in the framing sidebar, and adjust Padding and Shadow. Your screenshot stays crisp at native resolution and exports cleanly as lossless PNG up to 4096 px.",
+  },
+  {
+    question: "Are my screenshots uploaded to an external server?",
+    answer:
+      "No. Your image is decoded locally in browser memory and rendered on an HTML5 canvas on your device. Neither image bytes nor text annotations leave your browser.",
+  },
+  {
+    question: "Can I draw arrows or place text labels outside the screenshot on the background?",
+    answer:
+      "Yes. Once padding is greater than zero, curved arrows, freehand pen lines, step counters, shapes, and transparent or pill text labels can sit directly on the outer background frame.",
+  },
+  {
+    question: "Can I use the exported visuals in commercial products, SaaS landing pages, or client decks?",
+    answer:
+      "Yes. All built-in backgrounds and vector annotations carry no licensing restrictions — you retain full rights to publish exported images in commercial sites, changelogs, docs, and ads.",
+  },
+];
 
 export const Route = createFileRoute("/screenshot-beautifier")({
-  head: () => ({
-    scripts: seoScripts(TITLE, DESCRIPTION, PATH, true, "2026-11-16"),
-    meta: previewSeoMeta(TITLE, DESCRIPTION, PATH),
-    links: seoLinks(PATH),
-  }),
-  component: ScreenshotBeautifierPage,
+  head: () =>
+    buildV3RouteHead({
+    forceNoindex: false,
+      title: PAGE_TITLE,
+      description: DESCRIPTION,
+      canonicalPath: "/screenshot-beautifier",
+      appName: "Screenshot Beautifier",
+      howToTitle: "How to Beautify & Add a Background to a Screenshot Online",
+      steps: STEPS,
+      faqs: FAQS,
+    }),
+  component: ScreenshotBeautifierV3Page,
 });
 
-function ScreenshotBeautifierPage() {
+function ScreenshotBeautifierV3Page() {
   return (
-    <div className="min-h-screen bg-white dark:bg-background">
-      <header className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 pt-5 sm:px-6">
-        <Link
-          to="/"
-          aria-label="Image Aspect Ratio home"
-          className="flex items-center gap-2.5 font-display text-sm font-bold"
-        >
-          <img src="/brand-mark.svg" width="28" height="28" alt="" />
-          Image Aspect Ratio
-        </Link>
-        <ThemeControl />
-      </header>
-      <main className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-        <CalculatorNavigation />
-        <h1 className="mt-5 text-lg font-semibold tracking-[-0.02em] text-zinc-900 dark:text-zinc-100">
-          Screenshot Studio
-        </h1>
-        <ScreenshotStudio />
+    <V3PageShell
+      title="Screenshot Beautifier"
+      hero={{
+        title: (
+          <>
+            Screenshot <span className="text-primary">Beautifier</span>
+          </>
+        ),
+        description:
+          "Add gradient, blurred, or solid backgrounds, rounded frames, drop shadows, and crisp callouts to any screenshot right in your browser.",
+      }}
+    >
+      <ScreenshotStudio />
 
-        <section aria-labelledby="studio-guide" className="mt-14 grid gap-10 text-sm md:grid-cols-2">
-          <div className="space-y-3">
-            <h2 id="studio-guide" className="font-display text-2xl font-bold tracking-tight text-foreground">
-              Annotate and beautify screenshots in your browser
-            </h2>
-            <p className="text-muted-foreground">
-              Screenshot Studio frames a local capture on a clean gradient, ambient blur, custom wallpaper or solid background, and adds vector-sharp callouts without uploading your image to a server.
-            </p>
-            <ol className="space-y-2.5 pt-1">
-              <li className="flex gap-3">
-                <span className="num flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">1</span>
-                <span><strong className="font-semibold">Open or paste.</strong> <span className="text-muted-foreground">Choose a PNG, JPG or WebP file, or paste a clipboard capture directly with Cmd+V / Ctrl+V.</span></span>
-              </li>
-              <li className="flex gap-3">
-                <span className="num flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">2</span>
-                <span><strong className="font-semibold">Crop &amp; annotate.</strong> <span className="text-muted-foreground">Trim edges, draw curved 3-point arrows, boxes, ellipses, angle-snapped lines, numbered steps, pill text labels, spotlight dimming or pixelation blocks.</span></span>
-              </li>
-              <li className="flex gap-3">
-                <span className="num flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">3</span>
-                <span><strong className="font-semibold">Frame &amp; export.</strong> <span className="text-muted-foreground">Pick Auto or a locked aspect ratio (16:9, 4:3, 3:2, 1:1, 4:5, 9:16), adjust padding, corners and shadow, then copy PNG or download PNG / JPEG.</span></span>
-              </li>
-            </ol>
-          </div>
+      <V3Editorial
+        overview={{
+          eyebrow: "Clean Product Visuals",
+          heading: "Add a Clean Background & Frame to Any Screenshot",
+          lead: "Unframed browser crops often clash with article backgrounds or get clipped awkwardly by social feeds. Wrapping a capture in balanced padding, subtle elevation, and locked aspect ratios turns raw UI grabs into polished product visuals in seconds — without opening Figma.",
+        }}
+        visualGuide={{
+          eyebrow: "Before & After",
+          heading: "Raw Browser Clip vs. Framed Studio Screenshot",
+          src: "/previews/screenshot-beautifier-workflow.webp",
+          width: 1120,
+          height: 500,
+          alt: "Before and after screenshot beautifier comparison: raw unframed SaaS billing screenshot on the left versus framed capture on Northern Light gradient background with 12px rounded corners, drop shadow, numbered step badge, and red curved arrow on the right",
+          caption:
+            "Default Northern Light gradient preset with 48 px balanced padding, 12 px window corner radius, soft elevation shadow, and curved arrow + step callout.",
+        }}
+        shortcuts={{
+          heading: "Studio Shortcuts",
+          items: [
+            { keys: ["⌘/Ctrl", "V"], action: "Paste capture" },
+            { keys: ["A"], action: "Curved arrow" },
+            { keys: ["T"], action: "Text callout" },
+            { keys: ["N"], action: "Step badge" },
+            { keys: ["B"], action: "Blur redact" },
+            { keys: ["M"], action: "Mosaic" },
+            { keys: ["C"], action: "Crop" },
+            { keys: ["[", "]"], action: "Scale markup" },
+          ],
+        }}
+        howTo={{
+          heading: "How to Beautify & Add a Background to a Screenshot",
+          steps: STEPS,
+        }}
+        features={{
+          heading: "Everything Needed to Frame & Polish Captures",
+          items: FEATURES,
+        }}
+        referenceSection={
+          <section aria-labelledby="v3-export-ratios" className="space-y-4">
+            <div className="space-y-1">
+              <p className="v3-eyebrow">Canvas Ratios</p>
+              <h2
+                id="v3-export-ratios"
+                className="font-display text-xl font-bold tracking-tight text-foreground sm:text-2xl"
+              >
+                Recommended Export Frame Ratios
+              </h2>
+            </div>
 
-          <div className="space-y-3">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-foreground">
-              Capabilities, aspect ratios and privacy limits
-            </h2>
-            <ul className="divide-y">
-              <li className="flex items-baseline justify-between gap-4 py-2.5">
-                <span className="text-muted-foreground">Target frame ratios</span>
-                <span className="num text-right font-medium">Auto, 16:9, 4:3, 3:2, 1:1, 4:5, 9:16</span>
-              </li>
-              <li className="flex items-baseline justify-between gap-4 py-2.5">
-                <span className="text-muted-foreground">Input limits</span>
-                <span className="num text-right font-medium">Up to 20 MB · 50 megapixels</span>
-              </li>
-              <li className="flex items-baseline justify-between gap-4 py-2.5">
-                <span className="text-muted-foreground">Export ceiling</span>
-                <span className="num text-right font-medium">PNG or JPEG · up to 4096 px</span>
-              </li>
-              <li className="flex items-baseline justify-between gap-4 py-2.5">
-                <span className="text-muted-foreground">Saved style presets</span>
-                <span className="text-right font-medium">Stored locally in browser storage</span>
-              </li>
-            </ul>
-            <p className="pt-1 text-xs text-muted-foreground">
-              Screenshots are decoded and rendered on an HTML canvas inside your browser; no image bytes or annotation text are sent to an external server. Single-image still export only — no video recording, OCR or cloud hosting.
-            </p>
-          </div>
-        </section>
-
-        <nav aria-label="Related tools" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-          <Link to="/change-image-aspect-ratio" className="font-medium underline-offset-4 hover:text-foreground hover:underline">
-            Change image aspect ratio
-          </Link>
-          <Link to="/make-image-square" className="font-medium underline-offset-4 hover:text-foreground hover:underline">
-            Make image square
-          </Link>
-          <Link to="/" className="font-medium underline-offset-4 hover:text-foreground hover:underline">
-            Image aspect ratio
-          </Link>
-          <Link to="/16-9-aspect-ratio-calculator" className="font-medium underline-offset-4 hover:text-foreground hover:underline">
-            16:9 aspect ratio calculator
-          </Link>
-        </nav>
-      </main>
-    </div>
+            <div className="v3-table-wrap">
+              <table className="v3-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Preset</th>
+                    <th scope="col">Aspect Ratio</th>
+                    <th scope="col">Best Destination</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {EXPORT_SPECS.map(row => (
+                    <tr key={row.preset}>
+                      <td className="font-semibold text-foreground">{row.preset}</td>
+                      <td className="num font-medium text-foreground">{row.ratio}</td>
+                      <td className="text-muted-foreground">{row.typical}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+        faq={{
+          items: FAQS,
+        }}
+        relatedTools={{
+          items: [
+            {
+              to: "/blur-screenshot",
+              title: "Blur & Pixelate Screenshot",
+              description:
+                "Redact emails, API keys, and sensitive customer data with Gaussian blur or mosaic blocks.",
+              icon: <Droplets className="h-4 w-4" />,
+            },
+            {
+              to: "/annotate-screenshot",
+              title: "Annotate Screenshot",
+              description:
+                "Add curved arrows, numbered steps, highlighter bands, and freehand red ink for bug reports.",
+              icon: <PenLine className="h-4 w-4" />,
+            },
+            {
+              to: "/change-image-aspect-ratio",
+              title: "Change Image Aspect Ratio",
+              description:
+                "Fit or crop any photo to exact Instagram, YouTube, or Open Graph pixel dimensions.",
+              icon: <Crop className="h-4 w-4" />,
+            },
+          ],
+        }}
+      />
+    </V3PageShell>
   );
 }

@@ -646,11 +646,11 @@ describe("Screenshot Studio V5 (@ui-sdk/react + Figma geometry)", () => {
     await router.load();
     const { container } = render(<RouterProvider router={router} />);
     void CalculatorNavigation;
-    const socialMenu = container.querySelector(".tool-social-menu");
+    const socialMenu = container.querySelector(".v2-nav-menu--social");
     expect(socialMenu).not.toBeNull();
     const links = Array.from(socialMenu!.querySelectorAll("a"));
-    expect(links.length).toBeGreaterThanOrEqual(6);
-    expect(links[0]).toHaveTextContent(/Reels/i);
+    expect(links.length).toBeGreaterThanOrEqual(9);
+    expect(links[0]).toHaveTextContent(/Grid & Carousel/i);
     expect(links.at(-1)).toHaveTextContent("All platforms");
   });
 
