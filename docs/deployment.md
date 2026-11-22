@@ -1,5 +1,17 @@
 # Cloudflare deployment
 
+## TASK-9 and TASK-29 combined release — 2026-11-11
+
+Released version: `9ab0cf51-2e2a-4222-932e-579d77ba3694` (100% traffic). Prior active and rollback version: `6e37dbda-ed35-4083-aba1-a28a30b70b7a`. The user explicitly authorized publishing both accepted candidates together and independently validating production. Live pages: [Make image square](https://imageaspectratio.com/make-image-square) and [Social image sizes](https://imageaspectratio.com/social-media#image-sizes).
+
+This release includes the accepted compact Image/Social Media disclosures, exact current-page selection, Crop / Pad order and hand cursor, sharp image-preview corners, pointer-anchored Command/Control zoom, existing drag/export controls, four sourced image placements and the rotating source-disclosure chevron. The current source was verified against the latest accepted candidate; the older prepared November 11 release artifact was not used.
+
+TypeScript, production build, Wrangler dry run, 11 local browser checks, 25 local HTTP checks and two independently decoded local downloads passed before upload. After deployment, 30 production browser checks, 25 HTTP checks, six alias/query redirects and 56 byte-matched public assets passed. Three real production downloads (Pad PNG, Crop PNG and Crop JPEG) decoded as 1080×1080 and matched independent source-geometry calculations with mean RGB errors below 3/255. Desktop/mobile and light/dark screenshots were inspected.
+
+The existing Worker and Custom Domains, compatibility configuration, ASSETS binding and both GEO secret bindings were preserved. GA4 script configuration remains present; the GEO script returns the same bytes as before release. Production index/follow, canonical, sitemap and robots contracts passed; this is not proof of search index inclusion. No Git commit/push, branch/worktree or indexing submission was performed.
+
+Evidence and repeatable checks: `../../reports/2026-11-11/task9-task29-release/README.md` from this document. The frozen deployed source/artifact, hashes, deployment record and exact rollback command are retained there. Earlier local/unreleased labels below describe their dated candidate stages; this record establishes the current combined production release.
+
 ## Image uploader release candidate — 2026-11-07
 
 The user authorized committing and deploying the accepted Image uploader changes: native image paste, simplified uploader, always-visible pale placeholder previews, restored dimension layout and foreground frame borders. Existing production origin, indexability, routes and Worker bindings remain unchanged. Local build and browser evidence are retained in the parent workspace reports. Production acceptance is recorded separately after deployment.

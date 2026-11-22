@@ -163,12 +163,13 @@ export function MediaPreview({ kind, width: manualWidth = "", height: manualHeig
       {loaded && !image && <p className="mt-2 text-xs text-muted-foreground">Dimensions changed. The frames below use a diagram instead of your image.</p>}
     </div>}
     <>
-    <div className={uploadOnly ? "grid grid-cols-2 items-start gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "flex flex-wrap items-start gap-x-4 gap-y-3"} aria-label="Source dimensions">
-      <label className={uploadOnly ? "min-w-0 text-sm" : "w-28 shrink-0 text-sm sm:w-32"}>Width (px)<input className="field mt-2 w-full" inputMode="decimal" value={width} readOnly={uploadOnly} onChange={e=>editDimensions(e.target.value,height)} aria-label="Source width" aria-invalid={!uploadOnly && !pw.ok} /></label>
-      <label className={uploadOnly ? "min-w-0 text-sm" : "w-28 shrink-0 text-sm sm:w-32"}>Height (px)<input className="field mt-2 w-full" inputMode="decimal" value={height} readOnly={uploadOnly} onChange={e=>editDimensions(width,e.target.value)} aria-label="Source height" aria-invalid={!uploadOnly && !ph.ok} /></label>
+    <div className={uploadOnly ? "grid grid-cols-2 items-start gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]" : "flex flex-wrap items-start gap-x-4 gap-y-3"} role="group" aria-label="Source dimensions">
+      <label className={uploadOnly ? "min-w-0 text-sm" : "w-28 shrink-0 text-sm sm:w-32"}>Width (px)<input className={`field mt-2 w-full ${uploadOnly ? "mp-readout-field" : ""}`} inputMode="decimal" value={width} readOnly={uploadOnly} onChange={e=>editDimensions(e.target.value,height)} aria-label="Source width" aria-invalid={!uploadOnly && !pw.ok} /></label>
+      <label className={uploadOnly ? "min-w-0 text-sm" : "w-28 shrink-0 text-sm sm:w-32"}>Height (px)<input className={`field mt-2 w-full ${uploadOnly ? "mp-readout-field" : ""}`} inputMode="decimal" value={height} readOnly={uploadOnly} onChange={e=>editDimensions(width,e.target.value)} aria-label="Source height" aria-invalid={!uploadOnly && !ph.ok} /></label>
       <div className={uploadOnly ? "col-span-2 min-w-0 text-sm sm:col-span-1" : "min-w-32 text-sm"}>Exact ratio
         <div className="mt-2 flex flex-wrap items-center gap-3">
-          <p ref={ratioText} className="num break-all text-2xl font-bold text-primary select-text" data-testid="media-exact-ratio">{exactRatio || (uploadOnly ? "\u00a0" : "—")}</p>
+          {/* Upload-only empty state: the blank value takes no width, so Copy ratio lines up with its label. */}
+          <p ref={ratioText} className={`num break-all text-2xl font-bold text-primary select-text ${uploadOnly && !exactRatio ? "hidden" : ""}`} data-testid="media-exact-ratio">{exactRatio || (uploadOnly ? "\u00a0" : "—")}</p>
           <button type="button" onClick={copyRatio} disabled={!canCopy} aria-label="Copy ratio" className="flex min-h-11 items-center gap-1.5 rounded-full bg-foreground px-3.5 py-2 text-sm font-semibold text-background hover:ring-2 hover:ring-primary disabled:cursor-not-allowed disabled:opacity-40">
             {copyState === "ok" ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
             <span role="status">{copyState === "ok" ? "Copied" : "Copy ratio"}</span>
@@ -208,7 +209,8 @@ export function MediaPreview({ kind, width: manualWidth = "", height: manualHeig
           <div className="mp-stage">
             <div className={`mp-device mp-device--${device}`} style={{maxWidth:"100%"}}>
               <div className="mp-frame" data-fit={fit} style={{width:Math.min(base,base*target),aspectRatio:`${w}/${h}`,maxWidth:"100%"}}>
-                <div className="mp-screen" aria-label={`${w}:${h} frame: ${summary}`}>
+                {/* A labelled div needs a role; the blank upload-only summary is left out of the name. */}
+                <div className="mp-screen" role="group" aria-label={summary === "\u00a0" ? `${w}:${h} frame` : `${w}:${h} frame: ${summary}`}>
                   {empty && [0, 1].map(side => <div key={side} className="mp-empty" aria-hidden="true" style={isWide
                     ? {left:0, right:0, height:`${emptyPercent}%`, ...(side ? {bottom:0} : {top:0})}
                     : {top:0, bottom:0, width:`${emptyPercent}%`, ...(side ? {right:0} : {left:0})}}>
@@ -218,7 +220,8 @@ export function MediaPreview({ kind, width: manualWidth = "", height: manualHeig
                     width: `${(fit === "contain" ? target <= 1 : target >= 1) ? 100 : 100 / target}%`,
                     height: `${(fit === "contain" ? target >= 1 : target <= 1) ? 100 : target * 100}%`,
                   }} data-testid="image-placeholder">
-                    <img src="/images/image-placeholder-light.png" alt="" className="h-full w-full" />
+                    {/* 640px WebP of the original 1254px PNG (kept beside it): same picture, about 3 KB instead of 1 MB. */}
+                    <img src="/images/image-placeholder-light.webp" alt="" width={640} height={640} decoding="async" className="h-full w-full" />
                   </div>}
                   {ratio && (image
                     ? <img src={image.url} alt={`${name} preview of ${image.name}`} title={`${fit === "contain" ? "Fit" : "Center crop"} to ${w}:${h}`} className="absolute inset-0 h-full w-full" style={{objectFit:fit}} />

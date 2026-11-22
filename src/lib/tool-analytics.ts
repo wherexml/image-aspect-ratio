@@ -1,9 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "./site";
 
-type Tool = "calculator" | "image" | "video" | "ultrawide";
-type Mode = "solve" | "ratio" | "resize";
-type Details = { tool: Tool; task_type: "calculation" | "image_read"; calculation_mode: Mode };
+export type Tool =
+  | "calculator"
+  | "image"
+  | "video"
+  | "ultrawide"
+  | "16_9"
+  | "make_square"
+  | "change_ratio"
+  | "screenshot_studio";
+
+export type Mode = "solve" | "ratio" | "resize" | "frame" | "annotate";
+export type TaskType = "calculation" | "image_read" | "image_export";
+type Details = { tool: Tool; task_type: TaskType; calculation_mode: Mode };
 type AnalyticsWindow = Window & { gtag?: (...args: unknown[]) => void };
 
 /** Explicit QA events have separate names and never count as production key events. */
@@ -31,7 +41,8 @@ export function trackToolEvent(name: "tool_complete" | "result_copy", details: D
       const entries = JSON.parse(log.textContent || "[]") as unknown[];
       log.textContent = JSON.stringify([...entries.slice(-99), { event, ...params }]);
     }
-    if (site.indexable && site.origin === location.origin) {
+    const isV2Preview = location.pathname === "/v2" || location.pathname.startsWith("/v2/");
+    if (site.indexable && site.origin === location.origin && !isV2Preview) {
       (window as AnalyticsWindow).gtag?.("event", event, params);
     }
   } catch {
@@ -81,13 +92,26 @@ export function useToolTracking(tool: Tool, mode: Mode, signature: string | null
         trackToolEvent("tool_complete", {
           tool,
           task_type: "image_read",
-          calculation_mode: "ratio",
+          calculation_mode: mode === "frame" || mode === "annotate" ? mode : "ratio",
+        });
+      }
+    },
+    imageExport: (localIdentity: string) => {
+      if (record(completed.current, `export:${mode}:${localIdentity}`)) {
+        trackToolEvent("tool_complete", {
+          tool,
+          task_type: "image_export",
+          calculation_mode: mode,
         });
       }
     },
     copy: (localIdentity: string) => {
       if (record(copied.current, `${mode}:${localIdentity}`)) {
-        trackToolEvent("result_copy", { tool, task_type: "calculation", calculation_mode: mode });
+        trackToolEvent("result_copy", {
+          tool,
+          task_type: mode === "frame" || mode === "annotate" ? "image_export" : "calculation",
+          calculation_mode: mode,
+        });
       }
     },
   };

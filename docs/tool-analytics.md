@@ -10,9 +10,9 @@ Event-scoped custom dimensions registered on property `560549779`:
 
 | Parameter | Allowed values |
 | --- | --- |
-| `tool` | `calculator`, `image`, `video`, `ultrawide` |
-| `task_type` | `calculation`, `image_read` |
-| `calculation_mode` | `solve`, `ratio`, `resize` |
+| `tool` | `calculator`, `image`, `video`, `ultrawide`, `16_9`, `make_square`, `change_ratio`, `screenshot_studio` |
+| `task_type` | `calculation`, `image_read`, `image_export` |
+| `calculation_mode` | `solve`, `ratio`, `resize`, `frame`, `annotate` |
 
 Only these categorical parameters are sent. Input dimensions, ratios, image bytes, filenames, blob URLs and clipboard contents are not sent. Local signatures deduplicate the most recent 100 outcomes per mounted tool; they are held in memory and reset when the component is remounted. This is not a cross-session unique-user metric.
 

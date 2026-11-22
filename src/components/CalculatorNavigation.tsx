@@ -1,44 +1,129 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
-import { Calculator as CalculatorIcon, ChevronDown, Clapperboard, ImageIcon, Monitor, Share2 } from "lucide-react";
+import { useEffect, useRef, type SyntheticEvent } from "react";
+import { ChevronDown } from "lucide-react";
 import { SocialPlatformLinks, SOCIAL_GROUPS } from "./SocialPlatformLinks";
 
-const tools = [
-  { to: "/", label: "Image", icon: ImageIcon },
-  { to: "/calculator", label: "Calculator", icon: CalculatorIcon },
-  { to: "/video-aspect-ratio", label: "Video", icon: Clapperboard },
+const imageTools = [
+  { to: "/", label: "Image ratio" },
+  { to: "/make-image-square", label: "Make square" },
+  { to: "/change-image-aspect-ratio", label: "Change ratio" },
+  { to: "/screenshot-beautifier", label: "Screenshot Beautifier" },
 ] as const;
+
+// Calculator section: the general calculator and its fixed-ratio 16:9 shortcut.
+const calculatorTools = [
+  { to: "/calculator", label: "All ratios" },
+  { to: "/16-9-aspect-ratio-calculator", label: "16:9" },
+] as const;
+// Mobile trigger names for the calculator destinations.
+const calculatorTitles: Record<string, string> = { "/calculator": "Calculator", "/16-9-aspect-ratio-calculator": "16:9 Calculator" };
+
+const directTools = [
+  { to: "/video-aspect-ratio", label: "Video" },
+  { to: "/ultrawide-aspect-ratio-calculator", label: "Ultrawide" },
+] as const;
+
+const exact = { exact: true, includeSearch: false };
 
 export function CalculatorNavigation() {
   const { pathname } = useLocation();
-  const menu = useRef<HTMLDetailsElement>(null);
-  const trigger = useRef<HTMLElement>(null);
-  const active = pathname === "/social-media" || SOCIAL_GROUPS.some(group => group.links.some(link => link.to === pathname));
-  const close = () => { if (menu.current) menu.current.open = false; };
+  const navigation = useRef<HTMLElement>(null);
+  const imageActive = imageTools.some(tool => tool.to === pathname);
+  const calculatorActive = calculatorTools.some(tool => tool.to === pathname);
+  const socialActive = pathname === "/social-media" || SOCIAL_GROUPS.some(group => group.links.some(link => link.to === pathname));
+  const socialTool = SOCIAL_GROUPS.flatMap(group => group.links.map(link => ({ to: link.to, label: `${group.name} ${link.label}` }))).find(tool => tool.to === pathname);
+  const currentLabel = calculatorTitles[pathname] ?? [...imageTools, ...directTools].find(tool => tool.to === pathname)?.label ?? socialTool?.label ?? (socialActive ? "Social Media" : "Tools");
+  const close = (except?: HTMLDetailsElement) => {
+    navigation.current?.querySelectorAll("details[open]").forEach(menu => {
+      if (menu !== except) (menu as HTMLDetailsElement).open = false;
+    });
+  };
+
   useEffect(() => { close(); }, [pathname]);
   useEffect(() => {
-    const outside = (event: PointerEvent) => { if (event.target instanceof Node && !menu.current?.contains(event.target)) close(); };
+    const outside = (event: Event) => {
+      if (event.target instanceof Node && !navigation.current?.contains(event.target)) close();
+    };
     document.addEventListener("pointerdown", outside);
-    return () => document.removeEventListener("pointerdown", outside);
+    document.addEventListener("focusin", outside);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", outside);
+    };
   }, []);
-  return <nav aria-label="Calculators" className="relative mt-5 grid grid-cols-3 gap-2 border-b pb-4 text-xs sm:flex sm:items-center sm:text-sm">
-    {tools.map(({ to, label, icon: Icon }) => <Link key={to} to={to} activeOptions={{ exact: true }}
-      activeProps={{ className: "bg-accent text-accent-foreground", "aria-current": "page" }}
-      className={`flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-1 py-2 font-medium hover:bg-secondary focus-visible:outline-2 focus-visible:outline-primary sm:flex-row sm:gap-2 sm:px-4`}>
-      <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" /><span>{label}</span>
-    </Link>)}
-    <details ref={menu} className="social-menu group col-span-3 min-w-0 sm:ml-2"
-      onKeyDown={event => { if (event.key === "Escape") { close(); trigger.current?.focus(); } }}>
-      <summary ref={trigger} className={`flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm font-semibold hover:bg-secondary focus-visible:outline-2 focus-visible:outline-primary sm:justify-start sm:px-4 [&::-webkit-details-marker]:hidden ${active ? "bg-accent text-accent-foreground" : ""}`}>
-        <span className="flex items-center gap-2"><Share2 aria-hidden="true" className="h-4 w-4 text-primary" />Social Media</span>
-        <ChevronDown aria-hidden="true" className="h-4 w-4 transition-transform group-open:rotate-180" />
+
+  const disclosure = {
+    onToggle: (event: SyntheticEvent<HTMLDetailsElement>) => {
+      if (event.currentTarget.open) close(event.currentTarget);
+    },
+  };
+  const destination = ({ to, label }: typeof imageTools[number] | typeof calculatorTools[number] | typeof directTools[number], className = "tool-nav-link") =>
+    <Link key={to} to={to} activeOptions={exact} onClick={() => close()} className={className}>{label}</Link>;
+
+  return <nav ref={navigation} aria-label="Tools" className="tool-nav"
+    onKeyDown={event => {
+      if (event.key !== "Escape") return;
+      const opened = navigation.current?.querySelector<HTMLDetailsElement>("details[open]");
+      if (!opened) return;
+      event.preventDefault();
+      close();
+      opened.querySelector("summary")?.focus();
+    }}>
+    <div className="tool-nav-desktop">
+      <details className="tool-disclosure" {...disclosure}>
+        <summary className="tool-nav-link" aria-current={imageActive ? "location" : undefined}>
+          Image <ChevronDown aria-hidden="true" />
+        </summary>
+        <div className="tool-popover tool-image-menu" aria-label="Image tools">
+          {imageTools.map(tool => destination(tool, "tool-menu-link"))}
+        </div>
+      </details>
+      <details className="tool-disclosure tool-calculator" {...disclosure}>
+        <summary className="tool-nav-link" aria-current={calculatorActive ? "location" : undefined}>
+          Calculator <ChevronDown aria-hidden="true" />
+        </summary>
+        <div className="tool-popover tool-calculator-menu" aria-label="Calculator tools">
+          {calculatorTools.map(tool => destination(tool, "tool-menu-link"))}
+        </div>
+      </details>
+      {destination(directTools[0])}
+      <details className="tool-disclosure tool-social" {...disclosure}>
+        <summary className="tool-nav-link" aria-current={socialActive ? "location" : undefined}>
+          Social Media <ChevronDown aria-hidden="true" />
+        </summary>
+        <div className="tool-popover tool-social-menu" aria-label="Social Media tools">
+          <SocialPlatformLinks onNavigate={() => close()} />
+          <div className="mt-4 border-t border-border pt-3">
+            <Link to="/social-media" activeOptions={exact} className="tool-menu-link" onClick={() => close()}>All platforms</Link>
+          </div>
+        </div>
+      </details>
+      {destination(directTools[1])}
+    </div>
+
+    <details className="tool-nav-mobile" {...disclosure}>
+      <summary className="tool-mobile-trigger" aria-label={`Tools: ${currentLabel}`}>
+        {currentLabel}<ChevronDown aria-hidden="true" />
       </summary>
-      <div className="mt-2 rounded-2xl border bg-card p-5 sm:absolute sm:left-0 sm:top-full sm:w-[36rem] sm:max-w-full sm:z-30 sm:mt-1 sm:p-6 sm:shadow-xl">
-        <SocialPlatformLinks onNavigate={close} />
+      <div className="tool-popover tool-mobile-menu" aria-label="All tools">
+        <div className="tool-menu-group">
+          <p className="tool-group-label">Image</p>
+          {imageTools.map(tool => destination(tool, "tool-menu-link"))}
+        </div>
+        <div className="tool-menu-group">
+          <p className="tool-group-label">Calculator</p>
+          {calculatorTools.map(tool => destination(tool, "tool-menu-link"))}
+        </div>
+        <div className="tool-menu-group">
+          {directTools.map(tool => destination(tool, "tool-menu-link"))}
+        </div>
+        <div className="tool-menu-group">
+          <p className="tool-group-label">Social Media</p>
+          {SOCIAL_GROUPS.flatMap(group => group.links.map(link => <Link key={link.to} to={link.to} activeOptions={exact}
+            onClick={() => close()} className="tool-menu-link">{group.name} {link.label}</Link>))}
+          <Link to="/social-media" activeOptions={exact} className="tool-menu-link" onClick={() => close()}>All platforms</Link>
+        </div>
       </div>
     </details>
-    <Link to="/ultrawide-aspect-ratio-calculator" activeOptions={{ exact: true }} activeProps={{ className: "bg-accent text-accent-foreground", "aria-current": "page" }} className="col-span-3 flex min-h-11 items-center justify-center gap-2 rounded-xl px-3 py-2 font-medium hover:bg-secondary focus-visible:outline-2 focus-visible:outline-primary sm:px-4">
-      <Monitor aria-hidden="true" className="h-4 w-4 shrink-0 text-primary" />Ultrawide
-    </Link>
   </nav>;
 }

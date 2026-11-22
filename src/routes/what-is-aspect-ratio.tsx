@@ -81,9 +81,41 @@ function AspectRatioGuide() {
               {sectionSources[section.id] && <a className="ratio-guide-source" href={sources[sectionSources[section.id]!].url}>{sources[sectionSources[section.id]!].title} <ArrowUpRight size={13} aria-hidden /></a>}
               {section.id === "calculate-aspect-ratio" && <Link className="ratio-guide-related" to="/exact-fractions-vs-rounded-pixels">Why 1366 × 768 isn't exactly 16:9 <ArrowUpRight size={15} aria-hidden /></Link>}
               {section.id === "common-ratios" && <Link className="ratio-guide-related" to="/ultrawide-aspect-ratio-calculator">Check an ultrawide ratio <ArrowUpRight size={15} aria-hidden /></Link>}
-              {section.id === "choosing-a-ratio" && <Link className="ratio-guide-related" to="/">Check a photo and preview its fit <ArrowUpRight size={15} aria-hidden /></Link>}
+              {section.id === "crop-fit-stretch" && <Link className="ratio-guide-related" to="/make-image-square">Make an image square with padding or crop <ArrowUpRight size={15} aria-hidden /></Link>}
+              {section.id === "choosing-a-ratio" && <>
+                <Link className="ratio-guide-related" to="/">Check a photo and preview its fit <ArrowUpRight size={15} aria-hidden /></Link>
+                <Link className="ratio-guide-related" to="/social-media">Compare social media aspect ratios across platforms <ArrowUpRight size={15} aria-hidden /></Link>
+              </>}
               {section.id === "faq" && <Link className="ratio-guide-related" to="/video-aspect-ratio">Compare video frames <ArrowUpRight size={15} aria-hidden /></Link>}
             </section>)}
+            <section aria-labelledby="guide-tools-title" data-testid="guide-internal-links">
+              <div className="ratio-guide-section-label" aria-hidden>TOOLS &amp; GUIDES</div>
+              <h2 id="guide-tools-title">Put these aspect ratios to work</h2>
+              <p>Use the calculators and platform dimension guides below to apply exact ratios to photos, videos, and vertical feeds.</p>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {[
+                  { to: "/calculator", label: "Aspect ratio calculator", note: "Solve width or height in pixels" },
+                  { to: "/make-image-square", label: "Make image square", note: "Pad or crop to 1:1 locally" },
+                  { to: "/video-aspect-ratio", label: "Video aspect ratio calculator", note: "Compare 16:9 & 9:16 screen fit" },
+                  { to: "/social-media", label: "All social media sizes", note: "TikTok, Instagram & YouTube hub" },
+                  { to: "/tiktok-aspect-ratio", label: "TikTok aspect ratio", note: "9:16 vertical video sizing" },
+                  { to: "/instagram-reel-aspect-ratio", label: "Instagram Reel aspect ratio", note: "1080×1920 & cover framing" },
+                  { to: "/youtube-shorts-aspect-ratio", label: "YouTube Shorts aspect ratio", note: "Vertical & square geometry" },
+                ].map(item => (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="flex flex-col rounded-xl border bg-card p-3.5 transition-colors hover:border-foreground/30 hover:bg-accent/40"
+                    >
+                      <span className="inline-flex items-center gap-1 text-sm font-semibold text-foreground">
+                        {item.label} <ArrowUpRight size={14} aria-hidden />
+                      </span>
+                      <span className="mt-0.5 text-xs text-muted-foreground">{item.note}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
             <section className="ratio-guide-next" aria-labelledby="next-title">
               <h2 id="next-title">Find the ratio of your image.</h2>
               <Link to="/calculator" className="ratio-guide-action">Open the calculator <ArrowUpRight size={18} aria-hidden /></Link>

@@ -1,29 +1,35 @@
-# Aspect Ratio Calculator
+# Image Aspect Ratio Calculator
 
-> Find your image aspect ratio and calculate the dimensions you need. Supporting video and ultrawide calculators. Free browser-based tools maintained by wherexml.
+> Find your image aspect ratio, calculate exact pixel dimensions, frame or beautify screenshots locally, and check video, ultrawide, and social media dimensions. Free browser-based tools maintained by wherexml.
 
 ## Tools
-- [Image aspect ratio calculator](https://imageaspectratio.com/): Read dimensions from a local photo and preview padding (Fit) or a centered crop (Fill) in common frames.
-- [Aspect ratio calculator](https://imageaspectratio.com/calculator): Find an aspect ratio from width and height, calculate a matching width or height, or scale dimensions.
-- [Video aspect ratio](https://imageaspectratio.com/video-aspect-ratio): Enter dimensions to compare frame fit; assumes square pixels.
-- [Ultrawide calculator](https://imageaspectratio.com/ultrawide-aspect-ratio-calculator): Distinguish exact pixel ratios from the 21:9 category.
+- [Image aspect ratio calculator](https://imageaspectratio.com/): Read pixel dimensions and exact reduced aspect ratio from a local photo, then preview padding (Fit) or centered crop (Fill) in common frames.
+- [Make image square](https://imageaspectratio.com/make-image-square): Pad a local photo with a solid, blurred, or transparent background—or crop and reposition it—then download a 1:1 PNG or JPEG up to 4096 px.
+- [Change image aspect ratio](https://imageaspectratio.com/change-image-aspect-ratio): Crop or pad a local photo to 1:1, 4:5, 9:16, 16:9, or custom ratios without stretching and download a PNG or JPEG up to 4096 px.
+- [Screenshot Beautifier](https://imageaspectratio.com/screenshot-beautifier): Open or paste (`Cmd/Ctrl+V`) a local screenshot, frame on studio gradients, ambient blur, or solid backgrounds, annotate with curved arrows (`A`), step badges (`N`), text callouts (`T`), freehand ink (`P`), highlighter (`H`), spotlight (`S`), Gaussian blur (`B`), or mosaic pixelation (`M`), and export flattened PNG or JPEG up to 4096 px.
+- [Aspect ratio calculator](https://imageaspectratio.com/calculator): Find an aspect ratio from width and height, solve a matching width or height in pixels, or scale dimensions using exact fraction math.
+- [16:9 aspect ratio calculator](https://imageaspectratio.com/16-9-aspect-ratio-calculator): Solve width or height at exact 16:9 in whole pixels; apply 640×360 to 3840×2160 examples.
+- [Video aspect ratio](https://imageaspectratio.com/video-aspect-ratio): Enter dimensions to compare widescreen and vertical frame fit; assumes square pixels.
+- [Ultrawide calculator](https://imageaspectratio.com/ultrawide-aspect-ratio-calculator): Distinguish exact pixel ratios (43:18, 64:27, 12:5) from the 21:9 marketing category.
 
 ## Social media dimensions
-- [TikTok aspect ratio](https://imageaspectratio.com/tiktok-aspect-ratio): Plan a vertical frame; distinguish working examples from ad specifications.
+- [Social media aspect ratios](https://imageaspectratio.com/social-media): Compare recommended dimensions and aspect ratios across TikTok, YouTube, and Instagram placements.
+- [TikTok aspect ratio](https://imageaspectratio.com/tiktok-aspect-ratio): Plan a 9:16 (1080×1920) vertical frame; distinguish working examples from ad specifications.
 - [YouTube aspect ratio](https://imageaspectratio.com/youtube-aspect-ratio): Calculate 16:9 landscape dimensions and understand adaptive playback.
-- [Instagram Reel aspect ratio](https://imageaspectratio.com/instagram-reel-aspect-ratio): Plan a 9:16 video; distinguish accepted shapes and cover framing.
-- [Instagram Story aspect ratio](https://imageaspectratio.com/instagram-story-aspect-ratio): Plan a portrait photo/video canvas and distinguish Story ad guidance.
-- [YouTube Shorts aspect ratio](https://imageaspectratio.com/youtube-shorts-aspect-ratio): Compare vertical and square geometry; consult official classification rules.
+- [Instagram Reel aspect ratio](https://imageaspectratio.com/instagram-reel-aspect-ratio): Plan a 9:16 (1080×1920) vertical video; distinguish accepted shapes and 3:4 profile grid cover framing.
+- [Instagram Story aspect ratio](https://imageaspectratio.com/instagram-story-aspect-ratio): Plan a 9:16 portrait photo/video canvas and distinguish Story ad guidance.
+- [YouTube Shorts aspect ratio](https://imageaspectratio.com/youtube-shorts-aspect-ratio): Compare vertical 9:16 and square 1:1 geometry; consult official classification rules.
 
 ## Learn
-- [What is aspect ratio?](https://imageaspectratio.com/what-is-aspect-ratio): An illustrated guide to width:height, common ratios, exact calculations, cropping, padding and stretching.
+- [What is aspect ratio?](https://imageaspectratio.com/what-is-aspect-ratio): An illustrated guide to width:height, common ratios, exact calculations, cropping, padding, and stretching.
+- [Exact fractions vs rounded pixels](https://imageaspectratio.com/exact-fractions-vs-rounded-pixels): How reduced ratios, whole-pixel scaling, rounding direction, exact crops, and CSS aspect-ratio behave in practice.
 
 ## About and support
-- [About](https://imageaspectratio.com/about): Calculation methods, scope and maintainer.
+- [About](https://imageaspectratio.com/about): Calculation methods, scope, and maintainer.
 - [Contact](https://imageaspectratio.com/contact): Public GitHub issue tracker.
 - [Privacy](https://imageaspectratio.com/privacy)
 - [Terms](https://imageaspectratio.com/terms)
 - [Source code](https://github.com/wherexml/image-aspect-ratio): MIT license.
 
 ## Limitations
-Calculations use exact fractions; rounded pixel values are labeled. Fit/Fill are previews. The tool does not resize, crop, export or transcode files. Selected images are read locally in the browser. Open-source availability and indexability do not imply search engine ranking or endorsement.
+Calculations use exact integer fractions; rounded pixel values are labeled. Fit/Fill are previews. Make image square, Change image aspect ratio, and Screenshot Beautifier export a local PNG or JPEG rendered in the browser up to 4096 px (no batch, AI fill, or video transcoding). Selected or pasted images stay locally in the browser and are never uploaded to a server. Open-source availability and indexability do not imply search engine ranking or endorsement.

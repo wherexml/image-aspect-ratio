@@ -1,5 +1,7 @@
 # Routes
 
+Production release (2026-11-11): `/make-image-square`, the four-row image-size table on `/social-media` and the accepted compact tool navigation are live in Worker version `9ab0cf51-2e2a-4222-932e-579d77ba3694`. Production HTTP/browser acceptance and screenshots: `../../../reports/2026-11-11/task9-task29-release/README.md`. This release record supersedes older local/not-deployed labels for this scope.
+
 Current source contract: [product specification](../../docs/product-spec.md). `/` is Image; `/calculator` is the manual calculator; `/image-aspect-ratio` is a compatibility redirect. This current contract supersedes earlier dated route inventories below; historical release records do not imply this revision is deployed.
 
 TanStack Start uses **file-based routing**. Every `.tsx` file in this directory
@@ -120,8 +122,29 @@ The YouTube page defaults to 1920 × 1080 at 16:9; the others default to 1080 ×
 
 `/social-media` groups the five existing platform routes under Instagram, YouTube and TikTok. Shared navigation exposes this group from the homepage and calculators. Social detail hierarchy remains in JSON-LD; visible breadcrumbs were removed site-wide on 2026-11-06. The hub participates in SITE_PAGES and indexable sitemap generation. Local acceptance: `../../verification/social-navigation/README.md`. This change has not been deployed.
 
+Image sizes (TASK-29, released 2026-11-11): the hub renders the four sourced records from `src/content/image-placements.ts` below `SocialPlatformLinks`. The table uses fixed widths so it wraps rather than scrolls at 390 px. Sources are plain external links inside one native details element. The hub WebPage dateModified is now 2026-11-07. The route inventory is unchanged. The official sources were rechecked on 2026-11-11; the historical registry checked date remains 2026-11-07.
+
 Site-wide visible breadcrumb removal acceptance: `../../verification/breadcrumb-removal/README.md`.
+
+## Make image square route (2026-11-07)
+
+Navigation redesign (2026-11-11, local): this route and `/` select the Image disclosure. Its Image ratio / Make square links remain available from every tool page, with the exact route marked current. One desktop text row replaces the permanent child row; narrow screens use one current-tool disclosure containing all destinations. Route identity, SEO and export behavior are unchanged. Local evidence: reports/2026-11-11/tool-navigation-redesign/ in the parent workspace. This supersedes the earlier two-row navigation candidate. Released in the combined TASK-9/TASK-29 production version recorded above.
+
+`/make-image-square` renders `SquareImageMaker` with the shared header, `CalculatorNavigation` (Image is selected, with the exact image-tool child selected) and the H1 "Make image square". It is a WebApplication with review date 2026-11-07. It is listed in SITE_PAGES/SITE_LABELS ("Make image square"), so it joins trailing-slash 308s, canonical-with-origin and the indexable sitemap. The preview stays noindex/nofollow with an empty sitemap. `scripts/verify-http.py` and `public/llms.txt` list it. The `routeTree.gen.ts` entry was added in generator format; confirm that a build produces no further diff. Released on 2026-11-11; production is indexable while local preview remains noindex.
 
 ## Home image route migration (2026-11-07)
 
 `/` renders the upload-only image checker (`Calculator media="image"` + `ImageRatioGuide`) with the former image title, description and guide; it never redirects. `/calculator` renders the manual calculator (H1 and title `Aspect Ratio Calculator`, unchanged defaults, Reset and preset order). `/image-aspect-ratio` (with or without trailing slash) answers 308 to `/` in `src/server.ts`, keeping the query string; its route also throws a client `redirect` to `/`. It is not in SITE_PAGES, so it is excluded from the sitemap and canonicals. SITE_PAGES lists `/` and `/calculator`; SITE_LABELS names `/` "Image ratio" (breadcrumb home) and `/calculator` "Calculator". Logos stay on `/`; photo-inspection links go to `/`, manual-ratio links go to `/calculator`. Noindex/nofollow and the build-time-origin rule are unchanged. Not deployed.
+
+## 16:9 calculator and image ratio changer (2026-11-14, local, not released)
+
+`/16-9-aspect-ratio-calculator` and `/change-image-aspect-ratio` follow the header/navigation shell of `/make-image-square`, have unique titles/descriptions, WebApplication JSON-LD dated 2026-11-14, and join SITE_PAGES/SITE_LABELS ("16:9 calculator", "Change image aspect ratio"), `scripts/verify-http.py` and `public/llms.txt`. Preview stays noindex/nofollow with an empty sitemap; indexable builds list 19 routes. The Mac build regenerated `routeTree.gen.ts`, including the digit-leading 16:9 route. Behavior contract: [product specification](../../docs/product-spec.md#169-calculator-and-image-ratio-changer-implemented-locally-2026-11-14-not-released).
+
+Mac acceptance (2026-11-14): 69 browser assertions, 13 independently verified image downloads, 10 HTTP checks, build and no-emit TypeScript check passed against the frozen noindex candidate. Evidence: `../../../reports/2026-11-14/imageaspectratio-new-pages/README.md`. This is local acceptance, not a release.
+
+Calculator menu (2026-11-14, local): the Calculator primary section is a disclosure with All ratios and 16:9; both routes select it. See [product specification](../../docs/product-spec.md#calculator-menu-and-continuous-image-placement-local-2026-11-14-supersedes-conflicting-notes-above).
+
+
+## Screenshot Studio route (2026-11-14, local, not released)
+
+`/screenshot-beautifier` joins `SITE_PAGES`/`SITE_LABELS` ("Screenshot Studio"), `CalculatorNavigation` (`Image` disclosure), shared footer, `scripts/verify-http.py` and `public/llms.txt`, with `WebApplication` JSON-LD dated `2026-11-14`. Preview stays `noindex, nofollow` with an empty sitemap; indexable builds list 20 routes. Acceptance evidence: `../../../reports/2026-11-14/screenshot-studio/README.md`.

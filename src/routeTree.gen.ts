@@ -10,14 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as R169AspectRatioCalculatorRouteImport } from './routes/16-9-aspect-ratio-calculator'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as CalculatorRouteImport } from './routes/calculator'
+import { Route as ChangeImageAspectRatioRouteImport } from './routes/change-image-aspect-ratio'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExactFractionsVsRoundedPixelsRouteImport } from './routes/exact-fractions-vs-rounded-pixels'
 import { Route as ImageAspectRatioRouteImport } from './routes/image-aspect-ratio'
 import { Route as InstagramReelAspectRatioRouteImport } from './routes/instagram-reel-aspect-ratio'
 import { Route as InstagramStoryAspectRatioRouteImport } from './routes/instagram-story-aspect-ratio'
+import { Route as MakeImageSquareRouteImport } from './routes/make-image-square'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ScreenshotBeautifierRouteImport } from './routes/screenshot-beautifier'
 import { Route as SocialMediaRouteImport } from './routes/social-media'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TiktokAspectRatioRouteImport } from './routes/tiktok-aspect-ratio'
@@ -26,12 +30,49 @@ import { Route as VideoAspectRatioRouteImport } from './routes/video-aspect-rati
 import { Route as WhatIsAspectRatioRouteImport } from './routes/what-is-aspect-ratio'
 import { Route as YoutubeAspectRatioRouteImport } from './routes/youtube-aspect-ratio'
 import { Route as YoutubeShortsAspectRatioRouteImport } from './routes/youtube-shorts-aspect-ratio'
+import { Route as V2IndexRouteImport } from './routes/v2/index'
+import { Route as V2169AspectRatioCalculatorRouteImport } from './routes/v2/16-9-aspect-ratio-calculator'
+import { Route as V2CalculatorRouteImport } from './routes/v2/calculator'
+import { Route as V2ChangeImageAspectRatioRouteImport } from './routes/v2/change-image-aspect-ratio'
+import { Route as V2ImageAspectRatioRouteImport } from './routes/v2/image-aspect-ratio'
+import { Route as V2InstagramReelAspectRatioRouteImport } from './routes/v2/instagram-reel-aspect-ratio'
+import { Route as V2InstagramStoryAspectRatioRouteImport } from './routes/v2/instagram-story-aspect-ratio'
+import { Route as V2MakeImageSquareRouteImport } from './routes/v2/make-image-square'
+import { Route as V2ScreenshotBeautifierRouteImport } from './routes/v2/screenshot-beautifier'
+import { Route as V2SocialMediaRouteImport } from './routes/v2/social-media'
+import { Route as V2TiktokAspectRatioRouteImport } from './routes/v2/tiktok-aspect-ratio'
+import { Route as V2UltrawideAspectRatioCalculatorRouteImport } from './routes/v2/ultrawide-aspect-ratio-calculator'
+import { Route as V2VideoAspectRatioRouteImport } from './routes/v2/video-aspect-ratio'
+import { Route as V2YoutubeAspectRatioRouteImport } from './routes/v2/youtube-aspect-ratio'
+import { Route as V2YoutubeShortsAspectRatioRouteImport } from './routes/v2/youtube-shorts-aspect-ratio'
+import { Route as V3IndexRouteImport } from './routes/v3/index'
+import { Route as V3AddPaddingToImageRouteImport } from './routes/v3/add-padding-to-image'
+import { Route as V3AnnotateScreenshotRouteImport } from './routes/v3/annotate-screenshot'
+import { Route as V3BlurScreenshotRouteImport } from './routes/v3/blur-screenshot'
+import { Route as V3CalculatorRouteImport } from './routes/v3/calculator'
+import { Route as V3ChangeImageAspectRatioRouteImport } from './routes/v3/change-image-aspect-ratio'
+import { Route as V3FitPhotoToInstagramRouteImport } from './routes/v3/fit-photo-to-instagram'
+import { Route as V3ImageAspectRatioRouteImport } from './routes/v3/image-aspect-ratio'
+import { Route as V3InstagramGridSplitterRouteImport } from './routes/v3/instagram-grid-splitter'
+import { Route as V3MakeImageSquareRouteImport } from './routes/v3/make-image-square'
+import { Route as V3OgImageSafeZoneRouteImport } from './routes/v3/og-image-safe-zone'
+import { Route as V3PixelateImageRouteImport } from './routes/v3/pixelate-image'
+import { Route as V3RoundCornersImageRouteImport } from './routes/v3/round-corners-image'
+import { Route as V3SafeZoneCheckerRouteImport } from './routes/v3/safe-zone-checker'
+import { Route as V3ScreenshotBeautifierRouteImport } from './routes/v3/screenshot-beautifier'
+import { Route as V3VideoAspectRatioRouteImport } from './routes/v3/video-aspect-ratio'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const R169AspectRatioCalculatorRoute =
+  R169AspectRatioCalculatorRouteImport.update({
+    id: '/16-9-aspect-ratio-calculator',
+    path: '/16-9-aspect-ratio-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -40,6 +81,11 @@ const AboutRoute = AboutRouteImport.update({
 const CalculatorRoute = CalculatorRouteImport.update({
   id: '/calculator',
   path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChangeImageAspectRatioRoute = ChangeImageAspectRatioRouteImport.update({
+  id: '/change-image-aspect-ratio',
+  path: '/change-image-aspect-ratio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -70,9 +116,19 @@ const InstagramStoryAspectRatioRoute =
     path: '/instagram-story-aspect-ratio',
     getParentRoute: () => rootRouteImport,
   } as any)
+const MakeImageSquareRoute = MakeImageSquareRouteImport.update({
+  id: '/make-image-square',
+  path: '/make-image-square',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScreenshotBeautifierRoute = ScreenshotBeautifierRouteImport.update({
+  id: '/screenshot-beautifier',
+  path: '/screenshot-beautifier',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SocialMediaRoute = SocialMediaRouteImport.update({
@@ -117,17 +173,183 @@ const YoutubeShortsAspectRatioRoute =
     path: '/youtube-shorts-aspect-ratio',
     getParentRoute: () => rootRouteImport,
   } as any)
+const V2IndexRoute = V2IndexRouteImport.update({
+  id: '/v2/',
+  path: '/v2/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2169AspectRatioCalculatorRoute =
+  V2169AspectRatioCalculatorRouteImport.update({
+    id: '/v2/16-9-aspect-ratio-calculator',
+    path: '/v2/16-9-aspect-ratio-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V2CalculatorRoute = V2CalculatorRouteImport.update({
+  id: '/v2/calculator',
+  path: '/v2/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2ChangeImageAspectRatioRoute =
+  V2ChangeImageAspectRatioRouteImport.update({
+    id: '/v2/change-image-aspect-ratio',
+    path: '/v2/change-image-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V2ImageAspectRatioRoute = V2ImageAspectRatioRouteImport.update({
+  id: '/v2/image-aspect-ratio',
+  path: '/v2/image-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2InstagramReelAspectRatioRoute =
+  V2InstagramReelAspectRatioRouteImport.update({
+    id: '/v2/instagram-reel-aspect-ratio',
+    path: '/v2/instagram-reel-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V2InstagramStoryAspectRatioRoute =
+  V2InstagramStoryAspectRatioRouteImport.update({
+    id: '/v2/instagram-story-aspect-ratio',
+    path: '/v2/instagram-story-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V2MakeImageSquareRoute = V2MakeImageSquareRouteImport.update({
+  id: '/v2/make-image-square',
+  path: '/v2/make-image-square',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2ScreenshotBeautifierRoute = V2ScreenshotBeautifierRouteImport.update({
+  id: '/v2/screenshot-beautifier',
+  path: '/v2/screenshot-beautifier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2SocialMediaRoute = V2SocialMediaRouteImport.update({
+  id: '/v2/social-media',
+  path: '/v2/social-media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2TiktokAspectRatioRoute = V2TiktokAspectRatioRouteImport.update({
+  id: '/v2/tiktok-aspect-ratio',
+  path: '/v2/tiktok-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2UltrawideAspectRatioCalculatorRoute =
+  V2UltrawideAspectRatioCalculatorRouteImport.update({
+    id: '/v2/ultrawide-aspect-ratio-calculator',
+    path: '/v2/ultrawide-aspect-ratio-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V2VideoAspectRatioRoute = V2VideoAspectRatioRouteImport.update({
+  id: '/v2/video-aspect-ratio',
+  path: '/v2/video-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2YoutubeAspectRatioRoute = V2YoutubeAspectRatioRouteImport.update({
+  id: '/v2/youtube-aspect-ratio',
+  path: '/v2/youtube-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V2YoutubeShortsAspectRatioRoute =
+  V2YoutubeShortsAspectRatioRouteImport.update({
+    id: '/v2/youtube-shorts-aspect-ratio',
+    path: '/v2/youtube-shorts-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V3IndexRoute = V3IndexRouteImport.update({
+  id: '/v3/',
+  path: '/v3/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3AddPaddingToImageRoute = V3AddPaddingToImageRouteImport.update({
+  id: '/v3/add-padding-to-image',
+  path: '/v3/add-padding-to-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3AnnotateScreenshotRoute = V3AnnotateScreenshotRouteImport.update({
+  id: '/v3/annotate-screenshot',
+  path: '/v3/annotate-screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3BlurScreenshotRoute = V3BlurScreenshotRouteImport.update({
+  id: '/v3/blur-screenshot',
+  path: '/v3/blur-screenshot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3CalculatorRoute = V3CalculatorRouteImport.update({
+  id: '/v3/calculator',
+  path: '/v3/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3ChangeImageAspectRatioRoute =
+  V3ChangeImageAspectRatioRouteImport.update({
+    id: '/v3/change-image-aspect-ratio',
+    path: '/v3/change-image-aspect-ratio',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const V3FitPhotoToInstagramRoute = V3FitPhotoToInstagramRouteImport.update({
+  id: '/v3/fit-photo-to-instagram',
+  path: '/v3/fit-photo-to-instagram',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3ImageAspectRatioRoute = V3ImageAspectRatioRouteImport.update({
+  id: '/v3/image-aspect-ratio',
+  path: '/v3/image-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3InstagramGridSplitterRoute = V3InstagramGridSplitterRouteImport.update({
+  id: '/v3/instagram-grid-splitter',
+  path: '/v3/instagram-grid-splitter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3MakeImageSquareRoute = V3MakeImageSquareRouteImport.update({
+  id: '/v3/make-image-square',
+  path: '/v3/make-image-square',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3OgImageSafeZoneRoute = V3OgImageSafeZoneRouteImport.update({
+  id: '/v3/og-image-safe-zone',
+  path: '/v3/og-image-safe-zone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3PixelateImageRoute = V3PixelateImageRouteImport.update({
+  id: '/v3/pixelate-image',
+  path: '/v3/pixelate-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3RoundCornersImageRoute = V3RoundCornersImageRouteImport.update({
+  id: '/v3/round-corners-image',
+  path: '/v3/round-corners-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3SafeZoneCheckerRoute = V3SafeZoneCheckerRouteImport.update({
+  id: '/v3/safe-zone-checker',
+  path: '/v3/safe-zone-checker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3ScreenshotBeautifierRoute = V3ScreenshotBeautifierRouteImport.update({
+  id: '/v3/screenshot-beautifier',
+  path: '/v3/screenshot-beautifier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const V3VideoAspectRatioRoute = V3VideoAspectRatioRouteImport.update({
+  id: '/v3/video-aspect-ratio',
+  path: '/v3/video-aspect-ratio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/16-9-aspect-ratio-calculator': typeof R169AspectRatioCalculatorRoute
   '/about': typeof AboutRoute
   '/calculator': typeof CalculatorRoute
+  '/change-image-aspect-ratio': typeof ChangeImageAspectRatioRoute
   '/contact': typeof ContactRoute
   '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
   '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
   '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
+  '/make-image-square': typeof MakeImageSquareRoute
   '/privacy': typeof PrivacyRoute
+  '/screenshot-beautifier': typeof ScreenshotBeautifierRoute
   '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
   '/tiktok-aspect-ratio': typeof TiktokAspectRatioRoute
@@ -136,17 +358,52 @@ export interface FileRoutesByFullPath {
   '/what-is-aspect-ratio': typeof WhatIsAspectRatioRoute
   '/youtube-aspect-ratio': typeof YoutubeAspectRatioRoute
   '/youtube-shorts-aspect-ratio': typeof YoutubeShortsAspectRatioRoute
+  '/v2/16-9-aspect-ratio-calculator': typeof V2169AspectRatioCalculatorRoute
+  '/v2/calculator': typeof V2CalculatorRoute
+  '/v2/change-image-aspect-ratio': typeof V2ChangeImageAspectRatioRoute
+  '/v2/image-aspect-ratio': typeof V2ImageAspectRatioRoute
+  '/v2/instagram-reel-aspect-ratio': typeof V2InstagramReelAspectRatioRoute
+  '/v2/instagram-story-aspect-ratio': typeof V2InstagramStoryAspectRatioRoute
+  '/v2/make-image-square': typeof V2MakeImageSquareRoute
+  '/v2/screenshot-beautifier': typeof V2ScreenshotBeautifierRoute
+  '/v2/social-media': typeof V2SocialMediaRoute
+  '/v2/tiktok-aspect-ratio': typeof V2TiktokAspectRatioRoute
+  '/v2/ultrawide-aspect-ratio-calculator': typeof V2UltrawideAspectRatioCalculatorRoute
+  '/v2/video-aspect-ratio': typeof V2VideoAspectRatioRoute
+  '/v2/youtube-aspect-ratio': typeof V2YoutubeAspectRatioRoute
+  '/v2/youtube-shorts-aspect-ratio': typeof V2YoutubeShortsAspectRatioRoute
+  '/v3/add-padding-to-image': typeof V3AddPaddingToImageRoute
+  '/v3/annotate-screenshot': typeof V3AnnotateScreenshotRoute
+  '/v3/blur-screenshot': typeof V3BlurScreenshotRoute
+  '/v3/calculator': typeof V3CalculatorRoute
+  '/v3/change-image-aspect-ratio': typeof V3ChangeImageAspectRatioRoute
+  '/v3/fit-photo-to-instagram': typeof V3FitPhotoToInstagramRoute
+  '/v3/image-aspect-ratio': typeof V3ImageAspectRatioRoute
+  '/v3/instagram-grid-splitter': typeof V3InstagramGridSplitterRoute
+  '/v3/make-image-square': typeof V3MakeImageSquareRoute
+  '/v3/og-image-safe-zone': typeof V3OgImageSafeZoneRoute
+  '/v3/pixelate-image': typeof V3PixelateImageRoute
+  '/v3/round-corners-image': typeof V3RoundCornersImageRoute
+  '/v3/safe-zone-checker': typeof V3SafeZoneCheckerRoute
+  '/v3/screenshot-beautifier': typeof V3ScreenshotBeautifierRoute
+  '/v3/video-aspect-ratio': typeof V3VideoAspectRatioRoute
+  '/v2/': typeof V2IndexRoute
+  '/v3/': typeof V3IndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/16-9-aspect-ratio-calculator': typeof R169AspectRatioCalculatorRoute
   '/about': typeof AboutRoute
   '/calculator': typeof CalculatorRoute
+  '/change-image-aspect-ratio': typeof ChangeImageAspectRatioRoute
   '/contact': typeof ContactRoute
   '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
   '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
   '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
+  '/make-image-square': typeof MakeImageSquareRoute
   '/privacy': typeof PrivacyRoute
+  '/screenshot-beautifier': typeof ScreenshotBeautifierRoute
   '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
   '/tiktok-aspect-ratio': typeof TiktokAspectRatioRoute
@@ -155,18 +412,53 @@ export interface FileRoutesByTo {
   '/what-is-aspect-ratio': typeof WhatIsAspectRatioRoute
   '/youtube-aspect-ratio': typeof YoutubeAspectRatioRoute
   '/youtube-shorts-aspect-ratio': typeof YoutubeShortsAspectRatioRoute
+  '/v2/16-9-aspect-ratio-calculator': typeof V2169AspectRatioCalculatorRoute
+  '/v2/calculator': typeof V2CalculatorRoute
+  '/v2/change-image-aspect-ratio': typeof V2ChangeImageAspectRatioRoute
+  '/v2/image-aspect-ratio': typeof V2ImageAspectRatioRoute
+  '/v2/instagram-reel-aspect-ratio': typeof V2InstagramReelAspectRatioRoute
+  '/v2/instagram-story-aspect-ratio': typeof V2InstagramStoryAspectRatioRoute
+  '/v2/make-image-square': typeof V2MakeImageSquareRoute
+  '/v2/screenshot-beautifier': typeof V2ScreenshotBeautifierRoute
+  '/v2/social-media': typeof V2SocialMediaRoute
+  '/v2/tiktok-aspect-ratio': typeof V2TiktokAspectRatioRoute
+  '/v2/ultrawide-aspect-ratio-calculator': typeof V2UltrawideAspectRatioCalculatorRoute
+  '/v2/video-aspect-ratio': typeof V2VideoAspectRatioRoute
+  '/v2/youtube-aspect-ratio': typeof V2YoutubeAspectRatioRoute
+  '/v2/youtube-shorts-aspect-ratio': typeof V2YoutubeShortsAspectRatioRoute
+  '/v3/add-padding-to-image': typeof V3AddPaddingToImageRoute
+  '/v3/annotate-screenshot': typeof V3AnnotateScreenshotRoute
+  '/v3/blur-screenshot': typeof V3BlurScreenshotRoute
+  '/v3/calculator': typeof V3CalculatorRoute
+  '/v3/change-image-aspect-ratio': typeof V3ChangeImageAspectRatioRoute
+  '/v3/fit-photo-to-instagram': typeof V3FitPhotoToInstagramRoute
+  '/v3/image-aspect-ratio': typeof V3ImageAspectRatioRoute
+  '/v3/instagram-grid-splitter': typeof V3InstagramGridSplitterRoute
+  '/v3/make-image-square': typeof V3MakeImageSquareRoute
+  '/v3/og-image-safe-zone': typeof V3OgImageSafeZoneRoute
+  '/v3/pixelate-image': typeof V3PixelateImageRoute
+  '/v3/round-corners-image': typeof V3RoundCornersImageRoute
+  '/v3/safe-zone-checker': typeof V3SafeZoneCheckerRoute
+  '/v3/screenshot-beautifier': typeof V3ScreenshotBeautifierRoute
+  '/v3/video-aspect-ratio': typeof V3VideoAspectRatioRoute
+  '/v2': typeof V2IndexRoute
+  '/v3': typeof V3IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/16-9-aspect-ratio-calculator': typeof R169AspectRatioCalculatorRoute
   '/about': typeof AboutRoute
   '/calculator': typeof CalculatorRoute
+  '/change-image-aspect-ratio': typeof ChangeImageAspectRatioRoute
   '/contact': typeof ContactRoute
   '/exact-fractions-vs-rounded-pixels': typeof ExactFractionsVsRoundedPixelsRoute
   '/image-aspect-ratio': typeof ImageAspectRatioRoute
   '/instagram-reel-aspect-ratio': typeof InstagramReelAspectRatioRoute
   '/instagram-story-aspect-ratio': typeof InstagramStoryAspectRatioRoute
+  '/make-image-square': typeof MakeImageSquareRoute
   '/privacy': typeof PrivacyRoute
+  '/screenshot-beautifier': typeof ScreenshotBeautifierRoute
   '/social-media': typeof SocialMediaRoute
   '/terms': typeof TermsRoute
   '/tiktok-aspect-ratio': typeof TiktokAspectRatioRoute
@@ -175,19 +467,54 @@ export interface FileRoutesById {
   '/what-is-aspect-ratio': typeof WhatIsAspectRatioRoute
   '/youtube-aspect-ratio': typeof YoutubeAspectRatioRoute
   '/youtube-shorts-aspect-ratio': typeof YoutubeShortsAspectRatioRoute
+  '/v2/16-9-aspect-ratio-calculator': typeof V2169AspectRatioCalculatorRoute
+  '/v2/calculator': typeof V2CalculatorRoute
+  '/v2/change-image-aspect-ratio': typeof V2ChangeImageAspectRatioRoute
+  '/v2/image-aspect-ratio': typeof V2ImageAspectRatioRoute
+  '/v2/instagram-reel-aspect-ratio': typeof V2InstagramReelAspectRatioRoute
+  '/v2/instagram-story-aspect-ratio': typeof V2InstagramStoryAspectRatioRoute
+  '/v2/make-image-square': typeof V2MakeImageSquareRoute
+  '/v2/screenshot-beautifier': typeof V2ScreenshotBeautifierRoute
+  '/v2/social-media': typeof V2SocialMediaRoute
+  '/v2/tiktok-aspect-ratio': typeof V2TiktokAspectRatioRoute
+  '/v2/ultrawide-aspect-ratio-calculator': typeof V2UltrawideAspectRatioCalculatorRoute
+  '/v2/video-aspect-ratio': typeof V2VideoAspectRatioRoute
+  '/v2/youtube-aspect-ratio': typeof V2YoutubeAspectRatioRoute
+  '/v2/youtube-shorts-aspect-ratio': typeof V2YoutubeShortsAspectRatioRoute
+  '/v3/add-padding-to-image': typeof V3AddPaddingToImageRoute
+  '/v3/annotate-screenshot': typeof V3AnnotateScreenshotRoute
+  '/v3/blur-screenshot': typeof V3BlurScreenshotRoute
+  '/v3/calculator': typeof V3CalculatorRoute
+  '/v3/change-image-aspect-ratio': typeof V3ChangeImageAspectRatioRoute
+  '/v3/fit-photo-to-instagram': typeof V3FitPhotoToInstagramRoute
+  '/v3/image-aspect-ratio': typeof V3ImageAspectRatioRoute
+  '/v3/instagram-grid-splitter': typeof V3InstagramGridSplitterRoute
+  '/v3/make-image-square': typeof V3MakeImageSquareRoute
+  '/v3/og-image-safe-zone': typeof V3OgImageSafeZoneRoute
+  '/v3/pixelate-image': typeof V3PixelateImageRoute
+  '/v3/round-corners-image': typeof V3RoundCornersImageRoute
+  '/v3/safe-zone-checker': typeof V3SafeZoneCheckerRoute
+  '/v3/screenshot-beautifier': typeof V3ScreenshotBeautifierRoute
+  '/v3/video-aspect-ratio': typeof V3VideoAspectRatioRoute
+  '/v2/': typeof V2IndexRoute
+  '/v3/': typeof V3IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/16-9-aspect-ratio-calculator'
     | '/about'
     | '/calculator'
+    | '/change-image-aspect-ratio'
     | '/contact'
     | '/exact-fractions-vs-rounded-pixels'
     | '/image-aspect-ratio'
     | '/instagram-reel-aspect-ratio'
     | '/instagram-story-aspect-ratio'
+    | '/make-image-square'
     | '/privacy'
+    | '/screenshot-beautifier'
     | '/social-media'
     | '/terms'
     | '/tiktok-aspect-ratio'
@@ -196,17 +523,52 @@ export interface FileRouteTypes {
     | '/what-is-aspect-ratio'
     | '/youtube-aspect-ratio'
     | '/youtube-shorts-aspect-ratio'
+    | '/v2/16-9-aspect-ratio-calculator'
+    | '/v2/calculator'
+    | '/v2/change-image-aspect-ratio'
+    | '/v2/image-aspect-ratio'
+    | '/v2/instagram-reel-aspect-ratio'
+    | '/v2/instagram-story-aspect-ratio'
+    | '/v2/make-image-square'
+    | '/v2/screenshot-beautifier'
+    | '/v2/social-media'
+    | '/v2/tiktok-aspect-ratio'
+    | '/v2/ultrawide-aspect-ratio-calculator'
+    | '/v2/video-aspect-ratio'
+    | '/v2/youtube-aspect-ratio'
+    | '/v2/youtube-shorts-aspect-ratio'
+    | '/v3/add-padding-to-image'
+    | '/v3/annotate-screenshot'
+    | '/v3/blur-screenshot'
+    | '/v3/calculator'
+    | '/v3/change-image-aspect-ratio'
+    | '/v3/fit-photo-to-instagram'
+    | '/v3/image-aspect-ratio'
+    | '/v3/instagram-grid-splitter'
+    | '/v3/make-image-square'
+    | '/v3/og-image-safe-zone'
+    | '/v3/pixelate-image'
+    | '/v3/round-corners-image'
+    | '/v3/safe-zone-checker'
+    | '/v3/screenshot-beautifier'
+    | '/v3/video-aspect-ratio'
+    | '/v2/'
+    | '/v3/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/16-9-aspect-ratio-calculator'
     | '/about'
     | '/calculator'
+    | '/change-image-aspect-ratio'
     | '/contact'
     | '/exact-fractions-vs-rounded-pixels'
     | '/image-aspect-ratio'
     | '/instagram-reel-aspect-ratio'
     | '/instagram-story-aspect-ratio'
+    | '/make-image-square'
     | '/privacy'
+    | '/screenshot-beautifier'
     | '/social-media'
     | '/terms'
     | '/tiktok-aspect-ratio'
@@ -215,17 +577,52 @@ export interface FileRouteTypes {
     | '/what-is-aspect-ratio'
     | '/youtube-aspect-ratio'
     | '/youtube-shorts-aspect-ratio'
+    | '/v2/16-9-aspect-ratio-calculator'
+    | '/v2/calculator'
+    | '/v2/change-image-aspect-ratio'
+    | '/v2/image-aspect-ratio'
+    | '/v2/instagram-reel-aspect-ratio'
+    | '/v2/instagram-story-aspect-ratio'
+    | '/v2/make-image-square'
+    | '/v2/screenshot-beautifier'
+    | '/v2/social-media'
+    | '/v2/tiktok-aspect-ratio'
+    | '/v2/ultrawide-aspect-ratio-calculator'
+    | '/v2/video-aspect-ratio'
+    | '/v2/youtube-aspect-ratio'
+    | '/v2/youtube-shorts-aspect-ratio'
+    | '/v3/add-padding-to-image'
+    | '/v3/annotate-screenshot'
+    | '/v3/blur-screenshot'
+    | '/v3/calculator'
+    | '/v3/change-image-aspect-ratio'
+    | '/v3/fit-photo-to-instagram'
+    | '/v3/image-aspect-ratio'
+    | '/v3/instagram-grid-splitter'
+    | '/v3/make-image-square'
+    | '/v3/og-image-safe-zone'
+    | '/v3/pixelate-image'
+    | '/v3/round-corners-image'
+    | '/v3/safe-zone-checker'
+    | '/v3/screenshot-beautifier'
+    | '/v3/video-aspect-ratio'
+    | '/v2'
+    | '/v3'
   id:
     | '__root__'
     | '/'
+    | '/16-9-aspect-ratio-calculator'
     | '/about'
     | '/calculator'
+    | '/change-image-aspect-ratio'
     | '/contact'
     | '/exact-fractions-vs-rounded-pixels'
     | '/image-aspect-ratio'
     | '/instagram-reel-aspect-ratio'
     | '/instagram-story-aspect-ratio'
+    | '/make-image-square'
     | '/privacy'
+    | '/screenshot-beautifier'
     | '/social-media'
     | '/terms'
     | '/tiktok-aspect-ratio'
@@ -234,18 +631,53 @@ export interface FileRouteTypes {
     | '/what-is-aspect-ratio'
     | '/youtube-aspect-ratio'
     | '/youtube-shorts-aspect-ratio'
+    | '/v2/16-9-aspect-ratio-calculator'
+    | '/v2/calculator'
+    | '/v2/change-image-aspect-ratio'
+    | '/v2/image-aspect-ratio'
+    | '/v2/instagram-reel-aspect-ratio'
+    | '/v2/instagram-story-aspect-ratio'
+    | '/v2/make-image-square'
+    | '/v2/screenshot-beautifier'
+    | '/v2/social-media'
+    | '/v2/tiktok-aspect-ratio'
+    | '/v2/ultrawide-aspect-ratio-calculator'
+    | '/v2/video-aspect-ratio'
+    | '/v2/youtube-aspect-ratio'
+    | '/v2/youtube-shorts-aspect-ratio'
+    | '/v3/add-padding-to-image'
+    | '/v3/annotate-screenshot'
+    | '/v3/blur-screenshot'
+    | '/v3/calculator'
+    | '/v3/change-image-aspect-ratio'
+    | '/v3/fit-photo-to-instagram'
+    | '/v3/image-aspect-ratio'
+    | '/v3/instagram-grid-splitter'
+    | '/v3/make-image-square'
+    | '/v3/og-image-safe-zone'
+    | '/v3/pixelate-image'
+    | '/v3/round-corners-image'
+    | '/v3/safe-zone-checker'
+    | '/v3/screenshot-beautifier'
+    | '/v3/video-aspect-ratio'
+    | '/v2/'
+    | '/v3/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  R169AspectRatioCalculatorRoute: typeof R169AspectRatioCalculatorRoute
   AboutRoute: typeof AboutRoute
   CalculatorRoute: typeof CalculatorRoute
+  ChangeImageAspectRatioRoute: typeof ChangeImageAspectRatioRoute
   ContactRoute: typeof ContactRoute
   ExactFractionsVsRoundedPixelsRoute: typeof ExactFractionsVsRoundedPixelsRoute
   ImageAspectRatioRoute: typeof ImageAspectRatioRoute
   InstagramReelAspectRatioRoute: typeof InstagramReelAspectRatioRoute
   InstagramStoryAspectRatioRoute: typeof InstagramStoryAspectRatioRoute
+  MakeImageSquareRoute: typeof MakeImageSquareRoute
   PrivacyRoute: typeof PrivacyRoute
+  ScreenshotBeautifierRoute: typeof ScreenshotBeautifierRoute
   SocialMediaRoute: typeof SocialMediaRoute
   TermsRoute: typeof TermsRoute
   TiktokAspectRatioRoute: typeof TiktokAspectRatioRoute
@@ -254,6 +686,37 @@ export interface RootRouteChildren {
   WhatIsAspectRatioRoute: typeof WhatIsAspectRatioRoute
   YoutubeAspectRatioRoute: typeof YoutubeAspectRatioRoute
   YoutubeShortsAspectRatioRoute: typeof YoutubeShortsAspectRatioRoute
+  V2169AspectRatioCalculatorRoute: typeof V2169AspectRatioCalculatorRoute
+  V2CalculatorRoute: typeof V2CalculatorRoute
+  V2ChangeImageAspectRatioRoute: typeof V2ChangeImageAspectRatioRoute
+  V2ImageAspectRatioRoute: typeof V2ImageAspectRatioRoute
+  V2InstagramReelAspectRatioRoute: typeof V2InstagramReelAspectRatioRoute
+  V2InstagramStoryAspectRatioRoute: typeof V2InstagramStoryAspectRatioRoute
+  V2MakeImageSquareRoute: typeof V2MakeImageSquareRoute
+  V2ScreenshotBeautifierRoute: typeof V2ScreenshotBeautifierRoute
+  V2SocialMediaRoute: typeof V2SocialMediaRoute
+  V2TiktokAspectRatioRoute: typeof V2TiktokAspectRatioRoute
+  V2UltrawideAspectRatioCalculatorRoute: typeof V2UltrawideAspectRatioCalculatorRoute
+  V2VideoAspectRatioRoute: typeof V2VideoAspectRatioRoute
+  V2YoutubeAspectRatioRoute: typeof V2YoutubeAspectRatioRoute
+  V2YoutubeShortsAspectRatioRoute: typeof V2YoutubeShortsAspectRatioRoute
+  V3AddPaddingToImageRoute: typeof V3AddPaddingToImageRoute
+  V3AnnotateScreenshotRoute: typeof V3AnnotateScreenshotRoute
+  V3BlurScreenshotRoute: typeof V3BlurScreenshotRoute
+  V3CalculatorRoute: typeof V3CalculatorRoute
+  V3ChangeImageAspectRatioRoute: typeof V3ChangeImageAspectRatioRoute
+  V3FitPhotoToInstagramRoute: typeof V3FitPhotoToInstagramRoute
+  V3ImageAspectRatioRoute: typeof V3ImageAspectRatioRoute
+  V3InstagramGridSplitterRoute: typeof V3InstagramGridSplitterRoute
+  V3MakeImageSquareRoute: typeof V3MakeImageSquareRoute
+  V3OgImageSafeZoneRoute: typeof V3OgImageSafeZoneRoute
+  V3PixelateImageRoute: typeof V3PixelateImageRoute
+  V3RoundCornersImageRoute: typeof V3RoundCornersImageRoute
+  V3SafeZoneCheckerRoute: typeof V3SafeZoneCheckerRoute
+  V3ScreenshotBeautifierRoute: typeof V3ScreenshotBeautifierRoute
+  V3VideoAspectRatioRoute: typeof V3VideoAspectRatioRoute
+  V2IndexRoute: typeof V2IndexRoute
+  V3IndexRoute: typeof V3IndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -263,6 +726,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/16-9-aspect-ratio-calculator': {
+      id: '/16-9-aspect-ratio-calculator'
+      path: '/16-9-aspect-ratio-calculator'
+      fullPath: '/16-9-aspect-ratio-calculator'
+      preLoaderRoute: typeof R169AspectRatioCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -277,6 +747,13 @@ declare module '@tanstack/react-router' {
       path: '/calculator'
       fullPath: '/calculator'
       preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/change-image-aspect-ratio': {
+      id: '/change-image-aspect-ratio'
+      path: '/change-image-aspect-ratio'
+      fullPath: '/change-image-aspect-ratio'
+      preLoaderRoute: typeof ChangeImageAspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -314,11 +791,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InstagramStoryAspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/make-image-square': {
+      id: '/make-image-square'
+      path: '/make-image-square'
+      fullPath: '/make-image-square'
+      preLoaderRoute: typeof MakeImageSquareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/screenshot-beautifier': {
+      id: '/screenshot-beautifier'
+      path: '/screenshot-beautifier'
+      fullPath: '/screenshot-beautifier'
+      preLoaderRoute: typeof ScreenshotBeautifierRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/social-media': {
@@ -377,19 +868,240 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof YoutubeShortsAspectRatioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/v2/': {
+      id: '/v2/'
+      path: '/v2'
+      fullPath: '/v2/'
+      preLoaderRoute: typeof V2IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/16-9-aspect-ratio-calculator': {
+      id: '/v2/16-9-aspect-ratio-calculator'
+      path: '/v2/16-9-aspect-ratio-calculator'
+      fullPath: '/v2/16-9-aspect-ratio-calculator'
+      preLoaderRoute: typeof V2169AspectRatioCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/calculator': {
+      id: '/v2/calculator'
+      path: '/v2/calculator'
+      fullPath: '/v2/calculator'
+      preLoaderRoute: typeof V2CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/change-image-aspect-ratio': {
+      id: '/v2/change-image-aspect-ratio'
+      path: '/v2/change-image-aspect-ratio'
+      fullPath: '/v2/change-image-aspect-ratio'
+      preLoaderRoute: typeof V2ChangeImageAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/image-aspect-ratio': {
+      id: '/v2/image-aspect-ratio'
+      path: '/v2/image-aspect-ratio'
+      fullPath: '/v2/image-aspect-ratio'
+      preLoaderRoute: typeof V2ImageAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/instagram-reel-aspect-ratio': {
+      id: '/v2/instagram-reel-aspect-ratio'
+      path: '/v2/instagram-reel-aspect-ratio'
+      fullPath: '/v2/instagram-reel-aspect-ratio'
+      preLoaderRoute: typeof V2InstagramReelAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/instagram-story-aspect-ratio': {
+      id: '/v2/instagram-story-aspect-ratio'
+      path: '/v2/instagram-story-aspect-ratio'
+      fullPath: '/v2/instagram-story-aspect-ratio'
+      preLoaderRoute: typeof V2InstagramStoryAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/make-image-square': {
+      id: '/v2/make-image-square'
+      path: '/v2/make-image-square'
+      fullPath: '/v2/make-image-square'
+      preLoaderRoute: typeof V2MakeImageSquareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/screenshot-beautifier': {
+      id: '/v2/screenshot-beautifier'
+      path: '/v2/screenshot-beautifier'
+      fullPath: '/v2/screenshot-beautifier'
+      preLoaderRoute: typeof V2ScreenshotBeautifierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/social-media': {
+      id: '/v2/social-media'
+      path: '/v2/social-media'
+      fullPath: '/v2/social-media'
+      preLoaderRoute: typeof V2SocialMediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/tiktok-aspect-ratio': {
+      id: '/v2/tiktok-aspect-ratio'
+      path: '/v2/tiktok-aspect-ratio'
+      fullPath: '/v2/tiktok-aspect-ratio'
+      preLoaderRoute: typeof V2TiktokAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/ultrawide-aspect-ratio-calculator': {
+      id: '/v2/ultrawide-aspect-ratio-calculator'
+      path: '/v2/ultrawide-aspect-ratio-calculator'
+      fullPath: '/v2/ultrawide-aspect-ratio-calculator'
+      preLoaderRoute: typeof V2UltrawideAspectRatioCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/video-aspect-ratio': {
+      id: '/v2/video-aspect-ratio'
+      path: '/v2/video-aspect-ratio'
+      fullPath: '/v2/video-aspect-ratio'
+      preLoaderRoute: typeof V2VideoAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/youtube-aspect-ratio': {
+      id: '/v2/youtube-aspect-ratio'
+      path: '/v2/youtube-aspect-ratio'
+      fullPath: '/v2/youtube-aspect-ratio'
+      preLoaderRoute: typeof V2YoutubeAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v2/youtube-shorts-aspect-ratio': {
+      id: '/v2/youtube-shorts-aspect-ratio'
+      path: '/v2/youtube-shorts-aspect-ratio'
+      fullPath: '/v2/youtube-shorts-aspect-ratio'
+      preLoaderRoute: typeof V2YoutubeShortsAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/': {
+      id: '/v3/'
+      path: '/v3'
+      fullPath: '/v3/'
+      preLoaderRoute: typeof V3IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/add-padding-to-image': {
+      id: '/v3/add-padding-to-image'
+      path: '/v3/add-padding-to-image'
+      fullPath: '/v3/add-padding-to-image'
+      preLoaderRoute: typeof V3AddPaddingToImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/annotate-screenshot': {
+      id: '/v3/annotate-screenshot'
+      path: '/v3/annotate-screenshot'
+      fullPath: '/v3/annotate-screenshot'
+      preLoaderRoute: typeof V3AnnotateScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/blur-screenshot': {
+      id: '/v3/blur-screenshot'
+      path: '/v3/blur-screenshot'
+      fullPath: '/v3/blur-screenshot'
+      preLoaderRoute: typeof V3BlurScreenshotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/calculator': {
+      id: '/v3/calculator'
+      path: '/v3/calculator'
+      fullPath: '/v3/calculator'
+      preLoaderRoute: typeof V3CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/change-image-aspect-ratio': {
+      id: '/v3/change-image-aspect-ratio'
+      path: '/v3/change-image-aspect-ratio'
+      fullPath: '/v3/change-image-aspect-ratio'
+      preLoaderRoute: typeof V3ChangeImageAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/fit-photo-to-instagram': {
+      id: '/v3/fit-photo-to-instagram'
+      path: '/v3/fit-photo-to-instagram'
+      fullPath: '/v3/fit-photo-to-instagram'
+      preLoaderRoute: typeof V3FitPhotoToInstagramRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/image-aspect-ratio': {
+      id: '/v3/image-aspect-ratio'
+      path: '/v3/image-aspect-ratio'
+      fullPath: '/v3/image-aspect-ratio'
+      preLoaderRoute: typeof V3ImageAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/instagram-grid-splitter': {
+      id: '/v3/instagram-grid-splitter'
+      path: '/v3/instagram-grid-splitter'
+      fullPath: '/v3/instagram-grid-splitter'
+      preLoaderRoute: typeof V3InstagramGridSplitterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/make-image-square': {
+      id: '/v3/make-image-square'
+      path: '/v3/make-image-square'
+      fullPath: '/v3/make-image-square'
+      preLoaderRoute: typeof V3MakeImageSquareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/og-image-safe-zone': {
+      id: '/v3/og-image-safe-zone'
+      path: '/v3/og-image-safe-zone'
+      fullPath: '/v3/og-image-safe-zone'
+      preLoaderRoute: typeof V3OgImageSafeZoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/pixelate-image': {
+      id: '/v3/pixelate-image'
+      path: '/v3/pixelate-image'
+      fullPath: '/v3/pixelate-image'
+      preLoaderRoute: typeof V3PixelateImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/round-corners-image': {
+      id: '/v3/round-corners-image'
+      path: '/v3/round-corners-image'
+      fullPath: '/v3/round-corners-image'
+      preLoaderRoute: typeof V3RoundCornersImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/safe-zone-checker': {
+      id: '/v3/safe-zone-checker'
+      path: '/v3/safe-zone-checker'
+      fullPath: '/v3/safe-zone-checker'
+      preLoaderRoute: typeof V3SafeZoneCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/screenshot-beautifier': {
+      id: '/v3/screenshot-beautifier'
+      path: '/v3/screenshot-beautifier'
+      fullPath: '/v3/screenshot-beautifier'
+      preLoaderRoute: typeof V3ScreenshotBeautifierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/v3/video-aspect-ratio': {
+      id: '/v3/video-aspect-ratio'
+      path: '/v3/video-aspect-ratio'
+      fullPath: '/v3/video-aspect-ratio'
+      preLoaderRoute: typeof V3VideoAspectRatioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  R169AspectRatioCalculatorRoute: R169AspectRatioCalculatorRoute,
   AboutRoute: AboutRoute,
   CalculatorRoute: CalculatorRoute,
+  ChangeImageAspectRatioRoute: ChangeImageAspectRatioRoute,
   ContactRoute: ContactRoute,
   ExactFractionsVsRoundedPixelsRoute: ExactFractionsVsRoundedPixelsRoute,
   ImageAspectRatioRoute: ImageAspectRatioRoute,
   InstagramReelAspectRatioRoute: InstagramReelAspectRatioRoute,
   InstagramStoryAspectRatioRoute: InstagramStoryAspectRatioRoute,
+  MakeImageSquareRoute: MakeImageSquareRoute,
   PrivacyRoute: PrivacyRoute,
+  ScreenshotBeautifierRoute: ScreenshotBeautifierRoute,
   SocialMediaRoute: SocialMediaRoute,
   TermsRoute: TermsRoute,
   TiktokAspectRatioRoute: TiktokAspectRatioRoute,
@@ -398,6 +1110,37 @@ const rootRouteChildren: RootRouteChildren = {
   WhatIsAspectRatioRoute: WhatIsAspectRatioRoute,
   YoutubeAspectRatioRoute: YoutubeAspectRatioRoute,
   YoutubeShortsAspectRatioRoute: YoutubeShortsAspectRatioRoute,
+  V2169AspectRatioCalculatorRoute: V2169AspectRatioCalculatorRoute,
+  V2CalculatorRoute: V2CalculatorRoute,
+  V2ChangeImageAspectRatioRoute: V2ChangeImageAspectRatioRoute,
+  V2ImageAspectRatioRoute: V2ImageAspectRatioRoute,
+  V2InstagramReelAspectRatioRoute: V2InstagramReelAspectRatioRoute,
+  V2InstagramStoryAspectRatioRoute: V2InstagramStoryAspectRatioRoute,
+  V2MakeImageSquareRoute: V2MakeImageSquareRoute,
+  V2ScreenshotBeautifierRoute: V2ScreenshotBeautifierRoute,
+  V2SocialMediaRoute: V2SocialMediaRoute,
+  V2TiktokAspectRatioRoute: V2TiktokAspectRatioRoute,
+  V2UltrawideAspectRatioCalculatorRoute: V2UltrawideAspectRatioCalculatorRoute,
+  V2VideoAspectRatioRoute: V2VideoAspectRatioRoute,
+  V2YoutubeAspectRatioRoute: V2YoutubeAspectRatioRoute,
+  V2YoutubeShortsAspectRatioRoute: V2YoutubeShortsAspectRatioRoute,
+  V3AddPaddingToImageRoute: V3AddPaddingToImageRoute,
+  V3AnnotateScreenshotRoute: V3AnnotateScreenshotRoute,
+  V3BlurScreenshotRoute: V3BlurScreenshotRoute,
+  V3CalculatorRoute: V3CalculatorRoute,
+  V3ChangeImageAspectRatioRoute: V3ChangeImageAspectRatioRoute,
+  V3FitPhotoToInstagramRoute: V3FitPhotoToInstagramRoute,
+  V3ImageAspectRatioRoute: V3ImageAspectRatioRoute,
+  V3InstagramGridSplitterRoute: V3InstagramGridSplitterRoute,
+  V3MakeImageSquareRoute: V3MakeImageSquareRoute,
+  V3OgImageSafeZoneRoute: V3OgImageSafeZoneRoute,
+  V3PixelateImageRoute: V3PixelateImageRoute,
+  V3RoundCornersImageRoute: V3RoundCornersImageRoute,
+  V3SafeZoneCheckerRoute: V3SafeZoneCheckerRoute,
+  V3ScreenshotBeautifierRoute: V3ScreenshotBeautifierRoute,
+  V3VideoAspectRatioRoute: V3VideoAspectRatioRoute,
+  V2IndexRoute: V2IndexRoute,
+  V3IndexRoute: V3IndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

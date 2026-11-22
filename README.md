@@ -31,7 +31,7 @@ The `/what-is-aspect-ratio` guide explains proportions, pixel dimensions and fra
 - **Fit/Fill previews:** inspect framing before deciding how to prepare an image or video.
 - **Responsive interface:** shared navigation and system, light and dark themes.
 
-These tools calculate numbers and preview framing. They do **not** export resized or cropped images, transcode videos, or change display settings. Video calculations assume square pixels.
+`/make-image-square` pads or crops one local photo and downloads a square PNG or JPEG (1–4096 px) rendered in the browser. `/change-image-aspect-ratio` does the same for 1:1, 4:5, 9:16 or 16:9 output (each side 1–4096 px). `/screenshot-beautifier` (**Screenshot Studio**) opens or pastes one local screenshot, crops, adds directly editable annotations (3-handle curved arrows and lines, 8-handle shapes, highlights, step counters, inline text callouts, spotlight and irreversible block pixelation), frames with auto-balanced gradients or plain backgrounds, and exports PNG or JPEG (up to 4096 px). `/16-9-aspect-ratio-calculator` solves the missing width or height at exact 16:9 and applies common resolutions. The other tools calculate numbers and preview framing; they do **not** export files, transcode videos, or change display settings. Video calculations assume square pixels.
 
 ## Run locally
 

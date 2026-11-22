@@ -541,9 +541,14 @@ export function Calculator({ ultrawide = false, media, children }: { ultrawide?:
         {children}
         <nav aria-label="Related calculators" className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <Link to="/what-is-aspect-ratio" className="font-medium underline-offset-4 hover:underline">What is aspect ratio? — a visual guide</Link>
-          {media && <Link to="/calculator" className="font-medium underline-offset-4 hover:underline">Aspect ratio calculator — find the ratio of any other resolution</Link>}
+          {media === "image" && <Link to="/make-image-square" className="font-medium underline-offset-4 hover:underline">Make image square</Link>}
+          {media === "image" && <Link to="/change-image-aspect-ratio" className="font-medium underline-offset-4 hover:underline">Change image aspect ratio</Link>}
+          {media === "image" && <Link to="/screenshot-beautifier" className="font-medium underline-offset-4 hover:underline">Screenshot Beautifier</Link>}
+          {home && <Link to="/16-9-aspect-ratio-calculator" className="font-medium underline-offset-4 hover:underline">16:9 aspect ratio calculator</Link>}
+          {(media || ultrawide) && <Link to="/calculator" className="font-medium underline-offset-4 hover:underline">Aspect ratio calculator — find the ratio of any other resolution</Link>}
           {(home || media === "video") && <Link to="/" className="font-medium underline-offset-4 hover:underline">Image aspect ratio — check an image</Link>}
           {media !== "video" && <Link to="/video-aspect-ratio" className="font-medium underline-offset-4 hover:underline">Video aspect ratio calculator — compare screen fit</Link>}
+          <Link to="/social-media" className="font-medium underline-offset-4 hover:underline">Social media aspect ratio sizes</Link>
         </nav>
       </main>
     </div>

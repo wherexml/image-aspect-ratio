@@ -10,7 +10,7 @@ const DESCRIPTION =
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    scripts: seoScripts(TITLE, DESCRIPTION, "/", true, "2026-10-27"),
+    scripts: seoScripts(TITLE, DESCRIPTION, "/", true, "2026-11-14"),
     meta: previewSeoMeta(TITLE, DESCRIPTION, "/"),
     links: seoLinks("/"),
   }),
