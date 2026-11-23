@@ -5,6 +5,28 @@ const origin = "https://imageaspectratio.com";
 const relay = "https://llm.tothemars.top/_geoinflow";
 const website = "0e360655-0b8c-4334-98dd-99634b96d0c0";
 const source = "669a374d-1513-450f-b104-1e95b96745cc";
+const ALLOWED_EVENTS = new Set([
+  "tool_complete",
+  "result_copy",
+  "page_engaged_15s",
+  "scroll_depth",
+  "tool_first_interact",
+  "preset_select",
+  "nav_tool_switch",
+]);
+const ALLOWED_EVENT_FIELDS = [
+  "tool",
+  "task_type",
+  "calculation_mode",
+  "page_type",
+  "depth",
+  "action_type",
+  "preset",
+  "from_path",
+  "to_path",
+  "nav_surface",
+  "ui_ver",
+] as const;
 let lastHeartbeat = 0;
 
 function configured(request: Request, env: GeoEnv) {
@@ -59,11 +81,33 @@ export async function geoCollection(request: Request, rawEnv: unknown): Promise<
       const p = input.payload;
       if (input.type !== "event" || p?.website !== website || p.hostname !== "imageaspectratio.com" || p.link || p.pixel)
         return new Response(null, { status: 400 });
+      const evName = p.name === undefined || p.name === "" ? null : p.name;
+      if (evName !== null && (typeof evName !== "string" || !ALLOWED_EVENTS.has(evName))) {
+        return new Response(null, { status: 400 });
+      }
       const payload: Record<string, unknown> = {};
       for (const key of ["website", "eventId", "webdriver", "hostname", "language", "screen", "title", "url", "referrer"])
         if (p[key] !== undefined) payload[key] = p[key];
       payload['url'] = cleanUrl(payload['url']);
       payload['referrer'] = cleanUrl(payload['referrer']);
+      if (evName) {
+        payload['name'] = evName;
+        const eventData: Record<string, string | number> = {};
+        const rawData = p.data && typeof p.data === "object" && !Array.isArray(p.data)
+          ? (p.data as Record<string, unknown>)
+          : null;
+        if (rawData) {
+          for (const field of ALLOWED_EVENT_FIELDS) {
+            const val = rawData[field];
+            if (typeof val === "string" && val.length > 0 && val.length <= 80) {
+              eventData[field] = val;
+            } else if (typeof val === "number" && Number.isFinite(val)) {
+              eventData[field] = val;
+            }
+          }
+        }
+        payload['data'] = eventData;
+      }
       body = JSON.stringify({ type: "event", payload });
     } catch { return new Response(null, { status: 400 }); }
     h.set("Content-Type", "application/json");

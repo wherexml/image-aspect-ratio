@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useRef, type SyntheticEvent } from "react";
 import { ChevronDown } from "lucide-react";
+import { trackInteractionEvent } from "@/lib/tool-analytics";
 import { SocialPlatformLinks, SOCIAL_GROUPS } from "./SocialPlatformLinks";
 
 const imageTools = [
@@ -57,8 +58,22 @@ export function CalculatorNavigation() {
       if (event.currentTarget.open) close(event.currentTarget);
     },
   };
-  const destination = ({ to, label }: typeof imageTools[number] | typeof calculatorTools[number] | typeof directTools[number], className = "tool-nav-link") =>
-    <Link key={to} to={to} activeOptions={exact} onClick={() => close()} className={className}>{label}</Link>;
+  const trackNav = (to: string, surface: "desktop" | "mobile") => {
+    if (to !== pathname) {
+      trackInteractionEvent("nav_tool_switch", {
+        from_path: pathname,
+        to_path: to,
+        nav_surface: surface,
+      });
+    }
+    close();
+  };
+  const destination = (
+    { to, label }: typeof imageTools[number] | typeof calculatorTools[number] | typeof directTools[number],
+    className = "tool-nav-link",
+    surface: "desktop" | "mobile" = "desktop",
+  ) =>
+    <Link key={to} to={to} activeOptions={exact} onClick={() => trackNav(to, surface)} className={className}>{label}</Link>;
 
   return <nav ref={navigation} aria-label="Tools" className="tool-nav"
     onKeyDown={event => {
@@ -92,9 +107,9 @@ export function CalculatorNavigation() {
           Social Media <ChevronDown aria-hidden="true" />
         </summary>
         <div className="tool-popover tool-social-menu" aria-label="Social Media tools">
-          <SocialPlatformLinks onNavigate={() => close()} />
+          <SocialPlatformLinks onNavigate={(to) => (to ? trackNav(to, "desktop") : close())} />
           <div className="mt-4 border-t border-border pt-3">
-            <Link to="/social-media" activeOptions={exact} className="tool-menu-link" onClick={() => close()}>All platforms</Link>
+            <Link to="/social-media" activeOptions={exact} className="tool-menu-link" onClick={() => trackNav("/social-media", "desktop")}>All platforms</Link>
           </div>
         </div>
       </details>
@@ -108,20 +123,20 @@ export function CalculatorNavigation() {
       <div className="tool-popover tool-mobile-menu" aria-label="All tools">
         <div className="tool-menu-group">
           <p className="tool-group-label">Image</p>
-          {imageTools.map(tool => destination(tool, "tool-menu-link"))}
+          {imageTools.map(tool => destination(tool, "tool-menu-link", "mobile"))}
         </div>
         <div className="tool-menu-group">
           <p className="tool-group-label">Calculator</p>
-          {calculatorTools.map(tool => destination(tool, "tool-menu-link"))}
+          {calculatorTools.map(tool => destination(tool, "tool-menu-link", "mobile"))}
         </div>
         <div className="tool-menu-group">
-          {directTools.map(tool => destination(tool, "tool-menu-link"))}
+          {directTools.map(tool => destination(tool, "tool-menu-link", "mobile"))}
         </div>
         <div className="tool-menu-group">
           <p className="tool-group-label">Social Media</p>
           {SOCIAL_GROUPS.flatMap(group => group.links.map(link => <Link key={link.to} to={link.to} activeOptions={exact}
-            onClick={() => close()} className="tool-menu-link">{group.name} {link.label}</Link>))}
-          <Link to="/social-media" activeOptions={exact} className="tool-menu-link" onClick={() => close()}>All platforms</Link>
+            onClick={() => trackNav(link.to, "mobile")} className="tool-menu-link">{group.name} {link.label}</Link>))}
+          <Link to="/social-media" activeOptions={exact} className="tool-menu-link" onClick={() => trackNav("/social-media", "mobile")}>All platforms</Link>
         </div>
       </div>
     </details>

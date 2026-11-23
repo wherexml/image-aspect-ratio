@@ -15,7 +15,7 @@ export const SOCIAL_GROUPS = [
   ] },
 ] as const;
 
-export function SocialPlatformLinks({ onNavigate, hub = false }: { onNavigate?: () => void; hub?: boolean }) {
+export function SocialPlatformLinks({ onNavigate, hub = false }: { onNavigate?: (to?: string) => void; hub?: boolean }) {
   // Only the hub page owns headings; inside the navigation menu these labels would precede the page's h1.
   const GroupName = hub ? "h2" : "p";
   return <div className={`grid gap-6 sm:grid-cols-3 ${hub ? "sm:gap-8" : ""}`}>
@@ -24,7 +24,7 @@ export function SocialPlatformLinks({ onNavigate, hub = false }: { onNavigate?: 
         <Icon className="h-5 w-5 text-primary" aria-hidden="true" />{name}
       </GroupName>
       <div className="grid gap-1">
-        {links.map(({ to, label, ratio }) => <Link key={to} to={to} onClick={onNavigate}
+        {links.map(({ to, label, ratio }) => <Link key={to} to={to} onClick={() => onNavigate?.(to)}
           aria-label={`${name} ${label} aspect ratio`}
           activeProps={{ "aria-current": "page", className: "bg-accent text-accent-foreground" }}
           className={`group flex min-h-11 items-center justify-between gap-4 rounded-lg px-3 py-3 text-sm hover:bg-secondary focus-visible:outline-2 focus-visible:outline-primary ${hub ? "border-b rounded-none" : ""}`}>

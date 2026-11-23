@@ -299,7 +299,7 @@ export function Calculator({ ultrawide = false, media, children }: { ultrawide?:
                     const pressed = ultrawide ? ultraPreset === id : activePreset === index;
                     return (
                     <button key={id ?? index} type="button" title={hint} aria-pressed={pressed}
-                      onClick={() => { tracking.changed(); resetCopy(); setRatioW(w); setRatioH(h); if (ultrawide && id) setUltraPreset(id); }}
+                      onClick={() => { tracking.preset(ultrawide ? (id ?? `${w}:${h}`) : `${w}:${h}`); tracking.changed(); resetCopy(); setRatioW(w); setRatioH(h); if (ultrawide && id) setUltraPreset(id); }}
                       className={`${strict ? "col-span-2 mt-2 border-t" : ""} group flex flex-col items-center gap-0.5 rounded-lg border border-transparent py-1.5 text-muted-foreground transition-colors hover:border-border hover:text-foreground aria-pressed:border-primary/40 aria-pressed:bg-accent aria-pressed:text-accent-foreground`}>
                       <Thumb w={+w} h={+h} active={pressed} />
                       <span className="num text-xs font-medium">{ultrawide ? hint : `${w}:${h}`}</span>
@@ -313,7 +313,7 @@ export function Calculator({ ultrawide = false, media, children }: { ultrawide?:
                     <div className="grid grid-cols-2 gap-2">
                       {PRESET_DISPLAY.slice(PRIMARY_PRESET_COUNT).map(({ w, h, hint, index }) => (
                         <button key={w + ":" + h} type="button" title={hint} aria-pressed={activePreset === index}
-                          onClick={() => { tracking.changed(); resetCopy(); setRatioW(w); setRatioH(h); }}
+                          onClick={() => { tracking.preset(`${w}:${h}`); tracking.changed(); resetCopy(); setRatioW(w); setRatioH(h); }}
                           className="flex min-h-11 items-center justify-center gap-2 rounded-lg border px-2 py-3 text-sm hover:bg-accent aria-pressed:border-primary aria-pressed:bg-accent">
                           <span className="num font-semibold">{w}:{h}</span><span>{hint}</span>
                         </button>

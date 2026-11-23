@@ -6,6 +6,14 @@
 
 `result_copy` records successful clipboard writes only. It is a diagnostic event, not another key event for the same task. Clipboard fallback/manual selection is not counted as a successful programmatic copy.
 
+Real-time funnel events forwarded to both GA4 and first-party GEOInflow (`window.umami.track`, tagged with `ui_ver` for 4-hour iteration comparisons; suppressed in QA mode, Do-Not-Track, and `/v2` / `/v3` previews):
+
+- `page_engaged_15s` (`page_type`): fires once per pathname after real user interaction plus 15 seconds of foreground visible dwell.
+- `scroll_depth` (`page_type`, `depth`: `50 | 90`): fires once per milestone per pathname.
+- `tool_first_interact` (`tool`, `calculation_mode`, `action_type`: `input | preset | image`): fires once per mounted tool session on the first active interaction.
+- `preset_select` (`tool`, `calculation_mode`, `preset`): fires when a bounded ratio preset button is clicked.
+- `nav_tool_switch` (`from_path`, `to_path`, `nav_surface`: `desktop | mobile`): fires when switching tools via the top tool navigation.
+
 Event-scoped custom dimensions registered on property `560549779`:
 
 | Parameter | Allowed values |

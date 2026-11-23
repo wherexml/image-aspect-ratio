@@ -3,6 +3,7 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  useLocation,
   useRouter,
   HeadContent,
   Scripts,
@@ -11,6 +12,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { CONTENT_UPDATED, MAINTAINER, REPOSITORY_URL } from "@/lib/seo";
+import { usePageEngagement } from "@/lib/tool-analytics";
 
 import { analyticsScript, geoAnalyticsScript } from "../lib/analytics";
 
@@ -114,6 +116,8 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
+  const { pathname } = useLocation();
+  usePageEngagement(pathname);
   return (
     <>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
