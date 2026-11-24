@@ -1,10 +1,13 @@
 # Cloudflare deployment
 
-## Unrecorded production releases reconciliation — 2026-11-07 to 2026-11-24
+## Unrecorded production releases reconciliation — 2026-11-06 to 2026-11-23 UTC
 
-- **2026-11-07 (`afda3de8651b004f9f2a91a0dfc0677d413163a1`)**: Released Worker version `68cc34e2-210a-496b-a7ed-1b57a0d9c876` (prior rollback target `d6730cb2-d4f7-40ed-977f-302ac90970f2`). Swapped `/` to the image inspector, added `/calculator`, and set `/image-aspect-ratio` 308 redirect to `/`.
-- **2026-11-22 (`a00e5cd`)**: Released V3 tool suite promotion to canonical root routes with 28 sitemap URLs (exact Cloudflare Worker version UUID not separately recorded in local release ledger).
-- **2026-11-24 (`e50c93e`)**: Released Worker version `23506678-350d-4570-82f6-fd918175e21e` (rollback target `9ab0cf51-2e2a-4222-932e-579d77ba3694`), adding the first-party `/_geo/` relay and origin/path allowlist.
+Verified against `wrangler deployments list --name aspect-ratio-canvas` and `wrangler versions list --name aspect-ratio-canvas`:
+
+- **2026-11-06T16:38Z / 2026-11-07 CST (`afda3de`)**: Worker `68cc34e2-210a-496b-a7ed-1b57a0d9c876` (rollback `d6730cb2-d4f7-40ed-977f-302ac90970f2`). Swapped `/` to the image inspector, added `/calculator`, and set `/image-aspect-ratio` 308 redirect to `/`.
+- **2026-11-07T02:31Z / 2026-11-07 CST (`0697515`)**: Worker `6e37dbda-ed35-4083-aba1-a28a30b70b7a` (rollback `68cc34e2-210a-496b-a7ed-1b57a0d9c876`). Refined image upload, paste, and persistent preview states.
+- **2026-11-11T11:10Z (`9ab0cf51-2e2a-4222-932e-579d77ba3694`)**: TASK-9 and TASK-29 combined release (see section below).
+- **2026-11-23T16:00Z / 2026-11-24 CST (`e50c93e`, bundling `a00e5cd`)**: Worker `23506678-350d-4570-82f6-fd918175e21e` (direct prior Cloudflare deployment `9ab0cf51-2e2a-4222-932e-579d77ba3694`, which predates the 8 new V3 routes). Shipped the 2026-11-22 V3 canonical root promotion (`a00e5cd`, 28 sitemap URLs — never separately uploaded or deployed to Cloudflare) together with the GEOInflow tool/engagement event bridge and `/_geo/api/send` allowlist (`e50c93e`; the first-party `/_geo/` relay predated `e50c93e`). Safe rollback target for the next release is `23506678-350d-4570-82f6-fd918175e21e`.
 
 ## TASK-9 and TASK-29 combined release — 2026-11-11
 

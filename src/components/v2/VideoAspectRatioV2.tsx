@@ -106,7 +106,9 @@ export function VideoAspectRatioV2() {
     };
   }, [sourceInfo, parsedTarget, knownSide]);
 
-  const trackingSignature = `${srcW}x${srcH}:${knownSide}:${targetPx}:${fit}`;
+  const trackingSignature = solvedTarget
+    ? `${srcW}x${srcH}:${knownSide}:${targetPx}:${fit}:${solvedTarget.copy}`
+    : null;
   const tracking = useToolTracking("video", "solve", trackingSignature);
 
   const handleSelectPreset = useCallback((id: string | null) => {

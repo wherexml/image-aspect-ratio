@@ -12,6 +12,7 @@ vi.mock("@/lib/site", () => ({
 }));
 
 import { AspectRatioCalculatorV2 } from "@/components/v2/AspectRatioCalculatorV2";
+import { VideoAspectRatioV2 } from "@/components/v2/VideoAspectRatioV2";
 import { ANALYTICS_UI_VER, resetUmamiQueueForTest } from "@/lib/tool-analytics";
 import { routeTree } from "@/routeTree.gen";
 
@@ -152,6 +153,36 @@ describe("P0 active tool telemetry and SSR mobile nav deduplication", () => {
       from_path: "/calculator",
       to_path: "/make-image-square",
       nav_surface: "mobile",
+      ui_ver: ANALYTICS_UI_VER,
+    });
+  });
+
+  it("does not emit tool_complete from VideoAspectRatioV2 on cleared/invalid input and emits on valid input", async () => {
+    vi.useFakeTimers();
+    setProductionLocation("https://imageaspectratio.com/video-aspect-ratio");
+
+    render(<VideoAspectRatioV2 />);
+
+    const targetInput = screen.getByTestId("v2-video-target-px");
+    fireEvent.input(targetInput, { target: { value: "" } });
+
+    await act(async () => {
+      vi.advanceTimersByTime(1100);
+    });
+
+    const invalidCompletions = umamiTrackMock.mock.calls.filter(([name]) => name === "tool_complete");
+    expect(invalidCompletions).toHaveLength(0);
+
+    fireEvent.input(targetInput, { target: { value: "2560" } });
+
+    await act(async () => {
+      vi.advanceTimersByTime(1100);
+    });
+
+    expect(umamiTrackMock).toHaveBeenCalledWith("tool_complete", {
+      tool: "video",
+      task_type: "calculation",
+      calculation_mode: "solve",
       ui_ver: ANALYTICS_UI_VER,
     });
   });

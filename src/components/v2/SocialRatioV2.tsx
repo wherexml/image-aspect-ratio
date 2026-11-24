@@ -99,34 +99,6 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
 
   const selectedPreset = page.sizes[Number(presetIndex)] ?? page.sizes[0]!;
   const platformKey = page.path.replace(/^\//, "");
-  const tracking = useToolTracking(
-    "social",
-    "solve",
-    `${platformKey}:${presetIndex}:${knownSide}:${knownValue}`,
-  );
-
-  const handleSelectCanvas = useCallback(
-    (val: string | null) => {
-      if (!val) return;
-      const next = page.sizes[Number(val)];
-      if (!next) return;
-      tracking.preset(`${platformKey}:${val}`);
-      tracking.changed();
-      setCopied(false);
-      setPresetIndex(val);
-      setKnownValue(knownSide === "width" ? next.width : next.height);
-    },
-    [page.sizes, knownSide, platformKey, tracking],
-  );
-
-  const handleReset = useCallback(() => {
-    const first = page.sizes[0]!;
-    tracking.cancel();
-    setCopied(false);
-    setPresetIndex("0");
-    setKnownSide("width");
-    setKnownValue(first.width);
-  }, [page.sizes, tracking]);
 
   const solved = useMemo(() => {
     const pw = parsePositive(selectedPreset.width);
@@ -176,6 +148,34 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
       formatted: `${fmtInt(outW)} × ${fmtInt(outH)} px`,
     };
   }, [selectedPreset, knownSide, knownValue]);
+
+  const trackingSignature = solved.ok
+    ? `${platformKey}:${presetIndex}:${knownSide}:${solved.copyText}`
+    : null;
+  const tracking = useToolTracking("social", "solve", trackingSignature);
+
+  const handleSelectCanvas = useCallback(
+    (val: string | null) => {
+      if (!val) return;
+      const next = page.sizes[Number(val)];
+      if (!next) return;
+      tracking.preset(`${platformKey}:${val}`);
+      tracking.changed();
+      setCopied(false);
+      setPresetIndex(val);
+      setKnownValue(knownSide === "width" ? next.width : next.height);
+    },
+    [page.sizes, knownSide, platformKey, tracking],
+  );
+
+  const handleReset = useCallback(() => {
+    const first = page.sizes[0]!;
+    tracking.cancel();
+    setCopied(false);
+    setPresetIndex("0");
+    setKnownSide("width");
+    setKnownValue(first.width);
+  }, [page.sizes, tracking]);
 
   const stageBox = useMemo(() => {
     const ar = "ar" in solved && solved.ar ? solved.ar : 9 / 16;

@@ -176,6 +176,8 @@ const exact = { exact: true, includeSearch: false };
 function V3DropdownNavigation() {
   const { pathname } = useLocation();
   const navRef = useRef<HTMLElement>(null);
+  const mobileDetailsRef = useRef<HTMLDetailsElement>(null);
+  const prevPathnameRef = useRef(pathname);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const normalizedPath =
@@ -230,7 +232,16 @@ function V3DropdownNavigation() {
   };
 
   useEffect(() => {
-    closeAll();
+    if (mobileDetailsRef.current?.open) {
+      setMobileOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (prevPathnameRef.current !== pathname) {
+      prevPathnameRef.current = pathname;
+      closeAll();
+    }
   }, [pathname]);
 
   useEffect(() => {
@@ -390,6 +401,7 @@ function V3DropdownNavigation() {
       </div>
 
       <details
+        ref={mobileDetailsRef}
         className="v2-nav-mobile"
         onToggle={e => {
           const open = e.currentTarget.open;
