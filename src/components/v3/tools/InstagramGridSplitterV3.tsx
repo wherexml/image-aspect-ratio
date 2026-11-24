@@ -17,6 +17,7 @@ import {
 import { Switch, SwitchThumb } from "@ui-sdk/react/switch";
 import { Download, FolderArchive } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { buildStoreZip } from "@/lib/zip-store";
 import { V3StageEmptyDropzone, V3ToolFileBar } from "./V3ToolFileBar";
 import {
@@ -46,18 +47,28 @@ type GeneratedTile = {
 
 export function InstagramGridSplitterV3() {
   const sampleLoadingRef = useRef(false);
+  const autoDemoLoadingRef = useRef(false);
   const [isDemoSample, setIsDemoSample] = useState<boolean>(false);
-  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(() => {
+  const tracking = useToolTracking("grid_splitter", "frame", null);
+  const trackingRef = useRef(tracking);
+  trackingRef.current = tracking;
+  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(img => {
+    const isAutoDemo = autoDemoLoadingRef.current;
+    autoDemoLoadingRef.current = false;
     setIsDemoSample(sampleLoadingRef.current);
     sampleLoadingRef.current = false;
+    if (!isAutoDemo) {
+      trackingRef.current.imageRead(`${img.width}x${img.height}`);
+    }
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const autoDemoRef = useRef(false);
 
-  const loadSample = () => {
+  const loadSample = (fromAutoDemo = false) => {
     void createSyntheticSampleFile("carousel-panorama").then(f => {
       sampleLoadingRef.current = true;
+      autoDemoLoadingRef.current = fromAutoDemo;
       void readFile(f);
     });
   };
@@ -66,7 +77,7 @@ export function InstagramGridSplitterV3() {
     if (autoDemoRef.current) return;
     autoDemoRef.current = true;
     if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return;
-    loadSample();
+    loadSample(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -313,6 +324,7 @@ export function InstagramGridSplitterV3() {
         ? `instagram-carousel-${cols}x-${effectiveRatio.replace(":", "x")}.zip`
         : `instagram-3x4-grid-3x${rows}.zip`,
     );
+    trackingRef.current.imageExport("zip");
   }
 
   return (
@@ -351,7 +363,7 @@ export function InstagramGridSplitterV3() {
         isDemoSample={isDemoSample}
         reading={reading}
         onChooseFile={() => fileInputRef.current?.click()}
-        onTrySample={loadSample}
+        onTrySample={() => loadSample(false)}
         onClear={() => {
           setIsDemoSample(false);
           setTiles([]);
@@ -371,7 +383,7 @@ export function InstagramGridSplitterV3() {
                 inputError={inputError}
                 hint="Slice seamless 4:5 panoramic carousels or modern 3:4 profile grids"
                 onChooseFile={() => fileInputRef.current?.click()}
-                onTrySample={loadSample}
+                onTrySample={() => loadSample(false)}
                 uploadTestId="ig-upload-btn"
                 sampleTestId="ig-try-sample"
               />
@@ -410,7 +422,10 @@ export function InstagramGridSplitterV3() {
                   <button
                     key={tile.filename}
                     type="button"
-                    onClick={() => triggerBlobDownload(tile.blob, tile.filename)}
+                    onClick={() => {
+                      triggerBlobDownload(tile.blob, tile.filename);
+                      trackingRef.current.imageExport("tile");
+                    }}
                     aria-label={`Download ${mode === "carousel" ? `Slide ${tile.postOrder}` : `Post ${tile.postOrder}`}`}
                     className="group flex flex-col overflow-hidden rounded-lg border border-border bg-background text-left transition hover:border-primary"
                   >

@@ -26,6 +26,7 @@ import {
   simplifyRatio,
   solve,
 } from "@/lib/ratio";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { copyTextSafe } from "@/lib/v2-clipboard";
 
 const CHECKED_LABEL = new Date(`${PLACEMENTS_CHECKED}T00:00:00Z`).toLocaleDateString("en-US", {
@@ -97,26 +98,35 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
   );
 
   const selectedPreset = page.sizes[Number(presetIndex)] ?? page.sizes[0]!;
+  const platformKey = page.path.replace(/^\//, "");
+  const tracking = useToolTracking(
+    "social",
+    "solve",
+    `${platformKey}:${presetIndex}:${knownSide}:${knownValue}`,
+  );
 
   const handleSelectCanvas = useCallback(
     (val: string | null) => {
       if (!val) return;
       const next = page.sizes[Number(val)];
       if (!next) return;
+      tracking.preset(`${platformKey}:${val}`);
+      tracking.changed();
       setCopied(false);
       setPresetIndex(val);
       setKnownValue(knownSide === "width" ? next.width : next.height);
     },
-    [page.sizes, knownSide],
+    [page.sizes, knownSide, platformKey, tracking],
   );
 
   const handleReset = useCallback(() => {
     const first = page.sizes[0]!;
+    tracking.cancel();
     setCopied(false);
     setPresetIndex("0");
     setKnownSide("width");
     setKnownValue(first.width);
-  }, [page.sizes]);
+  }, [page.sizes, tracking]);
 
   const solved = useMemo(() => {
     const pw = parsePositive(selectedPreset.width);
@@ -179,11 +189,12 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
   const handleCopy = useCallback(async () => {
     if (!solved.ok) return;
     if (await copyTextSafe(solved.copyText)) {
+      tracking.copy(solved.copyText);
       setCopied(true);
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
       copyTimerRef.current = setTimeout(() => setCopied(false), 1800);
     }
-  }, [solved]);
+  }, [solved, tracking]);
 
   return (
     <div className="mt-8 space-y-12">
@@ -281,6 +292,7 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
                   value={knownSide}
                   onValueChange={val => {
                     if (val === "width" || val === "height") {
+                      tracking.changed();
                       setCopied(false);
                       setKnownSide(val);
                       setKnownValue(
@@ -320,6 +332,7 @@ export function SocialPlatformStudioV2({ path }: { path: SocialRatioPage["path"]
                     value={knownValue}
                     aria-invalid={!solved.ok}
                     onValueChange={val => {
+                      tracking.changed();
                       setCopied(false);
                       setKnownValue(val);
                     }}

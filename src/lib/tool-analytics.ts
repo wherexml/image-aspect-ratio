@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "./site";
 
 /** Short release tag attached to GEOInflow custom events for 4-hour iteration comparisons. */
-export const ANALYTICS_UI_VER = "20261123a";
+export const ANALYTICS_UI_VER = "20261125a";
 
 export type Tool =
   | "calculator"
@@ -12,7 +12,13 @@ export type Tool =
   | "16_9"
   | "make_square"
   | "change_ratio"
-  | "screenshot_studio";
+  | "screenshot_studio"
+  | "social"
+  | "add_padding"
+  | "round_corners"
+  | "safe_zone"
+  | "grid_splitter"
+  | "og_safe_zone";
 
 export type Mode = "solve" | "ratio" | "resize" | "frame" | "annotate";
 export type TaskType = "calculation" | "image_read" | "image_export";
@@ -28,6 +34,82 @@ type AnalyticsWindow = Window & {
 };
 
 const ENGAGED_DWELL_MS = 15_000;
+const MAX_UMAMI_QUEUE = 20;
+const UMAMI_RETRY_MS = 250;
+const UMAMI_MAX_RETRIES = 40;
+
+type QueuedUmamiEvent = { name: string; data: UmamiPayload };
+
+const umamiQueue: QueuedUmamiEvent[] = [];
+let umamiRetryTimer: number | null = null;
+let umamiRetryCount = 0;
+let umamiLoadScript: Element | null = null;
+
+function clearUmamiFlushWatchers() {
+  if (typeof window !== "undefined" && umamiRetryTimer !== null) {
+    window.clearInterval(umamiRetryTimer);
+    umamiRetryTimer = null;
+  }
+  umamiRetryCount = 0;
+  if (umamiLoadScript) {
+    umamiLoadScript.removeEventListener("load", flushUmamiQueue);
+    umamiLoadScript = null;
+  }
+}
+
+function flushUmamiQueue() {
+  if (typeof window === "undefined") return;
+  const track = (window as AnalyticsWindow).umami?.track;
+  if (typeof track !== "function") return;
+  clearUmamiFlushWatchers();
+  while (umamiQueue.length > 0) {
+    const item = umamiQueue.shift()!;
+    try {
+      track(item.name, item.data);
+    } catch {
+      // Ignore tracker runtime errors so queued flushes continue.
+    }
+  }
+}
+
+function scheduleUmamiFlush() {
+  if (typeof window === "undefined") return;
+  const scriptEl = document.querySelector("script[data-ratio-geo]");
+  if (scriptEl && scriptEl !== umamiLoadScript) {
+    if (umamiLoadScript) umamiLoadScript.removeEventListener("load", flushUmamiQueue);
+    umamiLoadScript = scriptEl;
+    scriptEl.addEventListener("load", flushUmamiQueue, { once: true });
+  }
+  if (umamiRetryTimer === null) {
+    umamiRetryCount = 0;
+    umamiRetryTimer = window.setInterval(() => {
+      const track = (window as AnalyticsWindow).umami?.track;
+      if (typeof track === "function") {
+        flushUmamiQueue();
+        return;
+      }
+      umamiRetryCount += 1;
+      if (umamiRetryCount >= UMAMI_MAX_RETRIES) {
+        umamiQueue.length = 0;
+        clearUmamiFlushWatchers();
+      }
+    }, UMAMI_RETRY_MS);
+  }
+}
+
+function enqueueUmamiEvent(name: string, data: UmamiPayload) {
+  if (umamiQueue.length >= MAX_UMAMI_QUEUE) {
+    umamiQueue.shift();
+  }
+  umamiQueue.push({ name, data });
+  scheduleUmamiFlush();
+}
+
+/** Clears buffered GEOInflow events and pending readiness timers (for unit tests). */
+export function resetUmamiQueueForTest() {
+  umamiQueue.length = 0;
+  clearUmamiFlushWatchers();
+}
 
 function isPreviewPathname(pathname: string): boolean {
   return (
@@ -76,7 +158,13 @@ function emitEvent(name: string, details: UmamiPayload) {
       win.gtag?.("event", gaEvent, gaParams);
       // Forward non-QA production events to first-party GEOInflow (Umami) for real-time 4-hour iteration checks.
       if (!test && navigator.doNotTrack !== "1") {
-        win.umami?.track?.(name, { ...details, ui_ver: ANALYTICS_UI_VER });
+        const umamiData: UmamiPayload = { ...details, ui_ver: ANALYTICS_UI_VER };
+        if (typeof win.umami?.track === "function") {
+          flushUmamiQueue();
+          win.umami.track(name, umamiData);
+        } else {
+          enqueueUmamiEvent(name, umamiData);
+        }
       }
     }
   } catch {

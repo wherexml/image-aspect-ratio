@@ -21,6 +21,7 @@ import {
   simplifyRatio,
   solve,
 } from "@/lib/ratio";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { copyTextSafe } from "@/lib/v2-clipboard";
 
 type FitMode = "contain" | "cover";
@@ -105,20 +106,27 @@ export function VideoAspectRatioV2() {
     };
   }, [sourceInfo, parsedTarget, knownSide]);
 
+  const trackingSignature = `${srcW}x${srcH}:${knownSide}:${targetPx}:${fit}`;
+  const tracking = useToolTracking("video", "solve", trackingSignature);
+
   const handleSelectPreset = useCallback((id: string | null) => {
     if (!id) return;
     const preset = VIDEO_PRESETS.find(p => p.id === id);
     if (!preset) return;
+    tracking.preset(preset.id);
+    tracking.changed();
     setCopied(false);
     setSrcW(preset.defaultW);
     setSrcH(preset.defaultH);
     const isPortrait = Number(preset.w) < Number(preset.h);
     setKnownSide(isPortrait ? "height" : "width");
     setTargetPx(isPortrait ? preset.defaultH : preset.defaultW);
-  }, []);
+  }, [tracking]);
 
   const applyResolutionShortcut = useCallback(
     (longEdge: number) => {
+      tracking.preset(`res_${longEdge}`);
+      tracking.changed();
       setCopied(false);
       if (sourceInfo && sourceInfo.ar < 1) {
         setKnownSide("height");
@@ -127,17 +135,18 @@ export function VideoAspectRatioV2() {
       }
       setTargetPx(String(longEdge));
     },
-    [sourceInfo],
+    [sourceInfo, tracking],
   );
 
   const handleCopy = useCallback(async () => {
     if (!solvedTarget) return;
     if (await copyTextSafe(solvedTarget.copy)) {
+      tracking.copy(solvedTarget.copy);
       setCopied(true);
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
       copyTimerRef.current = setTimeout(() => setCopied(false), 1800);
     }
-  }, [solvedTarget]);
+  }, [solvedTarget, tracking]);
 
   return (
     <section
@@ -275,7 +284,10 @@ export function VideoAspectRatioV2() {
             aria-label="Screen fitting"
             value={fit}
             onValueChange={val => {
-              if (val === "contain" || val === "cover") setFit(val);
+              if (val === "contain" || val === "cover") {
+                tracking.changed();
+                setFit(val);
+              }
             }}
             className="v2-seg v2-seg--block"
             data-testid="v2-video-mode-control"
@@ -307,6 +319,7 @@ export function VideoAspectRatioV2() {
               aria-label="Swap video orientation"
               onClick={() => {
                 setCopied(false);
+                tracking.changed();
                 setSrcW(srcH);
                 setSrcH(srcW);
               }}
@@ -345,6 +358,7 @@ export function VideoAspectRatioV2() {
                   aria-invalid={!pw.ok}
                   onValueChange={val => {
                     setCopied(false);
+                    tracking.changed();
                     setSrcW(val);
                   }}
                   className="v2-input num"
@@ -365,6 +379,7 @@ export function VideoAspectRatioV2() {
                   aria-invalid={!ph.ok}
                   onValueChange={val => {
                     setCopied(false);
+                    tracking.changed();
                     setSrcH(val);
                   }}
                   className="v2-input num"
@@ -384,6 +399,7 @@ export function VideoAspectRatioV2() {
               onValueChange={val => {
                 if (val === "width" || val === "height") {
                   setCopied(false);
+                  tracking.changed();
                   setKnownSide(val);
                 }
               }}
@@ -411,6 +427,7 @@ export function VideoAspectRatioV2() {
                 aria-invalid={!parsedTarget.ok}
                 onValueChange={val => {
                   setCopied(false);
+                  tracking.changed();
                   setTargetPx(val);
                 }}
                 className="v2-input num"

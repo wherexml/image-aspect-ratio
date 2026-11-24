@@ -10,7 +10,7 @@ import {
 } from "@/components/v3/V3Editorial";
 import { V3PageShell } from "@/components/v3/V3PageShell";
 
-const PAGE_TITLE = "Video Aspect Ratio Calculator — 16:9, 9:16 & 4K Simulator";
+const PAGE_TITLE = "Video Aspect Ratio Simulator — 16:9, 9:16 & 4K Crop Guide";
 const DESCRIPTION =
   "Simulate 16:9 widescreen, 9:16 vertical, and 2.39:1 cinema video framing with exact Fit/Fill crop loss math and DCI vs UHD 4K pixel dimensions.";
 
@@ -128,7 +128,7 @@ export const Route = createFileRoute("/video-aspect-ratio")({
       title: PAGE_TITLE,
       description: DESCRIPTION,
       canonicalPath: "/video-aspect-ratio",
-      appName: "Video Aspect Ratio Calculator & Screen Simulator",
+      appName: "Video Aspect Ratio Simulator",
       howToTitle: "How to Simulate Widescreen and Vertical Video Aspect Ratios",
       steps: STEPS,
       faqs: FAQS,

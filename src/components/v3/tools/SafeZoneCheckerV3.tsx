@@ -17,6 +17,7 @@ import {
 import { Switch, SwitchThumb } from "@ui-sdk/react/switch";
 import { Download, Eye, ImagePlus, Layers } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { V3ToolFileBar } from "./V3ToolFileBar";
 import {
   createSyntheticSampleFile,
@@ -330,10 +331,19 @@ function drawSafeZoneOverlay(
 
 export function SafeZoneCheckerV3() {
   const sampleLoadingRef = useRef(false);
+  const autoDemoLoadingRef = useRef(false);
   const [isDemoSample, setIsDemoSample] = useState<boolean>(false);
-  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(() => {
+  const tracking = useToolTracking("safe_zone", "frame", null);
+  const trackingRef = useRef(tracking);
+  trackingRef.current = tracking;
+  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(img => {
+    const isAutoDemo = autoDemoLoadingRef.current;
+    autoDemoLoadingRef.current = false;
     setIsDemoSample(sampleLoadingRef.current);
     sampleLoadingRef.current = false;
+    if (!isAutoDemo) {
+      trackingRef.current.imageRead(`${img.width}x${img.height}`);
+    }
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -345,9 +355,10 @@ export function SafeZoneCheckerV3() {
   const [showGridCrop, setShowGridCrop] = useState<boolean>(false);
   const [fitMode, setFitMode] = useState<"cover" | "contain">("cover");
 
-  const loadSample = () => {
+  const loadSample = (fromAutoDemo = false) => {
     void createSyntheticSampleFile("vertical-9x16").then(f => {
       sampleLoadingRef.current = true;
+      autoDemoLoadingRef.current = fromAutoDemo;
       void readFile(f);
     });
   };
@@ -357,7 +368,7 @@ export function SafeZoneCheckerV3() {
     if (autoDemoRef.current) return;
     autoDemoRef.current = true;
     if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return;
-    loadSample();
+    loadSample(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -431,6 +442,7 @@ export function SafeZoneCheckerV3() {
     off.height = 0;
     if (blob) {
       triggerBlobDownload(blob, `${spec.id}-safe-zone-guide-1080x1920.png`);
+      trackingRef.current.imageExport("template");
     }
   }
 
@@ -440,6 +452,7 @@ export function SafeZoneCheckerV3() {
     const blob = await new Promise<Blob | null>(r => canvas.toBlob(r, "image/png"));
     if (blob) {
       triggerBlobDownload(blob, `${spec.id}-safe-zone-preview-1080x1920.png`);
+      trackingRef.current.imageExport("annotated");
     }
   }
 
@@ -481,7 +494,7 @@ export function SafeZoneCheckerV3() {
         chooseLabel="Upload 9:16 frame"
         replaceLabel="Replace frame"
         onChooseFile={() => fileInputRef.current?.click()}
-        onTrySample={loadSample}
+        onTrySample={() => loadSample(false)}
         onClear={() => {
           setIsDemoSample(false);
           clearImage();
@@ -517,7 +530,7 @@ export function SafeZoneCheckerV3() {
                 <span>Upload 9:16 image</span>
               </Button>
               <Button
-                onClick={loadSample}
+                onClick={() => loadSample(false)}
                 disabled={reading}
                 className="v2-btn v2-btn--outline v2-btn--sm"
                 data-testid="safe-try-sample"
@@ -566,7 +579,10 @@ export function SafeZoneCheckerV3() {
                     key={item.id}
                     type="button"
                     aria-pressed={active}
-                    onClick={() => setPlatform(item.id)}
+                    onClick={() => {
+                      trackingRef.current.preset(item.id);
+                      setPlatform(item.id);
+                    }}
                     className={`rounded-lg border px-3 py-2 text-left text-xs font-semibold transition ${
                       active
                         ? "border-primary bg-primary/10 text-foreground ring-1 ring-primary/30"

@@ -27,3 +27,9 @@
 ## Language policy
 
 Use English for all new or modified product content, documentation, code comments, commit messages, and GitHub issues, pull requests and release notes. Update older non-English documentation incrementally when relevant. Preserve published commit history; do not rewrite existing commits for translation. Keep the root README concise and product-focused, following the Voicemore pattern: centered identity, clear value statement, practical features, usage, source build, privacy and limitations.
+
+## SEO Freeze & Deployment Hygiene (2026-11-25)
+
+- Freeze `/` and `/calculator` URL, `<title>`, `<h1>`, and above-the-fold primary intent for 30 days (through `2026-12-24`) unless an explicit emergency rollback is authorized.
+- Do not add new tool pages or expand `sitemap.xml` before the 30-day review gate (`2026-12-24`) passes.
+- Never deploy production from an uncommitted working tree; commit first and record the commit SHA, active Worker version, and rollback version in `docs/deployment.md`.

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Calculator, Crop, Sparkles } from "lucide-react";
 import { ImageInspectorV2 } from "@/components/v2/ImageInspectorV2";
 import {
@@ -183,7 +183,22 @@ export function ImageAspectRatioV3Content() {
         overview={{
           eyebrow: "Instant File Diagnostics",
           heading: "Know Your Photo’s Exact Picture Ratio & Print Size Before You Crop",
-          lead: "Design exports and phone captures often miss standard frames by a single pixel. Use this local photo size ratio calculator and aspect ratio finder to calculate aspect ratio from width and height, check megapixels and 300 DPI print dimensions, and preview 1:1, 4:5, 9:16, and 16:9 framing in one click.",
+          lead: (
+            <>
+              Design exports and phone captures often miss standard frames by a single pixel. Use
+              this local photo size ratio calculator and aspect ratio finder to calculate aspect
+              ratio from width and height, check megapixels and 300 DPI print dimensions, and
+              preview 1:1, 4:5, 9:16, and 16:9 framing in one click. Need to compute dimensions from
+              width and height numbers without uploading a file? Open the{" "}
+              <Link
+                to="/calculator"
+                className="font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground"
+              >
+                aspect ratio calculator
+              </Link>
+              .
+            </>
+          ),
         }}
         shortcuts={{
           heading: "Quick Actions",

@@ -11,6 +11,7 @@ import {
 import { Switch, SwitchThumb } from "@ui-sdk/react/switch";
 import { AlertTriangle, CheckCircle2, Download } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { V3StageEmptyDropzone, V3ToolFileBar } from "./V3ToolFileBar";
 import {
   createSyntheticSampleFile,
@@ -20,10 +21,19 @@ import {
 
 export function OgSafeZonePreviewerV3() {
   const sampleLoadingRef = useRef(false);
+  const autoDemoLoadingRef = useRef(false);
   const [isDemoSample, setIsDemoSample] = useState<boolean>(false);
-  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(() => {
+  const tracking = useToolTracking("og_safe_zone", "frame", null);
+  const trackingRef = useRef(tracking);
+  trackingRef.current = tracking;
+  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(img => {
+    const isAutoDemo = autoDemoLoadingRef.current;
+    autoDemoLoadingRef.current = false;
     setIsDemoSample(sampleLoadingRef.current);
     sampleLoadingRef.current = false;
+    if (!isAutoDemo) {
+      trackingRef.current.imageRead(`${img.width}x${img.height}`);
+    }
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const masterCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -40,9 +50,10 @@ export function OgSafeZonePreviewerV3() {
   const [showSafeGuides, setShowSafeGuides] = useState<boolean>(true);
   const [previewDataUrl, setPreviewDataUrl] = useState<string>("");
 
-  const loadSample = () => {
+  const loadSample = (fromAutoDemo = false) => {
     void createSyntheticSampleFile("og-1200x630").then(f => {
       sampleLoadingRef.current = true;
+      autoDemoLoadingRef.current = fromAutoDemo;
       void readFile(f);
     });
   };
@@ -51,7 +62,7 @@ export function OgSafeZonePreviewerV3() {
     if (autoDemoRef.current) return;
     autoDemoRef.current = true;
     if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return;
-    loadSample();
+    loadSample(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -207,6 +218,7 @@ export function OgSafeZonePreviewerV3() {
     off.height = 0;
     if (bestBlob) {
       triggerBlobDownload(bestBlob, "og-image-1200x630-whatsapp-safe.jpg");
+      trackingRef.current.imageExport("jpg");
     }
   }
 
@@ -218,6 +230,7 @@ export function OgSafeZonePreviewerV3() {
     off.height = 0;
     if (blob) {
       triggerBlobDownload(blob, "og-image-1200x630.png");
+      trackingRef.current.imageExport("png");
     }
   }
 
@@ -261,7 +274,7 @@ export function OgSafeZonePreviewerV3() {
         isDemoSample={isDemoSample}
         reading={reading}
         onChooseFile={() => fileInputRef.current?.click()}
-        onTrySample={loadSample}
+        onTrySample={() => loadSample(false)}
         onClear={() => {
           setIsDemoSample(false);
           clearImage();
@@ -281,7 +294,7 @@ export function OgSafeZonePreviewerV3() {
                 prompt="Drop or paste your local og:image here"
                 hint="Preview WhatsApp 1:1 square crops, X domain badges, LinkedIn cards & <300 KB weight"
                 onChooseFile={() => fileInputRef.current?.click()}
-                onTrySample={loadSample}
+                onTrySample={() => loadSample(false)}
                 uploadTestId="og-upload-btn"
                 sampleTestId="og-try-sample"
               />

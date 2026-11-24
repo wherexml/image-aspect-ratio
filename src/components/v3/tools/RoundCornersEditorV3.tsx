@@ -16,6 +16,7 @@ import {
 } from "@ui-sdk/react/slider";
 import { Check, Copy, Download } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { copyPngBlobSafe, useImageCopySupported } from "@/lib/v2-clipboard";
 import { V3StageEmptyDropzone, V3ToolFileBar } from "./V3ToolFileBar";
 import {
@@ -29,19 +30,29 @@ type CornerBgMode = "transparent" | "white" | "black";
 
 export function RoundCornersEditorV3() {
   const sampleLoadingRef = useRef(false);
+  const autoDemoLoadingRef = useRef(false);
   const [isDemoSample, setIsDemoSample] = useState<boolean>(false);
-  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(() => {
+  const tracking = useToolTracking("round_corners", "frame", null);
+  const trackingRef = useRef(tracking);
+  trackingRef.current = tracking;
+  const { loaded, reading, inputError, readFile, clearImage } = useLocalToolImage(img => {
+    const isAutoDemo = autoDemoLoadingRef.current;
+    autoDemoLoadingRef.current = false;
     setIsDemoSample(sampleLoadingRef.current);
     sampleLoadingRef.current = false;
+    if (!isAutoDemo) {
+      trackingRef.current.imageRead(`${img.width}x${img.height}`);
+    }
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const autoDemoRef = useRef(false);
   const imageCopySupported = useImageCopySupported();
 
-  const loadSample = () => {
+  const loadSample = (fromAutoDemo = false) => {
     void createSyntheticSampleFile("photo-4x3").then(f => {
       sampleLoadingRef.current = true;
+      autoDemoLoadingRef.current = fromAutoDemo;
       void readFile(f);
     });
   };
@@ -50,7 +61,7 @@ export function RoundCornersEditorV3() {
     if (autoDemoRef.current) return;
     autoDemoRef.current = true;
     if (typeof navigator !== "undefined" && /jsdom/i.test(navigator.userAgent)) return;
-    loadSample();
+    loadSample(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -195,6 +206,7 @@ export function RoundCornersEditorV3() {
     if (!blob) return;
     const prefix = shapeMode === "circle" ? "circle-avatar" : `rounded-${effectiveRadius}px`;
     triggerBlobDownload(blob, `${prefix}-${dims.outW}x${dims.outH}.png`);
+    trackingRef.current.imageExport("png");
   }
 
   async function handleCopy() {
@@ -205,6 +217,7 @@ export function RoundCornersEditorV3() {
       return b;
     });
     if (res.ok) {
+      trackingRef.current.copy("png");
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     }
@@ -246,7 +259,7 @@ export function RoundCornersEditorV3() {
         isDemoSample={isDemoSample}
         reading={reading}
         onChooseFile={() => fileInputRef.current?.click()}
-        onTrySample={loadSample}
+        onTrySample={() => loadSample(false)}
         onClear={() => {
           setIsDemoSample(false);
           clearImage();
@@ -264,7 +277,7 @@ export function RoundCornersEditorV3() {
               inputError={inputError}
               hint="Export crisp transparent rounded-corner PNGs or 1:1 circular avatars"
               onChooseFile={() => fileInputRef.current?.click()}
-              onTrySample={loadSample}
+              onTrySample={() => loadSample(false)}
               uploadTestId="round-upload-btn"
               sampleTestId="round-try-sample"
             />

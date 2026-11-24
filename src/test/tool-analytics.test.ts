@@ -12,12 +12,14 @@ vi.mock("@/lib/site", () => ({
 import {
   ANALYTICS_UI_VER,
   classifyPageType,
+  resetUmamiQueueForTest,
   trackEngagementEvent,
   trackInteractionEvent,
   trackToolEvent,
   usePageEngagement,
   useToolTracking,
 } from "@/lib/tool-analytics";
+import { geoCollection } from "@/lib/geo-collection";
 
 describe("tool-analytics real-time GEOInflow bridge and engagement signals", () => {
   const originalLocation = window.location;
@@ -217,5 +219,137 @@ describe("tool-analytics real-time GEOInflow bridge and engagement signals", () 
       depth: 50,
       ui_ver: ANALYTICS_UI_VER,
     });
+  });
+});
+
+describe("P0 Umami readiness queue and geoCollection attribution", () => {
+  const originalLocation = window.location;
+
+  function setProductionLocation(url: string) {
+    const parsed = new URL(url);
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        href: parsed.href,
+        origin: parsed.origin,
+        pathname: parsed.pathname,
+        search: parsed.search,
+        hostname: parsed.hostname,
+      } as Location,
+    });
+  }
+
+  beforeEach(() => {
+    resetUmamiQueueForTest();
+    setProductionLocation("https://imageaspectratio.com/calculator");
+    delete (window as unknown as Record<string, unknown>)["umami"];
+  });
+
+  afterEach(() => {
+    resetUmamiQueueForTest();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    Object.defineProperty(window, "location", { configurable: true, value: originalLocation });
+    delete (window as unknown as Record<string, unknown>)["umami"];
+    document.querySelectorAll("script[data-ratio-geo]").forEach(el => el.remove());
+  });
+
+  it("queues up to 20 events before window.umami loads and flushes FIFO on script load", () => {
+    const script = document.createElement("script");
+    script.setAttribute("data-ratio-geo", "true");
+    document.head.appendChild(script);
+
+    for (let i = 1; i <= 22; i += 1) {
+      trackInteractionEvent("preset_select", { tool: "calculator", preset: `p${i}` });
+    }
+
+    const delayedTrackMock = vi.fn();
+    (window as unknown as Record<string, unknown>)["umami"] = { track: delayedTrackMock };
+    script.dispatchEvent(new Event("load"));
+
+    expect(delayedTrackMock).toHaveBeenCalledTimes(20);
+    expect(delayedTrackMock).toHaveBeenNthCalledWith(1, "preset_select", {
+      tool: "calculator",
+      preset: "p3",
+      ui_ver: ANALYTICS_UI_VER,
+    });
+    expect(delayedTrackMock).toHaveBeenNthCalledWith(20, "preset_select", {
+      tool: "calculator",
+      preset: "p22",
+      ui_ver: ANALYTICS_UI_VER,
+    });
+  });
+
+  it("preserves allowlisted utm params on payload.url and strips referrer/disallowed queries in geoCollection", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const request = new Request("https://imageaspectratio.com/_geo/api/send", {
+      method: "POST",
+      headers: {
+        Origin: "https://imageaspectratio.com",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "event",
+        payload: {
+          website: "0e360655-0b8c-4334-98dd-99634b96d0c0",
+          hostname: "imageaspectratio.com",
+          url: "https://imageaspectratio.com/calculator?utm_source=chatgpt.com&utm_medium=referral&utm_campaign=test_1&secret=dropme&utm_term=ignored",
+          referrer: "https://chatgpt.com/c/123?token=secret",
+          name: "tool_first_interact",
+          data: { tool: "calculator", ui_ver: ANALYTICS_UI_VER },
+        },
+      }),
+    });
+    Object.assign(request, { cf: {} });
+
+    const response = await geoCollection(request, { GEO_RELAY_KEY: "test-key" });
+    expect(response?.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    const forwarded = JSON.parse(String(init.body)) as {
+      type: string;
+      payload: { url: string; referrer: string; name?: string; data?: Record<string, unknown> };
+    };
+    expect(forwarded.payload.url).toBe(
+      "/calculator?utm_source=chatgpt.com&utm_medium=referral&utm_campaign=test_1",
+    );
+    expect(forwarded.payload.referrer).toBe("https://chatgpt.com/c/123");
+    expect(forwarded.payload.name).toBe("tool_first_interact");
+  });
+
+  it("drops utm attribution params containing disallowed characters", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(JSON.stringify({ ok: true }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const request = new Request("https://imageaspectratio.com/_geo/api/send", {
+      method: "POST",
+      headers: {
+        Origin: "https://imageaspectratio.com",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "event",
+        payload: {
+          website: "0e360655-0b8c-4334-98dd-99634b96d0c0",
+          hostname: "imageaspectratio.com",
+          url: "https://imageaspectratio.com/calculator?utm_source=bad!val&utm_medium=organic",
+          referrer: "",
+        },
+      }),
+    });
+    Object.assign(request, { cf: {} });
+
+    const response = await geoCollection(request, { GEO_RELAY_KEY: "test-key" });
+    expect(response?.status).toBe(200);
+    const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
+    const forwarded = JSON.parse(String(init.body)) as { payload: { url: string } };
+    expect(forwarded.payload.url).toBe("/calculator?utm_medium=organic");
   });
 });

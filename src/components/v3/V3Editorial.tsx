@@ -238,7 +238,7 @@ export function V3Editorial({
   overview: {
     eyebrow?: string;
     heading: string;
-    lead: string;
+    lead: ReactNode;
   };
   visualGuide?: V3VisualGuide;
   shortcuts?: {

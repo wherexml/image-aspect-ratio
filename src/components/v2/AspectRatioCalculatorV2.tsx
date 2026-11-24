@@ -37,6 +37,11 @@ import {
   solve,
   type Frac,
 } from "@/lib/ratio";
+import {
+  useToolTracking,
+  type Mode as TrackingMode,
+  type Tool as TrackingTool,
+} from "@/lib/tool-analytics";
 import { copyTextSafe } from "@/lib/v2-clipboard";
 
 type CalcMode = "solve" | "identify" | "scale";
@@ -281,19 +286,28 @@ export function AspectRatioCalculatorV2({
     effectiveRatioH,
   ]);
 
+  const trackingTool: TrackingTool =
+    variant === "16:9" ? "16_9" : variant === "ultrawide" ? "ultrawide" : "calculator";
+  const trackingMode: TrackingMode =
+    effectiveMode === "solve" ? "solve" : effectiveMode === "scale" ? "resize" : "ratio";
+  const trackingSignature = result ? `${result.kind}:${result.copy}` : null;
+  const tracking = useToolTracking(trackingTool, trackingMode, trackingSignature);
+
   const copyAllowed = Boolean(result && !(result.kind === "solve" && result.subpixel));
 
   const handleCopy = useCallback(async () => {
     if (!result || !copyAllowed) return;
     if (await copyTextSafe(result.copy)) {
+      tracking.copy(result.copy);
       setCopied(true);
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
       copyTimerRef.current = setTimeout(() => setCopied(false), 1800);
     }
-  }, [result, copyAllowed]);
+  }, [result, copyAllowed, tracking]);
 
   const handleSwap = () => {
     setCopied(false);
+    tracking.changed();
     if (effectiveMode === "solve") {
       setRatioW(ratioH);
       setRatioH(ratioW);
@@ -305,6 +319,7 @@ export function AspectRatioCalculatorV2({
 
   const handleReset = () => {
     setCopied(false);
+    tracking.cancel();
     if (variant === "ultrawide") {
       setUltraPresetId("uwqhd");
       setRatioW("43");
@@ -327,6 +342,8 @@ export function AspectRatioCalculatorV2({
     const pf = parsePositive(factorStr);
     const base = targetSide === "width" ? pDW : pDH;
     if (!pf.ok || !base.ok) return;
+    tracking.preset(`scale_${factorStr}`);
+    tracking.changed();
     setTargetPx(roundFrac(mul(base.value, pf.value)).toString());
     setCopied(false);
   };
@@ -363,6 +380,7 @@ export function AspectRatioCalculatorV2({
     const hh = Math.max(16, Math.abs(e.clientY - cy));
     const nextR = Math.min(20, Math.max(0.05, hw / hh));
     setCopied(false);
+    tracking.changed();
     if (effectiveMode === "solve") {
       setRatioW(nextR.toFixed(2).replace(/\.?0+$/, ""));
       setRatioH("1");
@@ -454,6 +472,7 @@ export function AspectRatioCalculatorV2({
               onValueChange={val => {
                 if (val === "solve" || val === "identify" || val === "scale") {
                   setCopied(false);
+                  tracking.cancel();
                   if (val === "scale" && pRW.ok && pRH.ok && pKnown.ok) {
                     const out = solve(
                       pRW.value,
@@ -540,6 +559,8 @@ export function AspectRatioCalculatorV2({
                 const found = GENERAL_PRESETS.find(p => p.id === val);
                 if (!found) return;
                 setCopied(false);
+                tracking.preset(found.id);
+                tracking.changed();
                 setRatioW(found.w);
                 setRatioH(found.h);
               }}
@@ -575,6 +596,8 @@ export function AspectRatioCalculatorV2({
                     data-active={matchedGeneralPresetId === p.id ? "" : undefined}
                     onClick={() => {
                       setCopied(false);
+                      tracking.preset(p.id);
+                      tracking.changed();
                       setRatioW(p.w);
                       setRatioH(p.h);
                     }}
@@ -599,6 +622,7 @@ export function AspectRatioCalculatorV2({
                     aria-invalid={!pRW.ok}
                     onValueChange={val => {
                       setCopied(false);
+                      tracking.changed();
                       setRatioW(val);
                     }}
                     className="v2-input num"
@@ -619,6 +643,7 @@ export function AspectRatioCalculatorV2({
                     aria-invalid={!pRH.ok}
                     onValueChange={val => {
                       setCopied(false);
+                      tracking.changed();
                       setRatioH(val);
                     }}
                     className="v2-input num"
@@ -639,6 +664,8 @@ export function AspectRatioCalculatorV2({
                 const found = ULTRAWIDE_PRESETS.find(p => p.id === val);
                 if (!found) return;
                 setCopied(false);
+                tracking.preset(found.id);
+                tracking.changed();
                 setUltraPresetId(found.id);
                 setRatioW(found.rw);
                 setRatioH(found.rh);
@@ -669,6 +696,8 @@ export function AspectRatioCalculatorV2({
                   type="button"
                   onClick={() => {
                     setCopied(false);
+                    tracking.preset(`${activeUltraPreset.origW}x${activeUltraPreset.origH}`);
+                    tracking.changed();
                     setKnownPx(
                       knownSide === "width" ? activeUltraPreset.origW : activeUltraPreset.origH,
                     );
@@ -692,6 +721,7 @@ export function AspectRatioCalculatorV2({
                 onValueChange={val => {
                   if (val === "width" || val === "height") {
                     setCopied(false);
+                    tracking.changed();
                     setKnownSide(val);
                   }
                 }}
@@ -719,6 +749,7 @@ export function AspectRatioCalculatorV2({
                   aria-invalid={!pKnown.ok}
                   onValueChange={val => {
                     setCopied(false);
+                    tracking.changed();
                     setKnownPx(val);
                   }}
                   className="v2-input num"
@@ -738,6 +769,8 @@ export function AspectRatioCalculatorV2({
                     type="button"
                     onClick={() => {
                       setCopied(false);
+                      tracking.preset(s.id);
+                      tracking.changed();
                       setKnownPx(knownSide === "width" ? s.w : s.h);
                     }}
                     className="v2-chip-btn num"
@@ -764,6 +797,7 @@ export function AspectRatioCalculatorV2({
                     aria-invalid={!pDW.ok}
                     onValueChange={val => {
                       setCopied(false);
+                      tracking.changed();
                       setDimW(val);
                     }}
                     className="v2-input num"
@@ -784,6 +818,7 @@ export function AspectRatioCalculatorV2({
                     aria-invalid={!pDH.ok}
                     onValueChange={val => {
                       setCopied(false);
+                      tracking.changed();
                       setDimH(val);
                     }}
                     className="v2-input num"
@@ -803,6 +838,7 @@ export function AspectRatioCalculatorV2({
                     onValueChange={val => {
                       if (val === "width" || val === "height") {
                         setCopied(false);
+                        tracking.changed();
                         setTargetSide(val);
                       }
                     }}
@@ -830,6 +866,7 @@ export function AspectRatioCalculatorV2({
                       aria-invalid={!pKnown.ok}
                       onValueChange={val => {
                         setCopied(false);
+                        tracking.changed();
                         setTargetPx(val);
                       }}
                       className="v2-input num"

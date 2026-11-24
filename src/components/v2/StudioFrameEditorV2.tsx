@@ -75,6 +75,7 @@ import {
   type FrameLayout,
   type SquareFormat,
 } from "@/lib/square";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { copyPngBlobSafe, useImageCopySupported } from "@/lib/v2-clipboard";
 import { consumeV2PendingImage } from "@/lib/v2-image-handoff";
 
@@ -268,6 +269,9 @@ export function StudioFrameEditorV2({
   const [copied, setCopied] = useState(false);
   const imageCopySupported = useImageCopySupported();
   const [exportError, setExportError] = useState("");
+  const tracking = useToolTracking(mode === "square" ? "make_square" : "change_ratio", "frame", null);
+  const trackingRef = useRef(tracking);
+  trackingRef.current = tracking;
 
   const workspaceRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -445,6 +449,7 @@ export function StudioFrameEditorV2({
         });
         setPlacement(FIT);
         setLastPreset("fit");
+        trackingRef.current.imageRead(`${img.naturalWidth}x${img.naturalHeight}:${file.size}`);
       } catch (err) {
         URL.revokeObjectURL(url);
         urlsRef.current.delete(url);
@@ -682,6 +687,7 @@ export function StudioFrameEditorV2({
     if (!nextId) return;
     setRatioId(nextId);
     const preset = V2_RATIO_PRESETS.find(r => r.id === nextId);
+    trackingRef.current.preset(nextId);
     if (preset && nextId !== "custom") {
       setWidthText(String(preset.defaultWidth));
     }
@@ -717,6 +723,7 @@ export function StudioFrameEditorV2({
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(dlUrl), 10_000);
+      trackingRef.current.imageExport(`${format}:${width}x${height}`);
     } catch {
       if (id === generationRef.current) setExportError(ERR_DOWNLOAD);
     } finally {
@@ -744,6 +751,7 @@ export function StudioFrameEditorV2({
         ),
       );
       if (res.ok) {
+        trackingRef.current.copy(`png:${width}x${height}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 1800);
       } else {
@@ -1063,6 +1071,7 @@ export function StudioFrameEditorV2({
                       disabled={exporting}
                       data-active={widthText.trim() === px ? "" : undefined}
                       onClick={() => {
+                        trackingRef.current.preset(`sq_${px}`);
                         setWidthText(px);
                         setExportError("");
                       }}

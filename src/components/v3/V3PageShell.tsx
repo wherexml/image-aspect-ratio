@@ -7,6 +7,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { ChevronDown, Instagram, Monitor, Moon, Music2, Sun, Youtube } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode, type SyntheticEvent } from "react";
 import type { V2RoutePath } from "@/components/v2/V2PageShell";
+import { trackInteractionEvent } from "@/lib/tool-analytics";
 import "./v3.css";
 
 type ThemePref = "system" | "light" | "dark";
@@ -175,6 +176,7 @@ const exact = { exact: true, includeSearch: false };
 function V3DropdownNavigation() {
   const { pathname } = useLocation();
   const navRef = useRef<HTMLElement>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const normalizedPath =
     pathname === "" || pathname === "/" || pathname === "/image-aspect-ratio"
@@ -211,6 +213,20 @@ function V3DropdownNavigation() {
     navRef.current?.querySelectorAll("details[open]").forEach(el => {
       if (el !== except) (el as HTMLDetailsElement).open = false;
     });
+    if (!except || !except.classList.contains("v2-nav-mobile")) {
+      setMobileOpen(false);
+    }
+  };
+
+  const handleNavClick = (to: string, navSurface: "desktop" | "mobile") => {
+    if (to !== normalizedPath) {
+      trackInteractionEvent("nav_tool_switch", {
+        from_path: normalizedPath,
+        to_path: to,
+        nav_surface: navSurface,
+      });
+    }
+    closeAll();
   };
 
   useEffect(() => {
@@ -264,7 +280,7 @@ function V3DropdownNavigation() {
                 to={item.to}
                 activeOptions={exact}
                 aria-current={normalizedPath === item.to ? "page" : undefined}
-                onClick={() => closeAll()}
+                onClick={() => handleNavClick(item.to, "desktop")}
                 className="v2-nav-link whitespace-nowrap"
               >
                 <span>{item.label}</span>
@@ -289,7 +305,7 @@ function V3DropdownNavigation() {
                 to={item.to}
                 activeOptions={exact}
                 aria-current={normalizedPath === item.to ? "page" : undefined}
-                onClick={() => closeAll()}
+                onClick={() => handleNavClick(item.to, "desktop")}
                 className="v2-nav-link whitespace-nowrap"
               >
                 <span>{item.label}</span>
@@ -303,7 +319,7 @@ function V3DropdownNavigation() {
           activeOptions={exact}
           aria-current={normalizedPath === "/video-aspect-ratio" ? "page" : undefined}
           data-active={normalizedPath === "/video-aspect-ratio" ? "" : undefined}
-          onClick={() => closeAll()}
+          onClick={() => handleNavClick("/video-aspect-ratio", "desktop")}
           className="v2-nav-item"
         >
           Video
@@ -333,7 +349,7 @@ function V3DropdownNavigation() {
                         to={link.to}
                         activeOptions={exact}
                         aria-current={normalizedPath === link.to ? "page" : undefined}
-                        onClick={() => closeAll()}
+                        onClick={() => handleNavClick(link.to, "desktop")}
                         className="v2-nav-link whitespace-nowrap"
                       >
                         <span>{link.label}</span>
@@ -349,7 +365,7 @@ function V3DropdownNavigation() {
                 to="/social-media"
                 activeOptions={exact}
                 aria-current={normalizedPath === "/social-media" ? "page" : undefined}
-                onClick={() => closeAll()}
+                onClick={() => handleNavClick("/social-media", "desktop")}
                 className="v2-nav-link whitespace-nowrap"
               >
                 <span>All platforms</span>
@@ -366,14 +382,21 @@ function V3DropdownNavigation() {
           activeOptions={exact}
           aria-current={normalizedPath === "/ultrawide-aspect-ratio-calculator" ? "page" : undefined}
           data-active={normalizedPath === "/ultrawide-aspect-ratio-calculator" ? "" : undefined}
-          onClick={() => closeAll()}
+          onClick={() => handleNavClick("/ultrawide-aspect-ratio-calculator", "desktop")}
           className="v2-nav-item"
         >
           Ultrawide
         </Link>
       </div>
 
-      <details className="v2-nav-mobile" onToggle={onToggle}>
+      <details
+        className="v2-nav-mobile"
+        onToggle={e => {
+          const open = e.currentTarget.open;
+          setMobileOpen(open);
+          if (open) closeAll(e.currentTarget);
+        }}
+      >
         <summary className="v2-mobile-trigger" aria-label={`Tools: ${mobileLabel}`}>
           <span className="flex items-center gap-2">
             <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Tool</span>
@@ -381,75 +404,77 @@ function V3DropdownNavigation() {
           </span>
           <ChevronDown aria-hidden="true" />
         </summary>
-        <div className="v2-nav-menu v2-nav-menu--mobile" aria-label="All tools">
-          <p className="px-2.5 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-            Image
-          </p>
-          {V3_IMAGE_TOOLS.map(item => (
-            <Link
-              key={item.to}
-              to={item.to}
-              aria-current={normalizedPath === item.to ? "page" : undefined}
-              onClick={() => closeAll()}
-              className="v2-nav-link whitespace-nowrap"
-            >
-              <span>{item.label}</span>
-            </Link>
-          ))}
-          <p className="mt-2 px-2.5 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-            Calculator &amp; Video
-          </p>
-          {V3_CALC_TOOLS.map(item => (
-            <Link
-              key={item.to}
-              to={item.to}
-              aria-current={normalizedPath === item.to ? "page" : undefined}
-              onClick={() => closeAll()}
-              className="v2-nav-link whitespace-nowrap"
-            >
-              <span>{item.label}</span>
-            </Link>
-          ))}
-          {V3_DIRECT_TOOLS.map(item => (
-            <Link
-              key={item.to}
-              to={item.to}
-              aria-current={normalizedPath === item.to ? "page" : undefined}
-              onClick={() => closeAll()}
-              className="v2-nav-link whitespace-nowrap"
-            >
-              <span>{item.label}</span>
-            </Link>
-          ))}
-          <p className="mt-2 px-2.5 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
-            Social Media
-          </p>
-          {V3_SOCIAL_GROUPS.flatMap(g =>
-            g.links.map(l => (
+        {mobileOpen && (
+          <div className="v2-nav-menu v2-nav-menu--mobile" aria-label="All tools">
+            <p className="px-2.5 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+              Image
+            </p>
+            {V3_IMAGE_TOOLS.map(item => (
               <Link
-                key={l.to}
-                to={l.to}
-                aria-current={normalizedPath === l.to ? "page" : undefined}
-                onClick={() => closeAll()}
+                key={item.to}
+                to={item.to}
+                aria-current={normalizedPath === item.to ? "page" : undefined}
+                onClick={() => handleNavClick(item.to, "mobile")}
                 className="v2-nav-link whitespace-nowrap"
               >
-                <span>{l.mobileLabel}</span>
-                <span className="num shrink-0 text-[11px] opacity-60">{l.ratio}</span>
+                <span>{item.label}</span>
               </Link>
-            )),
-          )}
-          <Link
-            to="/social-media"
-            aria-current={normalizedPath === "/social-media" ? "page" : undefined}
-            onClick={() => closeAll()}
-            className="v2-nav-link whitespace-nowrap"
-          >
-            <span>All platforms</span>
-            <span aria-hidden="true" className="text-xs opacity-60">
-              →
-            </span>
-          </Link>
-        </div>
+            ))}
+            <p className="mt-2 px-2.5 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+              Calculator &amp; Video
+            </p>
+            {V3_CALC_TOOLS.map(item => (
+              <Link
+                key={item.to}
+                to={item.to}
+                aria-current={normalizedPath === item.to ? "page" : undefined}
+                onClick={() => handleNavClick(item.to, "mobile")}
+                className="v2-nav-link whitespace-nowrap"
+              >
+                <span>{item.label}</span>
+              </Link>
+            ))}
+            {V3_DIRECT_TOOLS.map(item => (
+              <Link
+                key={item.to}
+                to={item.to}
+                aria-current={normalizedPath === item.to ? "page" : undefined}
+                onClick={() => handleNavClick(item.to, "mobile")}
+                className="v2-nav-link whitespace-nowrap"
+              >
+                <span>{item.label}</span>
+              </Link>
+            ))}
+            <p className="mt-2 px-2.5 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+              Social Media
+            </p>
+            {V3_SOCIAL_GROUPS.flatMap(g =>
+              g.links.map(l => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  aria-current={normalizedPath === l.to ? "page" : undefined}
+                  onClick={() => handleNavClick(l.to, "mobile")}
+                  className="v2-nav-link whitespace-nowrap"
+                >
+                  <span>{l.mobileLabel}</span>
+                  <span className="num shrink-0 text-[11px] opacity-60">{l.ratio}</span>
+                </Link>
+              )),
+            )}
+            <Link
+              to="/social-media"
+              aria-current={normalizedPath === "/social-media" ? "page" : undefined}
+              onClick={() => handleNavClick("/social-media", "mobile")}
+              className="v2-nav-link whitespace-nowrap"
+            >
+              <span>All platforms</span>
+              <span aria-hidden="true" className="text-xs opacity-60">
+                →
+              </span>
+            </Link>
+          </div>
+        )}
       </details>
     </nav>
   );

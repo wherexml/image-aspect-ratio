@@ -52,7 +52,7 @@ function AspectRatioGuide() {
         <div className="ratio-guide-hero">
           <div>
             <p className="ratio-guide-eyebrow">THE VISUAL GUIDE</p>
-            <h1>What is<br />aspect ratio<span className="text-primary">?</span></h1>
+            <h1>What is{" "}<br />aspect ratio<span className="text-primary">?</span></h1>
             <p className="ratio-guide-lead">{guide.intro}</p>
             <Link to="/calculator" className="ratio-guide-action">Calculate a ratio <ArrowUpRight size={18} aria-hidden /></Link>
           </div>
@@ -79,7 +79,12 @@ function AspectRatioGuide() {
                   : <p key={index}>{block.text}</p>)}
               {section.id === "calculate-aspect-ratio" && <div className="ratio-guide-equation" aria-label="Example: at 16 to 9, 1200 pixels wide gives 675 pixels high"><span>16:9</span><code>1200 × 9 ÷ 16 = 675 px</code></div>}
               {sectionSources[section.id] && <a className="ratio-guide-source" href={sources[sectionSources[section.id]!].url}>{sources[sectionSources[section.id]!].title} <ArrowUpRight size={13} aria-hidden /></a>}
-              {section.id === "calculate-aspect-ratio" && <Link className="ratio-guide-related" to="/exact-fractions-vs-rounded-pixels">Why 1366 × 768 isn't exactly 16:9 <ArrowUpRight size={15} aria-hidden /></Link>}
+              {section.id === "calculate-aspect-ratio" && (
+                <>
+                  <Link className="ratio-guide-related" to="/exact-fractions-vs-rounded-pixels">Why 1366 × 768 isn't exactly 16:9 <ArrowUpRight size={15} aria-hidden /></Link>
+                  <Link className="ratio-guide-related" to="/calculator">Try the aspect ratio calculator <ArrowUpRight size={15} aria-hidden /></Link>
+                </>
+              )}
               {section.id === "common-ratios" && <Link className="ratio-guide-related" to="/ultrawide-aspect-ratio-calculator">Check an ultrawide ratio <ArrowUpRight size={15} aria-hidden /></Link>}
               {section.id === "crop-fit-stretch" && <Link className="ratio-guide-related" to="/make-image-square">Make an image square with padding or crop <ArrowUpRight size={15} aria-hidden /></Link>}
               {section.id === "choosing-a-ratio" && <>
@@ -96,7 +101,7 @@ function AspectRatioGuide() {
                 {[
                   { to: "/calculator", label: "Aspect ratio calculator", note: "Solve width or height in pixels" },
                   { to: "/make-image-square", label: "Make image square", note: "Pad or crop to 1:1 locally" },
-                  { to: "/video-aspect-ratio", label: "Video aspect ratio calculator", note: "Compare 16:9 & 9:16 screen fit" },
+                  { to: "/video-aspect-ratio", label: "Video aspect ratio simulator", note: "Compare 16:9 & 9:16 screen fit" },
                   { to: "/social-media", label: "All social media sizes", note: "TikTok, Instagram & YouTube hub" },
                   { to: "/tiktok-aspect-ratio", label: "TikTok aspect ratio", note: "9:16 vertical video sizing" },
                   { to: "/instagram-reel-aspect-ratio", label: "Instagram Reel aspect ratio", note: "1080×1920 & cover framing" },

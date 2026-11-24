@@ -22,6 +22,7 @@ import { ERR_BYTES, ERR_PIXELS, ERR_READ, isCandidateType } from "@/lib/image-in
 import { fmtInt, frac, roundFrac, simplifyRatio, type Frac } from "@/lib/ratio";
 import { loadSamplePhotoFile } from "@/lib/sample-photo";
 import { INPUT_MAX_BYTES, INPUT_MAX_PIXELS } from "@/lib/square";
+import { useToolTracking } from "@/lib/tool-analytics";
 import { copyTextSafe } from "@/lib/v2-clipboard";
 import { setV2PendingImage } from "@/lib/v2-image-handoff";
 
@@ -113,6 +114,9 @@ export function ImageInspectorV2({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const tracking = useToolTracking("image", "ratio", null);
+  const trackingRef = useRef(tracking);
+  trackingRef.current = tracking;
 
   useEffect(() => {
     return () => {
@@ -161,6 +165,7 @@ export function ImageInspectorV2({
           width: w,
           height: h,
         });
+        trackingRef.current.imageRead(`${w}x${h}:${file.size}`);
       } catch (e) {
         URL.revokeObjectURL(nextUrl);
         if (id === generationRef.current) {
@@ -243,6 +248,7 @@ export function ImageInspectorV2({
   const handleCopyRatio = useCallback(async () => {
     if (!inspection) return;
     if (await copyTextSafe(inspection.exactRatio)) {
+      trackingRef.current.copy(inspection.exactRatio);
       setCopied(true);
       if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
       copyTimerRef.current = setTimeout(() => setCopied(false), 1800);

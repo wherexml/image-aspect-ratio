@@ -42,11 +42,31 @@ function headers(request: Request, env: GeoEnv) {
   });
 }
 
+const ALLOWED_ATTRIBUTION_QUERY = ["utm_source", "utm_medium", "utm_campaign"] as const;
+const ATTRIBUTION_VALUE_RE = /^[a-zA-Z0-9._-]{1,64}$/;
+
 function cleanUrl(value: unknown) {
   if (typeof value !== "string" || value === "") return value;
   try {
     const u = new URL(value, origin);
     return u.origin === origin ? u.pathname : u.origin + u.pathname;
+  } catch { return ""; }
+}
+
+function cleanPageUrl(value: unknown) {
+  if (typeof value !== "string" || value === "") return value;
+  try {
+    const u = new URL(value, origin);
+    if (u.origin !== origin) return u.origin + u.pathname;
+    const kept = new URLSearchParams();
+    for (const key of ALLOWED_ATTRIBUTION_QUERY) {
+      const val = u.searchParams.get(key);
+      if (val && ATTRIBUTION_VALUE_RE.test(val)) {
+        kept.set(key, val);
+      }
+    }
+    const qs = kept.toString();
+    return qs ? `${u.pathname}?${qs}` : u.pathname;
   } catch { return ""; }
 }
 
@@ -88,7 +108,7 @@ export async function geoCollection(request: Request, rawEnv: unknown): Promise<
       const payload: Record<string, unknown> = {};
       for (const key of ["website", "eventId", "webdriver", "hostname", "language", "screen", "title", "url", "referrer"])
         if (p[key] !== undefined) payload[key] = p[key];
-      payload['url'] = cleanUrl(payload['url']);
+      payload['url'] = cleanPageUrl(payload['url']);
       payload['referrer'] = cleanUrl(payload['referrer']);
       if (evName) {
         payload['name'] = evName;

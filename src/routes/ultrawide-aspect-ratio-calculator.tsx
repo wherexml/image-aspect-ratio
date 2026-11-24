@@ -23,7 +23,7 @@ const ULTRAWIDE_RELATED_TOOLS = [
   },
   {
     to: "/video-aspect-ratio",
-    title: "Video aspect ratio calculator",
+    title: "Video aspect ratio simulator",
     description: "Compare how 16:9 widescreen and 9:16 vertical footage fits different screens.",
   },
   {
@@ -78,7 +78,15 @@ function UltrawidePage() {
         </h2>
         <p className="max-w-3xl text-sm text-muted-foreground">
           3440 × 1440 reduces to 43:18. Scaling it to 1720 pixels wide gives 720 pixels high. Strict
-          21:9 at 3440 wide gives approximately 1474.29 pixels high instead of 1440.
+          21:9 at 3440 wide gives approximately 1474.29 pixels high instead of 1440. For standard
+          16:9, 4:3, or custom pixel ratios, use the{" "}
+          <Link
+            to="/calculator"
+            className="font-medium text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground"
+          >
+            aspect ratio calculator
+          </Link>
+          .
         </p>
         <div className="v3-table-wrap max-w-3xl">
           <table className="v3-table">
