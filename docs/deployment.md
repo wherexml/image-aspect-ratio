@@ -1,5 +1,13 @@
 # Cloudflare deployment
 
+## P0 telemetry, SSR navigation dedup & SEO hygiene release — 2026-11-25
+
+- **Released version**: `70e4b0b7-bedf-47d6-84ec-781717da9f00` (100% traffic at `2026-11-25T02:06:28Z` / `10:06:28 SGT`).
+- **Source commits**: `9ad4f54` (building on `f1ab8e4`).
+- **Prior active & safe rollback version**: `23506678-350d-4570-82f6-fd918175e21e`.
+- **Scope**: Wired `useToolTracking` across all 10 active V2/V3 tool components (`ui_ver=20261125a`), added 20-event FIFO `window.umami` readiness queue, enabled `utm_source` / `utm_medium` / `utm_campaign` attribution allowlist on `/_geo/api/send` with matching `/privacy` disclosure, removed duplicate SSR `.v2-nav-menu--mobile` DOM links (homepage SSR internal `<a>` links reduced from ~76 to 55), fixed `/what-is-aspect-ratio` H1 spacing (`What is aspect ratio?`), added contextual `/calculator` links on `/`, `/ultrawide-aspect-ratio-calculator`, and `/what-is-aspect-ratio`, updated `/video-aspect-ratio` title to `Video Aspect Ratio Simulator — 16:9, 9:16 & 4K Crop Guide`, and established the 30-day SEO freeze through `2026-12-24`.
+- **Live verification**: `python3 scripts/verify-http.py https://imageaspectratio.com https://imageaspectratio.com indexable` passed across all 28 canonical routes, `sitemap.xml`, `robots.txt`, `308` query-preserving redirects, and `404`; live SSR HTML, `/_geo/script.js` (`200`, 5,949 bytes), IndexNow key file (`200`), and client bundle `ui_ver=20261125a` were verified on `https://imageaspectratio.com`.
+
 ## Unrecorded production releases reconciliation — 2026-11-06 to 2026-11-23 UTC
 
 Verified against `wrangler deployments list --name aspect-ratio-canvas` and `wrangler versions list --name aspect-ratio-canvas`:
